@@ -1,0 +1,2574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Email Marketing Optimization — Ingram Micro · Brian Pham</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Benne&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-700: #1346A2;
+    --blue-900: #0D317A;
+    --blue-100: #D3E2FF;
+    --cream:    #FFF9F0;
+    --page-bg:  #FFFDF9;
+    --band-bg:  #EAF3F6;
+    --ink:      #222222;
+    --muted:    #4B5A70;
+    --brown:    #392A13;
+    --brown-50: rgba(57, 42, 19, 0.51);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--page-bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; }
+
+  /* Nav (matches hero.html) */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 253, 249, 0.85);
+    backdrop-filter: saturate(1.2) blur(8px);
+    -webkit-backdrop-filter: saturate(1.2) blur(8px);
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+  nav#primary-nav { border: 0; background: transparent; }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 32px;
+  }
+  .brand {
+    font-family: 'Benne', serif;
+    font-size: 22px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav ul {
+    display: flex; gap: 8px;
+    list-style: none; margin: 0; padding: 0;
+  }
+  .nav a.nav-link {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 999px;
+    transition: background .15s ease, color .15s ease;
+  }
+  .nav a.nav-link:hover { background: var(--blue-100); color: var(--blue-900); }
+  .nav a.nav-link[aria-current="page"] {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .nav a.nav-link[aria-current="page"]:hover { background: var(--blue-100); }
+
+  .nav-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid transparent;
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+    align-items: center; justify-content: center;
+  }
+  .nav-toggle:hover { background: var(--blue-100); }
+  .nav-toggle:focus-visible { outline: 2px solid var(--blue-700); outline-offset: 2px; }
+  .nav-toggle .bars {
+    position: relative;
+    width: 22px; height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: background .15s ease;
+  }
+  .nav-toggle .bars::before,
+  .nav-toggle .bars::after {
+    content: "";
+    position: absolute; left: 0;
+    width: 22px; height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform .3s ease, top .3s ease;
+  }
+  .nav-toggle .bars::before { top: -7px; }
+  .nav-toggle .bars::after  { top:  7px; }
+  .nav-toggle[aria-expanded="true"] .bars { background: transparent; }
+  .nav-toggle[aria-expanded="true"] .bars::before { top: 0; transform: rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .bars::after  { top: 0; transform: rotate(-45deg); }
+
+  @media (max-width: 640px) {
+    .nav-toggle { display: inline-flex; }
+    .nav#primary-nav { display: none; }
+    .nav#primary-nav.is-open {
+      display: block;
+      position: absolute;
+      top: 100%; left: 0; right: 0;
+      background: rgba(255, 253, 249, 0.98);
+      backdrop-filter: saturate(1.2) blur(8px);
+      -webkit-backdrop-filter: saturate(1.2) blur(8px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 12px 20px 20px;
+      animation: dropIn .22s ease;
+    }
+    .nav#primary-nav ul {
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav#primary-nav a.nav-link {
+      display: block;
+      padding: 12px 14px;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+    @keyframes dropIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: none; }
+    }
+  }
+
+  /* Case study header */
+  .case-header {
+    background: var(--page-bg);
+    padding: 72px 32px 56px;
+  }
+  .case-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .case-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: clamp(32px, 4.5vw, 40px);
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0 0 8px;
+    letter-spacing: -0.005em;
+  }
+  .case-desc {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: clamp(16px, 1.8vw, 20px);
+    line-height: 1.6;
+    color: var(--brown);
+    margin: 0 0 40px;
+    max-width: 720px;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px 80px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+  }
+  .meta-item { min-width: 120px; }
+  .meta-label {
+    color: var(--brown-50);
+    line-height: 32px;
+  }
+  .meta-value {
+    color: var(--brown);
+    line-height: 32px;
+  }
+
+  /* Full-bleed design showcase */
+  .showcase {
+    background: var(--band-bg);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow: hidden;
+  }
+  .showcase img {
+    width: 100%;
+    max-width: 1600px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  @media (max-width: 960px) {
+    .meta-row { gap: 24px 48px; }
+    .case-header { padding: 56px 24px 40px; }
+    .case-inner { padding: 0 8px; }
+  }
+  @media (max-width: 640px) {
+    .case-header { padding: 40px 20px 32px; }
+    .case-inner { padding: 0; }
+    .showcase { padding: 24px 12px; }
+    .meta-row { gap: 16px 32px; }
+    .meta-item { min-width: 45%; }
+  }
+
+  /* ===== Context section ===== */
+  .context {
+    background: var(--page-bg);
+    padding: 69px 32px 0; /* 69px matches Figma gap from image to chip */
+  }
+  .context-inner {
+    max-width: 1022px;  /* widest block = 1440 − 209 − 209 */
+    margin: 0 auto;
+  }
+  /* Keep narrow-column text aligned with the 844px column (blocks 1 & 2) */
+  .sub-title,
+  .sub-body { max-width: 844px; }
+  .section-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    height: 36px;
+    padding: 0 24px;
+    background: #EAF3F6;
+    color: #4670D9;
+    border-radius: 999px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 20px;
+  }
+  .section-chip::before {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #4670D9;
+  }
+
+  .sub-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.35;
+    color: var(--ink);
+    margin: 35px 0 0;        /* 140 − 69 − 36 ≈ 35 from chip bottom */
+  }
+  .sub-body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--brown);
+    margin: 30px 0 0;
+  }
+  .sub-body + .sub-body { margin-top: 28px; }
+  .sub-body strong { font-weight: 700; }
+
+  /* Image + Good to know grid (top 405 from Figma ~ 60px below last body) */
+  .block-1-grid {
+    display: grid;
+    grid-template-columns: 359px 404px;
+    column-gap: 81px;        /* 649 − (209 + 359) = 81 */
+    align-items: start;
+    margin-top: 60px;
+  }
+  .campaign-preview {
+    width: 359px;
+    height: 525px;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #FEF8F0;
+    overflow: hidden;
+    background: #fff;
+  }
+  .campaign-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .caption {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 32px;
+    color: var(--brown-50);
+    text-align: center;
+    width: 359px;
+    margin: 10px 0 0;
+  }
+
+  .info {
+    background: #fff;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    padding: 25px 23px;
+    width: 404px;
+  }
+  .info h4 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E3ECF3;
+  }
+  .info .info-body {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .info p {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* ===== Subsection 2 — Delivery flow ===== */
+  .sub-block-2 { margin-top: 160px; }
+
+  .flow-chart {
+    margin-top: 60px;
+    width: 815px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .flow-legend {
+    display: grid;
+    grid-template-columns: 384px 384px;
+    column-gap: 38px;    /* 631 − (209 + 384) = 38 */
+    margin-top: 48px;
+  }
+  .legend-card {
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    padding: 25px 23px;
+    width: 384px;
+  }
+  .legend-card h4 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--ink);
+    padding-bottom: 8px;
+    border-bottom: 1px solid currentColor;
+    border-bottom-color: rgba(34,34,34,0.12);
+  }
+  .legend-card p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+  .legend-card.blue {
+    background: #EAF9FF;
+    border: 1px solid #BDD6EB;
+  }
+  .legend-card.yellow {
+    background: #FFFBEE;
+    border: 1px solid #E8CE7C;
+  }
+
+  /* ===== Subsection 3 — Essentials ===== */
+  .sub-block-3 { margin-top: 160px; }
+
+  .block-3-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 435px 400px;
+    column-gap: 134px;    /* 569 − 435 = 134 from Figma offsets */
+    align-items: center; /* vertically center right card/blob against the 3 notecards */
+    margin-top: 60px;
+  }
+
+  .notecards {
+    display: flex;
+    flex-direction: column;
+    gap: 54px;    /* per spec */
+  }
+  .notecard {
+    background: #fff;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    padding: 25px 23px;
+    width: 435px;
+  }
+  .notecard h4 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E3ECF3;
+  }
+  .notecard .info-body {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .notecard p {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* Right column — campaign types card with blob behind */
+  .campaign-types-wrap {
+    position: relative;
+    width: 400px;
+  }
+  .campaign-types-wrap::before {
+    content: "";
+    position: absolute;
+    left: -66px;   /* 503 − 569 from Figma */
+    top: -35px;    /* 2327 − 2362 */
+    width: 519px;
+    height: 641px;
+    background: url('https://www.figma.com/api/mcp/asset/32f4c7cd-b1b9-4cc2-a491-9024158f02ad') center / 100% 100% no-repeat;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .campaign-types {
+    position: relative;
+    z-index: 1;
+    width: 400px;
+    background: #fff;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    padding: 25px 23px;
+    display: flex;
+    flex-direction: column;
+    gap: 85px;
+  }
+  .campaign-type h5 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E3ECF3;
+    list-style-position: inside;
+  }
+  .campaign-type h5 .num { margin-right: 6px; }
+  .campaign-type img {
+    display: block;
+    width: 354px;
+    max-width: 100%;
+    height: 167px;
+    object-fit: cover;
+    border-radius: 2px;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 900px) {
+    .block-1-grid {
+      grid-template-columns: 1fr;
+      row-gap: 32px;
+      justify-items: center;
+    }
+    .campaign-preview,
+    .info,
+    .caption { width: 100%; max-width: 440px; }
+    .campaign-preview { height: auto; aspect-ratio: 359 / 525; }
+
+    .sub-block-2 { margin-top: 112px; }
+    .flow-legend {
+      grid-template-columns: 1fr;
+      row-gap: 20px;
+      justify-items: center;
+    }
+    .legend-card { width: 100%; max-width: 440px; }
+
+    .sub-block-3 { margin-top: 112px; }
+    .block-3-grid {
+      grid-template-columns: 1fr;
+      row-gap: 48px;
+      justify-items: center;
+    }
+    .notecard,
+    .campaign-types-wrap,
+    .campaign-types { width: 100%; max-width: 440px; }
+    .campaign-types-wrap::before {
+      left: -24px;
+      top: -24px;
+      width: calc(100% + 48px);
+      height: calc(100% + 48px);
+    }
+    .campaign-type img { width: 100%; height: auto; aspect-ratio: 354 / 167; }
+  }
+  @media (max-width: 640px) {
+    .context { padding: 48px 20px 72px; }
+    .sub-title { font-size: 22px; }
+  }
+
+  /* ===== Problem section ===== */
+  .problem {
+    background: var(--page-bg);
+    padding: 160px 32px 69px;  /* 160px below Context; 69px gap before HMW band */
+  }
+  .problem-inner {
+    max-width: 1022px;         /* match .context-inner so left edges align */
+    margin: 0 auto;
+  }
+  /* Cap Problem-section text/cards at 844 while left-aligning in the 1022 column */
+  .problem-inner .sub-title,
+  .problem-inner .sub-body,
+  .problem-inner .need-grid,
+  .problem-inner .why-card { max-width: 844px; }
+
+  .need-grid {
+    display: grid;
+    grid-template-columns: 409px 409px;
+    column-gap: 26px;    /* 644 − (209 + 409) = 26 from Figma offsets */
+    margin-top: 56px;
+  }
+  .need-card {
+    background: #fff;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    padding: 25px 23px;
+    width: 409px;
+  }
+  .need-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E3ECF3;
+  }
+  .need-header img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+  .need-header .label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+  .need-card p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  .why-card {
+    margin-top: 40px;
+    background: #FAF2E5;
+    border-left: 2px solid #FFB132;
+    border-radius: 2px;
+    box-shadow: 0 5px 5px 0 #F6F2EB;
+    padding: 25px 23px;
+    max-width: 844px;
+  }
+  .why-card h4 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .why-card p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* Three problem cards */
+  .problems-grid {
+    display: grid;
+    grid-template-columns: 318px 318px 318px;
+    column-gap: 34px;      /* derived from Figma offsets: 352−318 = 34 */
+    margin-top: 69px;
+  }
+  .problem-card {
+    width: 318px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+  }
+  .problem-card .media {
+    position: relative;
+    height: 262px;
+    background: #FAF2E5;
+    border: 1px solid #BDD6EB;
+    border-bottom: 0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    overflow: hidden;
+  }
+  .problem-card .media img {
+    position: absolute;
+    display: block;
+    object-fit: cover;
+  }
+  .problem-card .media.img-1 img { left: 11px;  top: 74px; width: 293px; height: 118px; }
+  .problem-card .media.img-2 img { left: -1px;  top: 11px; width: 324px; height: 244px; }
+  .problem-card .media.img-3 img { left: 10px;  top: 29px; width: 296px; height: 201px; }
+
+  .problem-card .body {
+    min-height: 268px;
+    background: #fff;
+    border: 1px solid #BDD6EB;
+    border-top: 0;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+  }
+  .problem-card .body h4 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E3ECF3;
+  }
+  .problem-card .body p {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+  .problem-card .body p + p { margin-top: 16px; }
+
+  @media (max-width: 900px) {
+    .need-grid {
+      grid-template-columns: 1fr;
+      row-gap: 20px;
+      justify-items: center;
+    }
+    .need-card { width: 100%; max-width: 440px; }
+
+    .problems-grid {
+      grid-template-columns: 1fr;
+      row-gap: 24px;
+      justify-items: center;
+    }
+    .problem-card { width: 100%; max-width: 360px; }
+  }
+  @media (max-width: 640px) {
+    .problem { padding: 56px 20px 72px; }
+  }
+
+  /* ===== How-Might-We band ===== */
+  .hmw {
+    background: #EAF3F6;
+    width: 100%;
+    padding: 38px 32px 35px;   /* ~187px tall band to match Figma */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hmw-inner {
+    max-width: 1022px;
+    width: 100%;
+    text-align: center;
+  }
+  .hmw-label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #4670D9;
+    margin: 0;
+  }
+  .hmw-text {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 32px;
+    color: var(--ink);
+    margin: 36px auto 0;
+    max-width: 1022px;
+  }
+
+  @media (max-width: 640px) {
+    .hmw { padding: 32px 20px; }
+    .hmw-text { font-size: 22px; line-height: 30px; }
+  }
+
+  /* ===== Goals section ===== */
+  .goals {
+    background: var(--page-bg);
+    padding: 69px 32px 0;      /* 69px below the HMW band; Users section carries bottom spacing */
+  }
+  .goals-inner {
+    max-width: 1022px;         /* match .problem-inner / .context-inner */
+    margin: 0 auto;
+  }
+  .goals-inner .sub-title,
+  .goals-inner .sub-body { max-width: 844px; }
+
+  .goals-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 232px);
+    column-gap: 31px;          /* Figma: 472−441 = 31 */
+    margin-top: 56px;
+  }
+  .goal-card {
+    width: 232px;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    padding: 25px 23px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .goal-card.light-blue { background: #F0F8FF; }
+  .goal-card.cream     { background: #FAF2E5; }
+  .goal-card.white     { background: #FFFFFF; }
+
+  .goal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E3ECF3;
+  }
+  .goal-header img {
+    display: block;
+    width: 24px;
+    height: 24px;
+    flex: none;
+  }
+  .goal-header .label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+  .goal-card p {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  @media (max-width: 1100px) {
+    .goals-grid {
+      grid-template-columns: repeat(2, 232px);
+      row-gap: 24px;
+      justify-content: center;
+    }
+  }
+  @media (max-width: 640px) {
+    .goals { padding: 56px 20px 72px; }
+    .goals-grid {
+      grid-template-columns: 1fr;
+      justify-content: stretch;
+    }
+    .goal-card { width: 100%; max-width: 360px; margin: 0 auto; }
+  }
+
+  /* ===== Users section ===== */
+  .users {
+    background: var(--page-bg);
+    padding: 160px 32px 0;
+  }
+  .users-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .users-inner .sub-title,
+  .users-inner .sub-body { max-width: 844px; }
+
+  .users-visual {
+    position: relative;
+    height: 264px; /* 218 avatar + 46px gap to cards */
+    margin-top: 71px;
+  }
+  .avatar-wrap {
+    position: absolute;
+    top: 0;
+    width: 218px;
+    aspect-ratio: 1 / 1;
+    height: auto;
+  }
+  .avatar-wrap.marketing { left: 139px;  /* Figma: calc(20% + 60px) - 209 */ }
+  .avatar-wrap.pm        { left: 665px;  /* Figma: calc(60% + 10px) - 209 */ }
+
+  .avatar-wrap img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  .users-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 495px);
+    gap: 32px;
+    justify-content: start;
+  }
+  .user-card {
+    border-radius: 4px;
+    padding: 25px 23px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    border: 1px solid transparent;
+  }
+  .user-card.primary   { background: #EAF9FF; border-color: #BDD6EB; }
+  .user-card.secondary { background: #FFFBEE; border-color: #E8CE7C; }
+  .user-card .role-title {
+    margin: 0 0 8px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #222;
+  }
+  .user-card .divider {
+    height: 1px;
+    width: 100%;
+    background: #BDD6EB;
+    margin: 0 0 12px;
+  }
+  .user-card.secondary .divider { background: #E8CE7C; }
+  .user-card p {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  @media (max-width: 1100px) {
+    .users-visual { height: auto; margin-top: 48px; display: flex; justify-content: flex-end; }
+    .avatar-wrap { position: static; margin-bottom: 24px; }
+    .users-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .users { padding: 96px 20px 72px; }
+    .users-visual { justify-content: center; }
+    .users-grid { grid-template-columns: 1fr; }
+    .user-card { max-width: 480px; margin: 0 auto; }
+  }
+
+  /* ===== User Testing section ===== */
+  /* =========================================================
+     RESEARCH & IDEATION — competitive analysis
+     ========================================================= */
+  .research {
+    background: var(--page-bg);
+    padding: 160px 32px 0;
+  }
+  .research-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .research-inner .sub-title,
+  .research-inner .sub-body { max-width: 844px; }
+
+  .research-figure {
+    margin: 50px 0 0;
+    width: 100%;
+    display: block;
+  }
+  .research-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Research sub-section — 160px below the previous block (feasibility chart) */
+  .research-subsection { margin-top: 160px; }
+
+  .feasibility-frame {
+    margin-top: 50px;
+    background: rgba(228, 217, 200, 0.22);
+    border: 1px solid rgba(151, 134, 107, 0.11);
+    border-radius: 4px;
+    padding: 10px;
+  }
+  .feasibility-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 640px) {
+    .research { padding: 96px 20px 0; }
+    .research-figure { margin-top: 32px; }
+    .research-subsection { margin-top: 96px; }
+    .feasibility-frame { margin-top: 32px; padding: 6px; }
+  }
+
+  .user-testing {
+    background: var(--page-bg);
+    padding: 160px 32px 0;
+  }
+  .user-testing-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .user-testing-inner .sub-title,
+  .user-testing-inner .sub-body { max-width: 844px; }
+
+  .version-chips {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 44px;
+  }
+  .version-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 39px;
+    padding: 0 22px;
+    border-radius: 180px;
+    border: 1px solid transparent;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 16px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    background: #FFFFFF;
+    color: #5E523F;
+    border-color: #BDD6EB;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+  .version-chip:hover {
+    border-color: #90BDE4;
+    color: var(--brown);
+  }
+  .version-chip[aria-pressed="true"] {
+    background: var(--brown);
+    color: #FFFFFF;
+    border-color: var(--brown);
+  }
+  .version-chip[aria-pressed="true"]:hover {
+    color: #A49E95;
+  }
+  .version-chip:focus-visible {
+    outline: 2px solid #4670D9;
+    outline-offset: 2px;
+  }
+
+  /* Version A / Version B content panels — only the active chip's panel shows */
+  .version-content { display: none; }
+  .version-content.is-active { display: block; }
+
+  /* Screen frame (image container with numbered hotspots) */
+  .screen-frame {
+    position: relative;
+    margin-top: 44px;
+    width: 100%;
+    aspect-ratio: 1022 / 714;
+    background: rgba(228, 217, 200, 0.22);
+    border: 1px solid rgba(151, 134, 107, 0.11);
+    border-radius: 4px;
+    padding: 2.15%; /* 22px of 1022 */
+    overflow: hidden;
+  }
+  .screen-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  /* Numbered hotspots — fixed size, position as percentage of image area so
+     they stay pinned on top of the image at any viewport width. */
+  .hotspot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.333px solid #FFFFFF;
+    box-shadow: 0 2.667px 2.667px 0 rgba(34, 34, 34, 0.33);
+    background: var(--brown);
+    color: #FFFFFF;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 10.667px;
+    text-align: center;
+    cursor: pointer;
+    padding: 0;
+    /* Custom properties drive the pulse color so it matches the hotspot state */
+    --glow-color: 57, 42, 19; /* brown, unselected */
+    transition: width 140ms ease, height 140ms ease, border-width 140ms ease, font-size 140ms ease, box-shadow 140ms ease;
+  }
+  .hotspot.is-active {
+    background: #C845AC;
+    --glow-color: 200, 69, 172; /* pink, active */
+  }
+
+  /* Pulsing ring — sits on a pseudo-element so the dot's own shadow/hover
+     styles are not interrupted by the animation. Ring color matches the
+     hotspot state via --glow-color. */
+  .hotspot::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: hotspotPulse 1.8s ease-out infinite;
+  }
+  @keyframes hotspotPulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(var(--glow-color), 0.55);
+    }
+    70% {
+      box-shadow: 0 0 0 14px rgba(var(--glow-color), 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(var(--glow-color), 0);
+    }
+  }
+  /* Stagger so the three pulses don't fire in lockstep */
+  .hotspot-2::before { animation-delay: 0.6s; }
+  .hotspot-3::before { animation-delay: 1.2s; }
+  .hotspot:hover,
+  .hotspot:focus-visible {
+    width: 33px;
+    height: 33px;
+    border-width: 1.692px;
+    font-size: 12.692px;
+    line-height: 13.538px;
+    box-shadow: 0 3.385px 3.385px 0 rgba(34, 34, 34, 0.33);
+    outline: none;
+  }
+  /* Percentage positions relative to the INNER image area (977 x 666).
+     Accounts for the ~2.15% padding of the outer frame. */
+  .hotspot-1 { top: calc(2.15% + 4.35% * 0.9579); left: calc(2.15% + 13.10% * 0.9560); }
+  .hotspot-2 { top: calc(2.15% + 16.22% * 0.9579); left: calc(2.15% + 33.16% * 0.9560); }
+  .hotspot-3 { top: calc(2.15% + 56.31% * 0.9579); left: calc(2.15% + 55.78% * 0.9560); }
+
+  /* User testing insight note card */
+  .testing-note {
+    margin-top: 50px;
+    max-width: 844px;
+    background: #FFFFFF;
+    border-left: 2px solid #C845AC;
+    border-radius: 2px;
+    box-shadow: 0 5px 5px 0 #F6F2EB;
+    padding: 25px 23px;
+  }
+  /* Version A's User Testing Insights card uses a light green background */
+  .version-content[data-version="a"] .testing-note {
+    background: #EEFFE8;
+  }
+  .testing-note-header {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000000;
+  }
+  .testing-note-header .counter {
+    color: #883276;
+    font-weight: 500;
+  }
+  .note-divider {
+    height: 1px;
+    background: #E9E1D4;
+    margin: 8px 0 12px;
+  }
+  .testing-note p {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+  .testing-note p strong { font-weight: 700; }
+
+  /* Version B — two overlapping screens (gif + static) with a red highlight */
+  .screen-frame-b {
+    aspect-ratio: 1022 / 714;
+    padding: 0;
+    overflow: hidden;
+  }
+  .screen-b-gif,
+  .screen-b-static {
+    position: absolute;
+    display: block;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  /* GIF (top-left), 544x395 at 45,48 within 1022x714 */
+  .screen-b-gif {
+    left: 4.40%;
+    top: 6.72%;
+    width: 53.23%;
+    height: 55.32%;
+  }
+  /* Static screenshot (overlapping, front), 622x443 at 352,221 */
+  .screen-b-static {
+    left: 34.44%;
+    top: 30.95%;
+    width: 60.86%;
+    height: 62.04%;
+  }
+
+  /* Red insight dot — pulsing glow */
+  .red-dot {
+    position: absolute;
+    /* Center at (523, 592) within 1022x714 frame */
+    top: 82.91%;
+    left: 51.17%;
+    transform: translate(-50%, -50%);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #FF5D60;
+    border: 1.333px solid #FFFFFF;
+    box-shadow:
+      0 2.667px 2.667px 0 rgba(34, 34, 34, 0.33),
+      0 0 0 0 rgba(255, 93, 96, 0.55);
+    animation: redPulse 1.8s ease-out infinite;
+    z-index: 2;
+  }
+  @keyframes redPulse {
+    0% {
+      box-shadow:
+        0 2.667px 2.667px 0 rgba(34, 34, 34, 0.33),
+        0 0 0 0 rgba(255, 93, 96, 0.55);
+    }
+    70% {
+      box-shadow:
+        0 2.667px 2.667px 0 rgba(34, 34, 34, 0.33),
+        0 0 0 16px rgba(255, 93, 96, 0);
+    }
+    100% {
+      box-shadow:
+        0 2.667px 2.667px 0 rgba(34, 34, 34, 0.33),
+        0 0 0 0 rgba(255, 93, 96, 0);
+    }
+  }
+
+  /* Assumptions + red-insight note card grid (Version B) */
+  .assumption-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 38px;
+    margin-top: 50px;
+  }
+  .insight-red-card {
+    margin-top: 0; /* grid provides the spacing */
+    max-width: none;
+    background: #FFE4E4;
+    border-left-color: #FF5D60;
+  }
+  .assumption-card {
+    margin-top: 0;
+    max-width: none;
+  }
+  .testing-note-header .close-icon {
+    width: 16px;
+    height: 16px;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* Second User Testing sub-section — 160px below the previous one */
+  .ut-subsection { margin-top: 160px; }
+
+  /* Custom hotspot positions for the second screen frame */
+  .screen-frame.frame-b .hotspot-1 { top: calc(2.15% + 35.89% * 0.9579); left: calc(2.15% + 33.57% * 0.9560); }
+  .screen-frame.frame-b .hotspot-2 { top: calc(2.15% + 65.02% * 0.9579); left: calc(2.15% + 90.07% * 0.9560); }
+
+  /* Version B (sub-section 2) — AB testing image with two red dots */
+  .screen-frame-b2 {
+    aspect-ratio: 1022 / 714;
+    padding: 0;
+    overflow: hidden;
+  }
+  .screen-b2-image {
+    position: absolute;
+    display: block;
+    /* Image is 967x670.686 placed inside 972x670.686 inner container at padding 25,21 */
+    left: 2.45%;
+    top: 2.94%;
+    width: 94.62%;
+    height: 93.93%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  /* Dot 1: center at (499, 348) within 1022x714 */
+  .screen-frame-b2 .red-dot.dot-1 {
+    left: 48.83%;
+    top: 48.74%;
+  }
+  /* Dot 2: center at (938, 77) within 1022x714 */
+  .screen-frame-b2 .red-dot.dot-2 {
+    left: 91.78%;
+    top: 10.78%;
+  }
+
+  /* Third User Testing sub-section — "After" frame (save & browse) */
+  /* Outer frame 1022x836 (padding 25/21, inner 977x794) */
+  .screen-frame.frame-c { aspect-ratio: 1022 / 836; }
+  .screen-frame.frame-c .hotspot-1 { top: 19.02%; left: 58.99%; }
+  .screen-frame.frame-c .hotspot-2 { top: 63.76%; left: 24.95%; }
+  .screen-frame.frame-c .hotspot-3 { top: 22.85%; left: 84.15%; }
+
+  /* "Before" frame for save-and-browse sub-section (1022x836, inner 977x794) */
+  .screen-frame-c2 {
+    aspect-ratio: 1022 / 836;
+    padding: 0;
+    overflow: hidden;
+  }
+  .screen-c2-image {
+    position: absolute;
+    display: block;
+    /* Inner image 977x794 placed at padding 25,21 inside 1022x836 */
+    left: 2.45%;
+    top: 2.51%;
+    width: 95.60%;
+    height: 94.98%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  /* Dot 1: center at (141, 204) within 1022x836 */
+  .screen-frame-c2 .red-dot.dot-1 {
+    left: 13.80%;
+    top: 24.40%;
+  }
+  /* Dot 2: center at (705, 611) within 1022x836 */
+  .screen-frame-c2 .red-dot.dot-2 {
+    left: 68.98%;
+    top: 73.09%;
+  }
+
+  /* Assumptions card with check icon (standalone, no grid) */
+  .assumption-check-icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 820px) {
+    .assumption-grid { grid-template-columns: 1fr; gap: 20px; }
+  }
+  @media (max-width: 640px) {
+    .user-testing { padding: 96px 20px 0; }
+    .version-chips { flex-wrap: wrap; }
+    .screen-frame { padding: 12px; }
+    .ut-subsection { margin-top: 96px; }
+  }
+
+  /* =========================================================
+     FINAL MVP DESIGN section
+     - Full-bleed blue background (#EAF3F6) replaces the cream margin
+     - 160px above the previous section
+     ========================================================= */
+  .final-mvp {
+    background: #EAF3F6;
+    margin-top: 160px;
+    padding: 62px 0 40px;
+  }
+  .final-mvp-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  /* Chip color inversion — section bg is blue so chip fills with the
+     page cream to remain legible against it. */
+  .final-mvp .section-chip {
+    background: #FFFDF9;
+    margin-left: 0;
+  }
+
+  .mvp-row {
+    display: grid;
+    grid-template-columns: 337fr 646fr;
+    column-gap: 39px;
+    margin-top: 62px;
+    align-items: start;
+  }
+
+  .mvp-note {
+    background: #FFFFFF;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    padding: 25px 23px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    font-family: 'Manrope', sans-serif;
+  }
+  .mvp-note-header {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+  .mvp-note .mvp-divider {
+    height: 1px;
+    background: rgba(151, 134, 107, 0.25);
+    width: 100%;
+    margin: 8px 0 12px;
+  }
+  .mvp-note-body p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: #392A13;
+    margin: 0;
+  }
+  .mvp-note-body p + p { margin-top: 28px; }
+
+  .mvp-media {
+    background: #DBDBDB;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 646 / 508;
+    position: relative;
+  }
+  .mvp-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #DBDBDB;
+  }
+
+  /* Full-width note card variant (spans 830 of 1022) */
+  .mvp-note--wide { max-width: 830px; }
+
+  /* Two equal gray-box media row (493 + 36 gap + 493 = 1022) */
+  .mvp-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 36px;
+    margin-top: 33px;
+  }
+  .mvp-split .mvp-media {
+    aspect-ratio: 493 / 423;
+  }
+
+  /* Cream-background media variant for the shareable link row */
+  .mvp-media--cream {
+    background: #FFFDF9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 23px;
+  }
+  .mvp-media-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  @media (max-width: 820px) {
+    .mvp-row { grid-template-columns: 1fr; row-gap: 24px; margin-top: 40px; }
+    .mvp-split { grid-template-columns: 1fr; row-gap: 24px; }
+    .final-mvp { padding: 48px 0 96px; margin-top: 96px; }
+  }
+  @media (max-width: 640px) {
+    .final-mvp-inner { padding: 0 16px; }
+  }
+
+  /* =========================================================
+     IMPACT section — cream bg, 3 success-metric cards
+     ========================================================= */
+  .impact {
+    background: var(--cream, #FFFDF9);
+    padding: 60px 0 0;
+  }
+  .impact-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .impact-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.35;
+    color: var(--ink, #222);
+    max-width: 844px;
+    margin: 50px 0 24px;
+  }
+  .impact-body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--brown, #392A13);
+    max-width: 844px;
+    margin: 0 0 56px;
+  }
+
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 55px;
+    align-items: start;
+  }
+  .impact-card {
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    padding: 25px 23px;
+    font-family: 'Manrope', sans-serif;
+  }
+  .impact-card--blue { background: #F0F8FF; }
+  .impact-card--tan  { background: #FAF2E5; }
+  .impact-card-title {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+  .impact-card-divider {
+    height: 1px;
+    background: rgba(151, 134, 107, 0.25);
+    width: 100%;
+    margin: 8px 0 12px;
+  }
+  .impact-card-quote,
+  .impact-card-source {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown, #392A13);
+    margin: 0;
+  }
+  .impact-card-quote { margin-bottom: 12px; }
+  .impact-card-quote strong { font-weight: 700; }
+
+  @media (max-width: 900px) {
+    .impact-grid { grid-template-columns: 1fr 1fr; row-gap: 24px; column-gap: 24px; }
+  }
+  @media (max-width: 640px) {
+    .impact { padding: 96px 0 80px; }
+    .impact-grid { grid-template-columns: 1fr; }
+    .impact-inner { padding: 0 16px; }
+  }
+
+  /* =========================================================
+     TAKEAWAYS section — 100px below Impact, 3 learning cards
+     ========================================================= */
+  .takeaways {
+    background: var(--cream, #FFFDF9);
+    padding: 100px 0 160px;
+  }
+  .takeaways-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .takeaways-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.35;
+    color: var(--ink, #222);
+    max-width: 844px;
+    margin: 50px 0 24px;
+  }
+  .takeaways-body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--brown, #392A13);
+    max-width: 1022px;
+    margin: 0 0 56px;
+  }
+  .takeaways-body strong { font-weight: 700; }
+
+  .takeaways-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 55px;
+    align-items: stretch;
+  }
+  .takeaway-card {
+    background: #FFFFFF;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    min-height: 171px;
+    padding: 25px 23px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+
+  @media (max-width: 900px) {
+    .takeaways-grid { grid-template-columns: 1fr 1fr; row-gap: 24px; column-gap: 24px; }
+  }
+  @media (max-width: 640px) {
+    .takeaways { padding: 80px 0 96px; }
+    .takeaways-grid { grid-template-columns: 1fr; }
+    .takeaways-inner { padding: 0 16px; }
+  }
+
+  /* =========================================================
+     SCROLL REVEAL — fade + rise as elements enter the viewport
+     ========================================================= */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    will-change: opacity, transform;
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* Stagger siblings inside grid-like groups for a gentle cascade */
+  .reveal-group > .reveal { transition-delay: 0ms; }
+  .reveal-group > .reveal:nth-child(2) { transition-delay: 80ms; }
+  .reveal-group > .reveal:nth-child(3) { transition-delay: 160ms; }
+  .reveal-group > .reveal:nth-child(4) { transition-delay: 240ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" role="banner">
+  <div class="nav-inner">
+    <a href="hero.html" class="brand" aria-label="Brian Pham, home">Brian Pham</a>
+    <button class="nav-toggle" type="button"
+            aria-expanded="false"
+            aria-controls="primary-nav"
+            aria-label="Open menu">
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+    <nav id="primary-nav" class="nav" aria-label="Primary">
+      <ul>
+        <li><a class="nav-link" href="hero.html">Home</a></li>
+        <li><a class="nav-link" href="hero.html#about">About</a></li>
+        <li><a class="nav-link" href="hero.html#work" aria-current="page">Work</a></li>
+        <li><a class="nav-link" href="hero.html#resume">Resume</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- CASE STUDY HEADER -->
+<section class="case-header" aria-labelledby="case-title">
+  <div class="case-inner">
+    <h1 id="case-title" class="case-title">Email Marketing Optimization</h1>
+    <p class="case-desc">Untangling the Email Marketing Workflow @ Ingram Micro</p>
+
+    <div class="meta-row" role="list">
+      <div class="meta-item" role="listitem">
+        <div class="meta-label">Role</div>
+        <div class="meta-value">UI/UX Designer</div>
+      </div>
+      <div class="meta-item" role="listitem">
+        <div class="meta-label">Team</div>
+        <div class="meta-value">1 Designer, 4 Engineers</div>
+      </div>
+      <div class="meta-item" role="listitem">
+        <div class="meta-label">Timeline</div>
+        <div class="meta-value">4 months</div>
+      </div>
+      <div class="meta-item" role="listitem">
+        <div class="meta-label">Tools</div>
+        <div class="meta-value">Figma</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL-BLEED DESIGN -->
+<section class="showcase" aria-label="Ingram Micro project preview">
+  <img src="https://www.figma.com/api/mcp/asset/58facd46-dc26-4600-9899-6657130b826f"
+       alt="Ingram Micro email marketing platform — campaign dashboard, template builder, and email preview mockups with the Ingram Micro logo." />
+</section>
+
+<!-- CONTEXT -->
+<section class="context" aria-labelledby="context-heading">
+  <div class="context-inner">
+    <span class="section-chip" id="context-heading">Context</span>
+
+    <h2 class="sub-title">What I worked on as a UI/UX Designer in Ingram Micro&rsquo;s Marketing Department.</h2>
+
+    <p class="sub-body">
+      I worked on &ldquo;Template-Repository&rdquo; (TR for short) &ndash; Ingram Micro&rsquo;s in-house marketing campaign creation tool used by <strong>279+ marketing associates</strong> globally. This tool allows associates to create company-branded marketing campaigns and have them sent to the inbox of subscribers.
+    </p>
+    <p class="sub-body">
+      My work centered on accelerating campaign creation to increase the volume of hand-off-ready campaigns for our subscribers.
+    </p>
+
+    <div class="block-1-grid">
+      <div>
+        <div class="campaign-preview">
+          <img src="https://www.figma.com/api/mcp/asset/51fa3578-93f0-4f12-a75a-cb3d0fa0cb8d"
+               alt="Example Ingram Micro marketing campaign — Take Your Surface Offering Further, featuring Microsoft Surface." />
+        </div>
+        <p class="caption">Example of Marketing Campaign</p>
+      </div>
+
+      <div class="info">
+        <h4>Good to know</h4>
+        <div class="info-body">
+          <p>Ingram Micro is a tech distributor company that partners with several companies to help sell their product (e.g. Microsoft Surface).</p>
+          <p>When users are creating marketing campaigns, they also select a vendor associated with it.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subsection 2: Delivery flow -->
+    <div class="sub-block-2">
+      <h2 class="sub-title">How are Marketing Campaigns currently delivered?</h2>
+      <p class="sub-body">
+        Before gathering requirements and setting project goals, I observed <strong>6+ marketing associates</strong> and gathered their intel on how the current Template Repository works.
+      </p>
+
+      <img class="flow-chart"
+           src="https://www.figma.com/api/mcp/asset/eb06e037-4bcd-4194-8644-8e84a83e7a33"
+           alt="Flow chart of how marketing campaigns are currently delivered, showing the Marketing Associate flow (blue) from selecting a campaign category through uploading the campaign, and the Project Manager flow (yellow) from review to Workfront to subscriber inbox." />
+
+      <div class="flow-legend">
+        <div class="legend-card blue">
+          <h4>Marketing Associate Flow (Blue)</h4>
+          <p>Optimizing the flow for marketing associates should be the priority since it plays a vital role in the creation of marketing campaigns.</p>
+        </div>
+        <div class="legend-card yellow">
+          <h4>Project Manager Flow (Yellow)</h4>
+          <p>Project Manager flow is secondary and can be worked on once configuring the flow for marketing associates is fulfilled.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subsection 3: Final essentials -->
+    <div class="sub-block-3">
+      <h2 class="sub-title">Final but good essentials to know about Template Repository.</h2>
+      <p class="sub-body">
+        Since TR is unique to Ingram Micro, the workflow includes specialized assets tailored to the company&rsquo;s marketing campaign creation process. This distinguishes it from current marketing tools.
+      </p>
+
+      <div class="block-3-grid">
+        <!-- Left: 3 notecards -->
+        <div class="notecards">
+          <div class="notecard">
+            <h4>Campaigns consist of a number of templates, each serving a different purpose.</h4>
+            <div class="info-body">
+              <p>1 Template could be about a featured product. Another could be about a new release. (Image 1)</p>
+              <p>Users can choose the custom option, allowing them to add as many templates in a campaign. (Image 2)</p>
+            </div>
+          </div>
+
+          <div class="notecard">
+            <h4>Several campaign categories to choose from.</h4>
+            <div class="info-body">
+              <p>Example: Campaigns under the Acquire category are meant for new customers.</p>
+            </div>
+          </div>
+
+          <div class="notecard">
+            <h4>It&rsquo;s a Content Management System anyone in marketing can access.</h4>
+            <div class="info-body">
+              <p>Marketing associates are able to view the campaigns other&rsquo;s have worked on.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: campaign types card with blob behind -->
+        <div class="campaign-types-wrap">
+          <div class="campaign-types">
+            <div class="campaign-type">
+              <h5><span class="num">1.</span>Non-Custom Campaign (3 Fixed Templates)</h5>
+              <img src="https://www.figma.com/api/mcp/asset/e6e547ef-4cfa-401e-9809-e8f6302179d0"
+                   alt="Screenshot showing a Non-Custom Campaign with 3 fixed templates." />
+            </div>
+            <div class="campaign-type">
+              <h5><span class="num">2.</span>Custom Campaign (Any # of Templates)</h5>
+              <img src="https://www.figma.com/api/mcp/asset/b4a0e3ed-a684-410f-96ef-734f0b6882f7"
+                   alt="Screenshot showing a Custom Campaign with a flexible number of templates." />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem" aria-labelledby="problem-heading">
+  <div class="problem-inner">
+    <span class="section-chip" id="problem-heading">Problem</span>
+
+    <h2 class="sub-title">What is not working well in Template Repository and how can I help?</h2>
+
+    <p class="sub-body">
+      Ingram Micro associates need to deliver hand-off ready marketing campaigns, but technical constraints and workflow ambiguity hinders their productivity.
+    </p>
+    <p class="sub-body">
+      This reduces the number of polished campaigns to PMs and creates an inconvenient campaign design experience.
+    </p>
+
+    <div class="need-grid">
+      <div class="need-card">
+        <div class="need-header">
+          <img src="https://www.figma.com/api/mcp/asset/4b3480ab-6ecd-4041-8e5f-9a516fbffe3c" alt="" aria-hidden="true" />
+          <span class="label">User Need:</span>
+        </div>
+        <p>A campaign building experience that is flexible and contains less ambiguous roadblocks.</p>
+      </div>
+
+      <div class="need-card">
+        <div class="need-header">
+          <img src="https://www.figma.com/api/mcp/asset/3d47e058-73c1-4753-9e05-9ff6fe859815" alt="" aria-hidden="true" />
+          <span class="label">Business Need:</span>
+        </div>
+        <p>Needs more ready-to-be handed off email marketing campaigns.</p>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <h4>Why is this a problem?</h4>
+      <p>Through 6+ user interviews with marketing associates. I discovered 3 common patterns that users mentioned when it came to their experience with Template Repository.</p>
+    </div>
+
+    <div class="problems-grid">
+      <div class="problem-card">
+        <div class="media img-1">
+          <img src="https://www.figma.com/api/mcp/asset/678fd50a-f8fd-41e1-9094-d4e54f6658f8"
+               alt="Template Repository screenshot showing that only one template can be viewed at a time." />
+        </div>
+        <div class="body">
+          <h4>Can only view 1 template at once.</h4>
+          <p>Marketing Associates can only view &amp; select to edit 1 template of a campaign at a time.</p>
+          <p>They must also upload unfinished work to save their progress.</p>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="media img-2">
+          <img src="https://www.figma.com/api/mcp/asset/39c4d677-024d-47e3-852b-998060caddbc"
+               alt="Browse Campaigns screen with repetitive rows and icons making campaigns hard to locate." />
+        </div>
+        <div class="body">
+          <h4>Monotonous Design.</h4>
+          <p>Monotonous Design makes it difficult for users to locate their desired campaign.</p>
+          <p>Repetitive icons also make it hard to locate the desired campaign.</p>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="media img-3">
+          <img src="https://www.figma.com/api/mcp/asset/931dbb35-b562-4235-ac98-7a1496d0202f"
+               alt="Screens showing disjointed transitions — a pop-up input jumping to a full-screen design interface." />
+        </div>
+        <div class="body">
+          <h4>Lack of Fluid Task Transitions.</h4>
+          <p>Disjointed transitions make it difficult for users to identify their current stage of work.</p>
+          <p>E.g. in-put pop-up to full-screen design interface.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW MIGHT WE -->
+<section class="hmw" aria-labelledby="hmw-heading">
+  <div class="hmw-inner">
+    <p class="hmw-label">With this&hellip;</p>
+    <p class="hmw-text" id="hmw-heading">How might we optimize the email marketing campaign creation experience that provides marketing associates with clarity &amp; efficiency needed to deliver hand-off ready campaigns?</p>
+  </div>
+</section>
+
+<!-- GOALS -->
+<section class="goals" aria-labelledby="goals-heading">
+  <div class="goals-inner">
+    <span class="section-chip" id="goals-heading">Goals</span>
+
+    <h2 class="sub-title">What does success look like in this project?</h2>
+    <p class="sub-body">
+      After uncovering key pain points in Template Repository, I identified <strong>4 key goals</strong> that align with user needs and business objectives.
+    </p>
+
+    <div class="goals-grid">
+      <div class="goal-card light-blue">
+        <div class="goal-header">
+          <img src="https://www.figma.com/api/mcp/asset/aab80e79-8968-475f-ae6d-70ed82e59430" alt="" aria-hidden="true" />
+          <span class="label">Lessen ambiguity</span>
+        </div>
+        <p>To improve workflow clarity &amp; enhancing user recall throughout the marketing campaign design lifecycle.</p>
+      </div>
+
+      <div class="goal-card cream">
+        <div class="goal-header">
+          <img src="https://www.figma.com/api/mcp/asset/70e43b05-0f10-429b-967c-d8929a9400bd" alt="" aria-hidden="true" />
+          <span class="label">Reduce the time</span>
+        </div>
+        <p>To create/edit marketing campaigns while maintaining a digestible interface.</p>
+      </div>
+
+      <div class="goal-card white">
+        <div class="goal-header">
+          <img src="https://www.figma.com/api/mcp/asset/4ac8f6c3-d84f-41f8-8c0d-906d39773085" alt="" aria-hidden="true" />
+          <span class="label">Add Flexibility</span>
+        </div>
+        <p>Enhance workflow flexibility to make users feel less constrained while creating email marketing campaigns.</p>
+      </div>
+
+      <div class="goal-card light-blue">
+        <div class="goal-header">
+          <img src="https://www.figma.com/api/mcp/asset/e378df89-1d81-498c-9dfb-f485d07502cc" alt="" aria-hidden="true" />
+          <span class="label">Campaigns</span>
+        </div>
+        <p>Increase the amount of hand-off ready marketing campaigns for PMs to approve.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="users" aria-labelledby="users-heading">
+  <div class="users-inner">
+    <span class="section-chip" id="users-heading">Users</span>
+
+    <h2 class="sub-title">There are 2 main users of Template Repository. How do they use the product?</h2>
+    <p class="sub-body">
+      As mentioned earlier, marketing associates are the primary user and program managers are the secondary user of Template Repository. Despite using the same product, they use it for different purposes.
+    </p>
+
+    <div class="users-visual">
+      <div class="avatar-wrap marketing" aria-hidden="true">
+        <img src="https://www.figma.com/api/mcp/asset/c44c711f-20f6-4271-8681-c80e13494c86" alt="" />
+      </div>
+      <div class="avatar-wrap pm" aria-hidden="true">
+        <img src="https://www.figma.com/api/mcp/asset/9a91039a-291f-4380-b75a-0ad3157845c7" alt="" />
+      </div>
+    </div>
+
+    <div class="users-grid">
+      <div class="user-card primary">
+        <h3 class="role-title">Primary user: Marketing Associate</h3>
+        <div class="divider"></div>
+        <p>
+          Currently 279+ globally, they are <strong>non-designers</strong>, meaning that <strong>need</strong> a tool that allows them to easily create company-branded marketing campaigns.
+        </p>
+      </div>
+
+      <div class="user-card secondary">
+        <h3 class="role-title">Secondary User: Project Manager</h3>
+        <div class="divider"></div>
+        <p>
+          Responsible for <strong>reviewing</strong> marketing campaigns. Once approved, PMs send them to Workfront. They <strong>need</strong> a process that allows them to search for completed campaigns faster.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     RESEARCH & IDEATION
+     ========================================================= -->
+<section class="research" aria-labelledby="research-heading">
+  <div class="research-inner">
+    <span class="section-chip" id="research-heading">Research &amp; Ideation</span>
+    <h2 class="sub-title">Competitive Analysis: Viewing Marketing Tools used in the past.</h2>
+    <p class="sub-body">
+      During interviews, I asked marketing associates at Ingram Micro what tools that were used in the past to create marketing campaigns. I researched these tools and analyzed the pros and cons of each product.
+    </p>
+
+    <figure class="research-figure">
+      <img
+        src="https://www.figma.com/api/mcp/asset/e4ee6c39-2fd5-4f1e-b410-f01c42a39fea"
+        alt="Competitive analysis comparing Oracle Eloqua and Adobe Marketo with pros and cons for each"
+      />
+    </figure>
+
+    <!-- Sub-section: Feasibility & organizing ideas based on impact -->
+    <div class="research-subsection">
+      <h2 class="sub-title">Feasibility and organizing ideas based on impact.</h2>
+      <p class="sub-body">
+        After conducting a competitive analysis, I gathered a list of potential features to explore based on the goals that I defined earlier. I focused on features that could speed up the process of creating campaigns, while reducing task ambiguity.
+      </p>
+
+      <div class="feasibility-frame">
+        <img
+          src="https://www.figma.com/api/mcp/asset/a6d66534-769f-4eeb-8a19-f0051f964a7f"
+          alt="Feasibility vs. Impact chart plotting potential features like Campaign Template Preview, Save & Archive Work, Undo & Redo Button, and others"
+        />
+      </div>
+    </div>
+
+    <!-- Sub-section: User Flows -->
+    <div class="research-subsection">
+      <h2 class="sub-title">Crafting 2 primary flows: Create Campaign &amp; Search for Campaign</h2>
+      <p class="sub-body">
+        The two primary flows in this product are creating a new campaign, &amp; searching for an existing campaign. I mapped out a flow to guide the designing phase, containing the possible features to explore.
+      </p>
+
+      <div class="feasibility-frame">
+        <img
+          src="https://www.figma.com/api/mcp/asset/b5ae980d-e29c-4f6a-b6a1-60ce837b6395"
+          alt="Two user flow diagrams: Creating a New Campaign Flow and Search / Edit an Existing Campaign flow"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="user-testing" aria-labelledby="user-testing-heading">
+  <div class="user-testing-inner">
+    <span class="section-chip" id="user-testing-heading">User Testing</span>
+
+    <h2 class="sub-title">Boosting Clarity in the Campaign Creation Process.</h2>
+    <p class="sub-body">
+      When conducting user testing, I learned that user recall plays a major role on how long it takes for users to design marketing campaigns. It was also important to section off important steps to avoid overload.
+    </p>
+
+    <div class="version-group">
+    <div class="version-chips" role="group" aria-label="Filter by version">
+      <button type="button" class="version-chip" data-version="a" aria-pressed="true">Version A</button>
+      <button type="button" class="version-chip" data-version="b" aria-pressed="false">Version B</button>
+    </div>
+
+    <!-- Version A content -->
+    <div class="version-content is-active" data-version="a">
+      <div class="screen-frame" aria-label="Campaign creation screen with 3 annotated points">
+        <img
+          class="screen-image"
+          src="https://www.figma.com/api/mcp/asset/0bfa3f43-2592-42f0-9b5e-30c017bff557"
+          alt="Campaign creation screen with numbered annotations"
+        />
+        <button type="button" class="hotspot hotspot-1 is-active"
+          aria-label="Annotation 1 of 3" aria-pressed="true"
+          data-counter="1/3"
+          data-insight="6/6 users preferred filling out campaign details before working on marketing templates since it not only <strong>reduces space</strong>, but also provides a smooth transition. Users are <strong>more aware</strong> of the steps needed to complete before working on designing the templates.">1</button>
+        <button type="button" class="hotspot hotspot-2"
+          aria-label="Annotation 2 of 3" aria-pressed="false"
+          data-counter="2/3"
+          data-insight="Users are able to see the templates/examples they are working on before they dive into the template design phase. This significantly <strong>reduced ambiguity</strong> and gave them an idea of what they are about to work on.">2</button>
+        <button type="button" class="hotspot hotspot-3"
+          aria-label="Annotation 3 of 3" aria-pressed="false"
+          data-counter="3/3"
+          data-insight="By enlarging the template buttons and including a thumbnail of the current progress, users are able to recall what they worked on, even while working on a different template. Enlarging the buttons also made the process of <strong>switching workspaces faster</strong>.">3</button>
+      </div>
+
+      <aside class="testing-note" aria-live="polite">
+        <div class="testing-note-header">
+          <span>User Testing Insights</span>
+          <span class="counter">1/3</span>
+        </div>
+        <div class="note-divider"></div>
+        <p>
+          6/6 users preferred filling out campaign details before working on marketing templates since it not only <strong>reduces space</strong>, but also provides a smooth transition. Users are <strong>more aware</strong> of the steps needed to complete before working on designing the templates.
+        </p>
+      </aside>
+    </div>
+
+    <!-- Version B content -->
+    <div class="version-content" data-version="b">
+      <div class="screen-frame screen-frame-b" aria-label="Old version of campaign creation flow with a red highlight">
+        <img
+          class="screen-b-gif"
+          src="https://www.figma.com/api/mcp/asset/8d1d210e-97f6-4250-81ca-7034cde22732"
+          alt="Animated walkthrough of the old campaign creation flow"
+        />
+        <img
+          class="screen-b-static"
+          src="https://www.figma.com/api/mcp/asset/181e6113-42fb-4788-9db4-0111bdd14109"
+          alt="Static screenshot of the old campaign creation flow showing template selection"
+        />
+        <span class="red-dot" aria-hidden="true"></span>
+      </div>
+
+      <div class="assumption-grid">
+        <aside class="testing-note assumption-card">
+          <div class="testing-note-header">
+            <span>Assumptions</span>
+          </div>
+          <div class="note-divider"></div>
+          <p>
+            Initially, I assumed that including details and have the templates appear automatically, would save time since everything appeared on one page.
+          </p>
+        </aside>
+
+        <aside class="testing-note insight-red-card">
+          <div class="testing-note-header">
+            <img
+              class="close-icon"
+              src="https://www.figma.com/api/mcp/asset/849a39e9-7fbc-4cfd-a1d3-229a9ecc9183"
+              alt=""
+              aria-hidden="true"
+            />
+            <span>User Testing Insights</span>
+          </div>
+          <div class="note-divider"></div>
+          <p>
+            This increased cognitive overload &amp; was also ambiguous. Users <strong>felt surprised</strong> whenever they switched templates due to not knowing what was going to appear.
+          </p>
+        </aside>
+      </div>
+    </div>
+    </div><!-- /.version-group -->
+
+    <!-- ===== Sub-section: customize your own campaign ===== -->
+    <div class="ut-subsection">
+      <h2 class="sub-title">Customize your own campaign without using a pre-existing one.</h2>
+      <p class="sub-body">
+        Previously, I conducted user testing on a campaign that is pre-existing and already contains a fixed number of templates. To enhance flexibility in the design process, it was important to provide users the option to customize their own work, especially in a way that can be interpreted by <strong>non-designers</strong>.
+      </p>
+
+      <div class="version-group">
+        <div class="version-chips" role="group" aria-label="Filter by version">
+          <button type="button" class="version-chip" data-version="a" aria-pressed="true">Version A</button>
+          <button type="button" class="version-chip" data-version="b" aria-pressed="false">Version B</button>
+        </div>
+
+        <!-- Version A content -->
+        <div class="version-content is-active" data-version="a">
+          <div class="screen-frame frame-b" aria-label="Custom campaign creation screen with 2 annotated points">
+            <img
+              class="screen-image"
+              src="https://www.figma.com/api/mcp/asset/ef0dd492-f745-48cf-b75b-6893891d205d"
+              alt="Custom campaign creation screen with numbered annotations"
+            />
+            <button type="button" class="hotspot hotspot-1 is-active"
+              aria-label="Annotation 1 of 2" aria-pressed="true"
+              data-counter="1/2"
+              data-insight="<strong>5/6</strong> users preferred having a &ldquo;get started&rdquo; CTA in the design canvas to activate the dropdown menu that allows the users to begin adding sections (e.g. Hero Banner). It enhanced clarity and reduced the feeling of emptiness as mentioned in Version B.">1</button>
+            <button type="button" class="hotspot hotspot-2"
+              aria-label="Annotation 2 of 2" aria-pressed="false"
+              data-counter="2/2"
+              data-insight="By adding the back and next button at the bottom of the design, users were <strong>more likely</strong> to recall what goes next in a standard marketing template. This was helpful for users that wanted to reference the order of a standard template, while having the option to customize.">2</button>
+          </div>
+
+          <aside class="testing-note" aria-live="polite">
+            <div class="testing-note-header">
+              <span>User Testing Insights</span>
+              <span class="counter">1/2</span>
+            </div>
+            <div class="note-divider"></div>
+            <p>
+              <strong>5/6</strong> users preferred having a &ldquo;get started&rdquo; CTA in the design canvas to activate the dropdown menu that allows the users to begin adding sections (e.g. Hero Banner). It enhanced clarity and reduced the feeling of emptiness as mentioned in Version B.
+            </p>
+          </aside>
+        </div>
+
+        <!-- Version B content -->
+        <div class="version-content" data-version="b">
+          <div class="screen-frame screen-frame-b2" aria-label="Old custom campaign creation screen with two red highlights">
+            <img
+              class="screen-b2-image"
+              src="https://www.figma.com/api/mcp/asset/47b21a60-455a-4d3a-aee8-ad2dab8203df"
+              alt="Old custom campaign creation screen with two red dot annotations"
+            />
+            <span class="red-dot dot-1" aria-hidden="true"></span>
+            <span class="red-dot dot-2" aria-hidden="true"></span>
+          </div>
+
+          <div class="assumption-grid">
+            <aside class="testing-note assumption-card">
+              <div class="testing-note-header">
+                <span>Assumptions</span>
+              </div>
+              <div class="note-divider"></div>
+              <p>
+                With an empty design canvas without the &ldquo;Get Started&rdquo; CTA button, I assumed that users knew that this area was meant for designing.
+              </p>
+            </aside>
+
+            <aside class="testing-note insight-red-card">
+              <div class="testing-note-header">
+                <img
+                  class="close-icon"
+                  src="https://www.figma.com/api/mcp/asset/849a39e9-7fbc-4cfd-a1d3-229a9ecc9183"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span>User Testing Insights</span>
+              </div>
+              <div class="note-divider"></div>
+              <p>
+                Users did not know that the empty canvas was meant for designing. They also did not know that the dropdown menu was meant to view/add template sections.
+              </p>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Sub-section: browse for completed campaigns / save as draft ===== -->
+    <div class="ut-subsection">
+      <h2 class="sub-title">Browse for completed campaigns and save unfinished work as a draft.</h2>
+      <p class="sub-body">
+        Since users must upload their work to save their progress, it appears in the &ldquo;Browse Campaigns&rdquo; section for everyone to see. This makes it difficult, <strong>especially for PMs</strong> to differentiate between completed campaigns and those saved as a draft. It was important to distinguish between the two.
+      </p>
+
+      <div class="version-group">
+        <div class="version-chips" role="group" aria-label="Filter by version">
+          <button type="button" class="version-chip" data-version="a" aria-pressed="true">After</button>
+          <button type="button" class="version-chip" data-version="b" aria-pressed="false">Before</button>
+        </div>
+
+        <!-- After content -->
+        <div class="version-content is-active" data-version="a">
+          <div class="screen-frame frame-c" aria-label="New save-and-browse campaign screen with 3 annotated points">
+            <img
+              class="screen-image"
+              src="https://www.figma.com/api/mcp/asset/282aa3ad-a64e-4771-81cb-00744ebbb5a4"
+              alt="Save-and-browse campaign screen with numbered annotations"
+            />
+            <button type="button" class="hotspot hotspot-1 is-active"
+              aria-label="Annotation 1 of 3" aria-pressed="true"
+              data-counter="1/3"
+              data-insight="Being able to select the following templates to save as a draft made users feel <strong>less overwhelmed</strong> in the marketing campaign design phase. It granted more flexibility and assured them that their work will be saved.">1</button>
+            <button type="button" class="hotspot hotspot-2"
+              aria-label="Annotation 2 of 3" aria-pressed="false"
+              data-counter="2/3"
+              data-insight="By incorporating colors the company uses to differentiate campaigns in the &ldquo;Browse&rdquo; section, users, especially PMs spotted their desired campaign a lot <strong>quicker</strong>. Including the fraction also assisted with <strong>differentiating</strong> between completed templates &amp; those saved as a draft.">2</button>
+            <button type="button" class="hotspot hotspot-3"
+              aria-label="Annotation 3 of 3" aria-pressed="false"
+              data-counter="3/3"
+              data-insight="When a user decides to view a campaign, they are able to <strong>effectively filter</strong> between templates that have submitted and those saved as a draft. When PMs send uploaded campaigns by marketing associates to Workfront, the shareable link can only share submitted templates.">3</button>
+          </div>
+
+          <aside class="testing-note" aria-live="polite">
+            <div class="testing-note-header">
+              <span>User Testing Insights</span>
+              <span class="counter">1/3</span>
+            </div>
+            <div class="note-divider"></div>
+            <p>
+              Being able to select the following templates to save as a draft made users feel <strong>less overwhelmed</strong> in the marketing campaign design phase. It granted more flexibility and assured them that their work will be saved.
+            </p>
+          </aside>
+        </div>
+
+        <!-- Before content -->
+        <div class="version-content" data-version="b">
+          <div class="screen-frame screen-frame-c2" aria-label="Old browse-and-save campaign screen with two red highlights">
+            <img
+              class="screen-c2-image"
+              src="https://www.figma.com/api/mcp/asset/90b7b993-c4a9-4080-b050-5c7c36fd897f"
+              alt="Old browse-and-save campaign screen with two red dot annotations"
+            />
+            <span class="red-dot dot-1" aria-hidden="true"></span>
+            <span class="red-dot dot-2" aria-hidden="true"></span>
+          </div>
+
+          <aside class="testing-note">
+            <div class="testing-note-header">
+              <img
+                class="assumption-check-icon"
+                src="https://www.figma.com/api/mcp/asset/960cd753-f239-4c8b-890c-d85cd94ebc34"
+                alt=""
+                aria-hidden="true"
+              />
+              <span>Assumptions</span>
+            </div>
+            <div class="note-divider"></div>
+            <p>
+              By displaying 3 templates, users would assume that they would already be completed and ready to be sent off by PMs. As a result, they are likely to see campaigns that are unfinished. This would interrupt the workflow for PMs that need to send-off finished campaigns.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FINAL MVP DESIGN
+     Full-bleed blue background. First row only: "Use an existing
+     campaign?" note + autoplaying video in gray box.
+     ========================================================= -->
+<section class="final-mvp" aria-labelledby="final-mvp-heading">
+  <div class="final-mvp-inner">
+    <span class="section-chip" id="final-mvp-heading">Final MVP Design</span>
+
+    <div class="mvp-row">
+      <aside class="mvp-note">
+        <div class="mvp-note-header">Use an existing campaign?</div>
+        <div class="mvp-divider" aria-hidden="true"></div>
+        <div class="mvp-note-body">
+          <p>Users have the option to select a campaign that already contains available templates.</p>
+          <p>Enlarging button and including previews helps users recall their work progress.</p>
+        </div>
+      </aside>
+
+      <div class="mvp-media">
+        <video
+          class="mvp-video"
+          src="videos/use-existing-campaign.mp4"
+          autoplay
+          muted
+          loop
+          playsinline
+          controls
+          preload="metadata"
+          aria-label="Walkthrough of using an existing campaign"
+        ></video>
+      </div>
+    </div>
+
+    <div class="mvp-row">
+      <aside class="mvp-note">
+        <div class="mvp-note-header">Feel like customizing?</div>
+        <div class="mvp-divider" aria-hidden="true"></div>
+        <div class="mvp-note-body">
+          <p>Users have the option to not use a campaign with fixed templates.</p>
+          <p>Able to browse through company-branded sections, creating flexibility for non-designers.</p>
+        </div>
+      </aside>
+
+      <div class="mvp-media">
+        <video
+          class="mvp-video"
+          src="videos/feel-like-customizing.mp4"
+          autoplay
+          muted
+          loop
+          playsinline
+          controls
+          preload="metadata"
+          aria-label="Walkthrough of customizing a campaign with company-branded sections"
+        ></video>
+      </div>
+    </div>
+
+    <!-- Full-width note card: Search / edit drafts -->
+    <aside class="mvp-note mvp-note--wide" style="margin-top: 62px;">
+      <div class="mvp-note-header">Search for the desired campaign (1) and edit drafts (2).</div>
+      <div class="mvp-divider" aria-hidden="true"></div>
+      <div class="mvp-note-body">
+        <p>With an updated design system that aligns with company branding, users can browse and filter through the desired campaigns.</p>
+        <p>Users wanting to browse able to differentiate between submitted templates and drafts. Drafts can become edited and submitted for PM approval.</p>
+      </div>
+    </aside>
+
+    <!-- Two equal gray boxes; only the left one has a video for now -->
+    <div class="mvp-split">
+      <div class="mvp-media">
+        <video
+          class="mvp-video"
+          src="videos/search-campaign.mp4"
+          autoplay
+          muted
+          loop
+          playsinline
+          controls
+          preload="metadata"
+          aria-label="Walkthrough of searching for the desired campaign"
+        ></video>
+      </div>
+      <div class="mvp-media">
+        <video
+          class="mvp-video"
+          src="videos/edit-drafts.mp4"
+          autoplay
+          muted
+          loop
+          playsinline
+          controls
+          preload="metadata"
+          aria-label="Walkthrough of editing drafts"
+        ></video>
+      </div>
+    </div>
+
+    <!-- Create Shareable Link for PMs -->
+    <div class="mvp-row">
+      <aside class="mvp-note">
+        <div class="mvp-note-header">Create Shareable Link for PMs</div>
+        <div class="mvp-divider" aria-hidden="true"></div>
+        <div class="mvp-note-body">
+          <p>PMs are able to create a shareable URL for campaign approval.</p>
+          <p>There is emphasis on submitted templates to avoid confusion with template drafts.</p>
+        </div>
+      </aside>
+
+      <div class="mvp-media mvp-media--cream">
+        <img
+          class="mvp-media-image"
+          src="https://www.figma.com/api/mcp/asset/069c9637-9013-422c-aaa1-36a5a759576d"
+          alt="Mockup showing the shareable link flow with an emphasis that only submitted templates can be shared"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     IMPACT — success metrics from user testing
+     ========================================================= -->
+<section class="impact" aria-labelledby="impact-heading">
+  <div class="impact-inner">
+    <span class="section-chip" id="impact-heading">Impact</span>
+    <h2 class="impact-title">So&hellip; What did my designs help improve?</h2>
+    <p class="impact-body">
+      By defining the goals early on in the design process, it helped identify success metrics more efficiently. As a result, I came across 3 success metrics (2 user success metrics and 1 business success metric).
+    </p>
+
+    <div class="impact-grid">
+      <article class="impact-card impact-card--blue">
+        <div class="impact-card-title">25% Increase in Navigation &amp; Content Creation Efficiency.</div>
+        <div class="impact-card-divider" aria-hidden="true"></div>
+        <p class="impact-card-quote">&ldquo;&hellip;having a preview of the template &amp; seeing just with <strong>one click</strong> it&rsquo;s easier for me.&rdquo;</p>
+        <p class="impact-card-source">User from Spain.</p>
+      </article>
+
+      <article class="impact-card impact-card--blue">
+        <div class="impact-card-title">5/6 said designs removed ambiguity during content creation.</div>
+        <div class="impact-card-divider" aria-hidden="true"></div>
+        <p class="impact-card-quote">&ldquo;&hellip;so I am able to switch between templates on the left hand side because it is <strong>bigger &amp; visible</strong> and is actually dragging my attention there.&rdquo;</p>
+        <p class="impact-card-source">User from India.</p>
+      </article>
+
+      <article class="impact-card impact-card--tan">
+        <div class="impact-card-title">Hand-off of submitted campaigns anticipated to increase by 20%.</div>
+        <div class="impact-card-divider" aria-hidden="true"></div>
+        <p class="impact-card-quote">&ldquo;&hellip;it is <strong>easier to differentiate</strong> between campaigns that are still in draft mode vs. submitted. This makes it easier to send-off.&rdquo;</p>
+        <p class="impact-card-source">PM from the US.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     TAKEAWAYS — learnings from the project
+     ========================================================= -->
+<section class="takeaways" aria-labelledby="takeaways-heading">
+  <div class="takeaways-inner">
+    <span class="section-chip" id="takeaways-heading">Takeaways</span>
+    <h2 class="takeaways-title">What did I learn from this experience?</h2>
+    <p class="takeaways-body">
+      Despite the time constraint given, I was satisfied by the design decisions I came up with for the marketing associates responsible for designing marketing campaigns. If given more time, I would include additional solutions on top of an updated design system to assist PMs with locating their desired campaigns. Additionally, I came across <strong>3 learning experiences</strong>:
+    </p>
+
+    <div class="takeaways-grid">
+      <article class="takeaway-card">Be open to feedback, while leveraging research data to validate your designs.</article>
+      <article class="takeaway-card">Organize Potential Solutions based on impact.</article>
+      <article class="takeaway-card">Even the smallest design component can enhance user recall.</article>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    const toggle = document.querySelector('.nav-toggle');
+    const menu = document.getElementById('primary-nav');
+    if (!toggle || !menu) return;
+
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      menu.classList.toggle('is-open', open);
+    }
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    menu.addEventListener('click', (e) => {
+      if (e.target.matches('a.nav-link')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 640) setOpen(false);
+    });
+  })();
+
+  // Version A / Version B filter toggle — scoped per .version-group so
+  // multiple independent groups (e.g. each user testing sub-section) can
+  // toggle without affecting each other.
+  (function() {
+    document.querySelectorAll('.version-group').forEach(group => {
+      const chips = group.querySelectorAll('.version-chip');
+      const panels = group.querySelectorAll('.version-content');
+
+      function activate(version) {
+        chips.forEach(c => {
+          c.setAttribute('aria-pressed', c.dataset.version === version ? 'true' : 'false');
+        });
+        panels.forEach(p => {
+          p.classList.toggle('is-active', p.dataset.version === version);
+        });
+      }
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => activate(chip.dataset.version));
+      });
+    });
+  })();
+
+  // Scroll reveal — fade + rise for content as it enters the viewport.
+  // Auto-tags common content blocks so every section benefits without
+  // touching the markup. Uses IntersectionObserver; degrades gracefully.
+  (function() {
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Selectors for content we want to animate. Kept modest so we don't
+    // double-up on nested elements (e.g. only tag the grid, not its children,
+    // unless the grid itself is wrapped with a reveal-group).
+    const selectors = [
+      '.section-chip',
+      '.sub-title',
+      '.sub-body',
+      '.research-figure',
+      '.feasibility-frame',
+      '.screen-frame',
+      '.testing-note',
+      '.assumption-grid',
+      '.mvp-row',
+      '.mvp-split',
+      '.mvp-note--wide',
+      '.impact-title',
+      '.impact-body',
+      '.impact-grid',
+      '.takeaways-title',
+      '.takeaways-body',
+      '.takeaways-grid',
+      '.users-visual',
+      '.need-grid',
+      '.goals-grid',
+      '.hmw-quote',
+      '.case-title',
+      '.case-subtitle',
+      '.version-chips',
+      '.avatar-wrap',
+      '.user-card'
+    ];
+
+    const targets = new Set();
+    selectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => targets.add(el));
+    });
+
+    // Add stagger class to grid-like groups so their children cascade.
+    const groupSelectors = ['.impact-grid', '.takeaways-grid', '.need-grid', '.goals-grid', '.assumption-grid', '.mvp-split'];
+    groupSelectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(group => {
+        group.classList.add('reveal-group');
+        Array.from(group.children).forEach(child => {
+          child.classList.add('reveal');
+          targets.add(child);
+        });
+      });
+    });
+
+    targets.forEach(el => el.classList.add('reveal'));
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -10% 0px',
+      threshold: 0.08
+    });
+
+    targets.forEach(el => io.observe(el));
+  })();
+
+  // Hotspot numbers — single-select inside each screen frame.
+  // Each hotspot carries its own data-counter + data-insight, so a click
+  // simply reads from the clicked element and writes into the sibling card.
+  (function() {
+    document.querySelectorAll('.screen-frame').forEach(frame => {
+      const spots = frame.querySelectorAll('.hotspot');
+      const panel = frame.closest('.version-content');
+      const note = panel ? panel.querySelector('.testing-note') : null;
+      const counterEl = note ? note.querySelector('.counter') : null;
+      const bodyEl = note ? note.querySelector('p') : null;
+
+      spots.forEach(spot => {
+        spot.addEventListener('click', () => {
+          spots.forEach(s => {
+            s.classList.toggle('is-active', s === spot);
+            s.setAttribute('aria-pressed', s === spot ? 'true' : 'false');
+          });
+          if (counterEl && bodyEl && spot.dataset.counter && spot.dataset.insight) {
+            counterEl.textContent = spot.dataset.counter;
+            bodyEl.innerHTML = spot.dataset.insight;
+          }
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>
