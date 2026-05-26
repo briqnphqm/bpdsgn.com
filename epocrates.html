@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Epocrates for Medical Students — Brian Pham</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Benne&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-700: #1346A2;
+    --blue-900: #0D317A;
+    --blue-100: #D3E2FF;
+    --cream:    #FFF9F0;
+    --page-bg:  #FFFDF9;
+    --ink:      #222222;
+    --muted:    #4B5A70;
+    --brown:    #392A13;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--page-bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; }
+
+  /* ===== NAV (matches site-wide pattern) ===== */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 253, 249, 0.85);
+    backdrop-filter: saturate(1.2) blur(8px);
+    -webkit-backdrop-filter: saturate(1.2) blur(8px);
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+  nav#primary-nav { border: 0; background: transparent; }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 32px;
+  }
+  .brand {
+    font-family: 'Benne', serif;
+    font-size: 22px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav ul {
+    display: flex; gap: 8px;
+    list-style: none; margin: 0; padding: 0;
+  }
+  .nav a.nav-link {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 999px;
+    transition: background .15s ease, color .15s ease;
+  }
+  .nav a.nav-link:hover { background: var(--blue-100); color: var(--blue-900); }
+
+  .nav-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid transparent;
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+    align-items: center; justify-content: center;
+  }
+  .nav-toggle:hover { background: var(--blue-100); }
+  .nav-toggle:focus-visible { outline: 2px solid var(--blue-700); outline-offset: 2px; }
+  .nav-toggle .bars {
+    position: relative;
+    width: 22px; height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: background .15s ease;
+  }
+  .nav-toggle .bars::before,
+  .nav-toggle .bars::after {
+    content: "";
+    position: absolute; left: 0;
+    width: 22px; height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform .3s ease, top .3s ease;
+  }
+  .nav-toggle .bars::before { top: -7px; }
+  .nav-toggle .bars::after  { top:  7px; }
+  .nav-toggle[aria-expanded="true"] .bars { background: transparent; }
+  .nav-toggle[aria-expanded="true"] .bars::before { top: 0; transform: rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .bars::after  { top: 0; transform: rotate(-45deg); }
+
+  @media (max-width: 640px) {
+    .nav-toggle { display: inline-flex; }
+    .nav#primary-nav { display: none; }
+    .nav#primary-nav.is-open {
+      display: block;
+      position: absolute;
+      top: 100%; left: 0; right: 0;
+      background: rgba(255, 253, 249, 0.98);
+      backdrop-filter: saturate(1.2) blur(8px);
+      -webkit-backdrop-filter: saturate(1.2) blur(8px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 12px 20px 20px;
+      animation: dropIn .22s ease;
+    }
+    .nav#primary-nav ul {
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav#primary-nav a.nav-link {
+      display: block;
+      padding: 12px 14px;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+    @keyframes dropIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: none; }
+    }
+  }
+
+  /* ===== Case study header — title aligns with the "Brian Pham" brand
+     (matches .nav-inner: max-width 1280, 32px padding) ===== */
+  .case-header {
+    background: var(--page-bg);
+    /* Extra top padding so the fixed pill nav doesn't overlap the title. */
+    padding: 120px 32px 56px;
+  }
+  .case-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .case-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: clamp(32px, 4.5vw, 40px);
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .case-desc {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: clamp(16px, 1.7vw, 20px);
+    line-height: 32px;
+    color: var(--brown);
+    margin: 29px 0 0;        /* 29px gap matches Figma */
+    max-width: 844px;        /* matches Figma description width */
+  }
+
+  /* ===== Full-bleed image banner — Epocrates: image is inset so the
+     steel-blue backdrop shows around it (matches Figma offsets). ===== */
+  .showcase {
+    position: relative;
+    background: #A3B0C8;
+    width: 100%;
+    aspect-ratio: 1440 / 680;
+    overflow: hidden;
+  }
+  .showcase img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 82%;             /* a bit wider than Figma's 69% so phones read larger */
+    max-height: 92%;        /* clamp height so the SVG never overflows vertically */
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* ===== Context section — 69px below banner, 209px L/R margins on 1440 ===== */
+  .context {
+    background: var(--page-bg);
+    padding: 69px 32px 0;
+  }
+  .context-inner {
+    max-width: 1022px;       /* 1440 − 209 − 209 */
+    margin: 0 auto;
+  }
+
+  /* Blue Epocrates chip (matches Figma) */
+  .section-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    height: 36px;
+    padding: 0 24px;
+    background: #DFE3F0;
+    color: #33517D;
+    border-radius: 999px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 20px;
+  }
+  .section-chip::before {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #33517D;
+  }
+
+  .sub-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 35px;
+    color: var(--ink);
+    margin: 35px 0 0;
+  }
+  .sub-body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--brown);
+    margin: 30px 0 0;
+    max-width: 844px;
+  }
+  .sub-body + .sub-body { margin-top: 28px; }
+  .sub-body strong { font-weight: 700; }
+
+  /* 160px between context subsections */
+  .ctx-block + .ctx-block { margin-top: 160px; }
+
+  /* Subsection 1: text + meta card */
+  .ctx-1-grid {
+    display: grid;
+    grid-template-columns: 520px 1fr;
+    column-gap: 64px;
+    align-items: start;
+  }
+  .ctx-1-text .sub-title { margin-top: 35px; }
+
+  .ctx-meta {
+    background: #DFE3F0;
+    border: 1px solid #A3B0C8;
+    border-radius: 4px;
+    padding: 35px 52px;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+  .ctx-meta-row { display: flex; flex-direction: column; gap: 2px; }
+  .ctx-meta-key {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+  .ctx-meta-val {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* Subsection 2: yellow callout + centered illustration frame */
+  .callout {
+    margin-top: 40px;
+    border-radius: 2px;
+    box-shadow: 0 5px 5px 0 #F6F2EB;
+    padding: 25px 23px;
+    max-width: 844px;
+  }
+  .callout-yellow {
+    background: #FAF2E5;
+    border-left: 2px solid #FFB132;
+  }
+  .callout h4 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .callout p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  .ctx-image-frame {
+    margin-top: 40px;
+    background: #F9F5EE;
+    border: 1px solid #EFE9E0;
+    border-radius: 4px;
+    padding: 57px 99px;     /* (467−352)/2 ≈ 57, (1022−824)/2 = 99 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ctx-image-frame img {
+    display: block;
+    width: 100%;
+    max-width: 824px;
+    height: auto;
+  }
+
+  @media (max-width: 900px) {
+    .ctx-1-grid {
+      grid-template-columns: 1fr;
+      row-gap: 32px;
+    }
+    .ctx-block + .ctx-block { margin-top: 112px; }
+    .ctx-image-frame { padding: 32px 24px; }
+  }
+
+  /* ===== Problem section — 160px below context, 209px L/R margins ===== */
+  .problem {
+    background: var(--page-bg);
+    padding: 160px 32px 0;
+  }
+  .problem-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .problem-inner .sub-title,
+  .problem-inner .sub-body,
+  .problem-inner .need-card { max-width: 844px; }
+
+  /* User Need card */
+  .need-card {
+    margin-top: 55px;
+    background: #FFFFFF;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    padding: 25px 23px;
+  }
+  .need-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E3ECF3;
+  }
+  .need-header img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+  .need-header .label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+  .need-card p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* "Why is this a problem?" yellow callout */
+  .why-card {
+    margin-top: 40px;
+    background: #FAF2E5;
+    border-left: 2px solid #FFB132;
+    border-radius: 2px;
+    box-shadow: 0 5px 5px 0 #F6F2EB;
+    padding: 25px 23px;
+    max-width: 1022px;
+  }
+  .why-card h4 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .why-card p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* Three insight cards with emoji illustrations on top */
+  .problems-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 318px);
+    column-gap: 34px;
+    margin-top: 56px;
+  }
+  .problem-card {
+    width: 318px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+  }
+  .problem-card .media {
+    height: 134px;
+    background: #FAF2E5;
+    border: 1px solid #BDD6EB;
+    border-bottom: 0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .problem-card .media img {
+    width: 101px;
+    height: 101px;
+    display: block;
+  }
+  .problem-card .body {
+    flex: 1;
+    background: #FFFFFF;
+    border: 1px solid #BDD6EB;
+    border-top: 0;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .problem-card .body h4 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E3ECF3;
+  }
+  .problem-card .body p {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+  .problem-card .body p strong { font-weight: 700; }
+
+  @media (max-width: 1100px) {
+    .problems-grid {
+      grid-template-columns: 1fr;
+      row-gap: 24px;
+      justify-content: center;
+      justify-items: center;
+    }
+    .problem-card { width: 100%; max-width: 360px; }
+  }
+  @media (max-width: 640px) {
+    .problem { padding: 96px 20px 0; }
+  }
+
+  /* ===== How Might We — full-bleed blue band, 69px below problem ===== */
+  .hmw {
+    background: #DFE3F0;
+    margin-top: 69px;
+    padding: 38px 32px 50px;
+  }
+  .hmw-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hmw-label {
+    margin: 0 0 14px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #33517D;
+  }
+  .hmw-text {
+    margin: 0;
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: clamp(20px, 1.9vw, 23px);
+    line-height: 32px;
+    color: var(--ink);
+  }
+  @media (max-width: 640px) {
+    .hmw { padding: 32px 20px; }
+    .hmw-text { line-height: 30px; }
+  }
+
+  /* ===== User Research — 69px below HMW, 209px L/R margins ===== */
+  .research {
+    background: var(--page-bg);
+    padding: 69px 32px 0;
+  }
+  .research-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .research-inner .sub-title,
+  .research-inner .sub-body { max-width: 844px; }
+
+  /* 160px between research subsections */
+  .research-block + .research-block { margin-top: 160px; }
+
+  /* 3 goal cards row */
+  .goals-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 26px;
+    margin-top: 56px;
+  }
+  .goal-card {
+    background: #FFFFFF;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    padding: 13px 23px 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .goal-card.teal { background: #BFE3E7; }
+  .goal-card.grey { background: #E0E0E0; }
+  .goal-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E3ECF3;
+  }
+  .goal-head img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+  .goal-head .label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+    text-align: center;
+  }
+  .goal-card p {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* Medical student profile — avatar above the description card */
+  .user-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 46px;
+    margin-top: 56px;
+    max-width: 795px;
+    margin-left: 0;
+    margin-right: auto;
+  }
+  .user-avatar {
+    width: 218px;
+    height: 218px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .user-card {
+    width: 100%;
+    background: rgba(191, 227, 231, 0.51);
+    border: 1px solid rgba(9, 106, 132, 0.46);
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    padding: 25px 23px;
+  }
+  .user-card-head {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #222;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(9, 106, 132, 0.18);
+  }
+  .user-card p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+  .user-card p strong { font-weight: 700; }
+
+  /* Competitive analysis image — tight frame so the cream backdrop hugs the image */
+  .comp-frame {
+    margin-top: 50px;
+    background: #F9F5EE;
+    border: 1px solid #EFE9E0;
+    border-radius: 4px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .comp-frame img {
+    display: block;
+    width: 100%;
+    max-width: 982px;
+    height: auto;
+  }
+
+  @media (max-width: 900px) {
+    .goals-grid { grid-template-columns: 1fr; row-gap: 20px; }
+    .research-block + .research-block { margin-top: 112px; }
+    .user-block { margin: 56px auto 0; }
+    .comp-frame { padding: 16px; }
+  }
+  @media (max-width: 640px) {
+    .research { padding: 56px 20px 0; }
+  }
+
+  /* ===== Ideation — 160px below research, 209px L/R margins ===== */
+  .ideation {
+    background: var(--page-bg);
+    padding: 160px 32px 0;
+  }
+  .ideation-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .ideation-inner .sub-title,
+  .ideation-inner .sub-body { max-width: 844px; }
+
+  /* 160px between ideation sub-blocks */
+  .ideation-block + .ideation-block { margin-top: 160px; }
+
+  /* Goals → Potential Solutions chart (844x603 in Figma) */
+  .ideation-chart {
+    margin: 50px 0 0;        /* reset <figure>'s default inline margins so it left-aligns with the column */
+    background: #F9F5EE;
+    border: 1px solid #EFE9E0;
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 844px;
+  }
+  .ideation-chart img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Idea blocks (title + body + media frame) */
+  .idea-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 35px;
+    color: var(--ink);
+    margin: 0;
+    max-width: 844px;
+  }
+  .idea-body {
+    margin: 30px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--brown);
+    max-width: 844px;
+  }
+
+  /* Idea 1 — extra-wide frame extending beyond the 1022 column to 1184px on 1440 layout */
+  .idea1-frame {
+    position: relative;
+    margin-top: 50px;
+    width: min(calc(100vw - 64px), 1184px);
+    margin-left: 50%;
+    transform: translateX(-50%);
+    background: #F9F5EE;
+    border-radius: 4px;
+    padding: 50px 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .idea1-frame img {
+    display: block;
+    width: 100%;
+    max-width: 1132px;
+    height: auto;
+  }
+
+  /* Idea 2 — flow chart frame (1007px wide, fits within the inner column) */
+  .idea2-frame {
+    margin-top: 50px;
+    background: #F9F5EE;
+    border-radius: 4px;
+    padding: 48px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1022px;
+  }
+  .idea2-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 900px) {
+    .ideation { padding: 112px 20px 0; }
+    .ideation-block + .ideation-block { margin-top: 112px; }
+    .ideation-chart,
+    .idea1-frame,
+    .idea2-frame { padding: 20px; }
+  }
+
+  /* ===== User Testing — 160px below ideation, 209px L/R margins,
+     160px bottom padding so the page ends with breathing room ===== */
+  .user-testing {
+    background: var(--page-bg);
+    padding: 160px 32px 160px;
+  }
+  .user-testing-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .user-testing-inner .sub-title,
+  .user-testing-inner .sub-body { max-width: 844px; }
+
+  /* Yellow Note callout above the iteration block */
+  .ut-note { margin-top: 35px; }
+  /* Sub-block (title + body + iteration frame) */
+  .ut-block { margin-top: 55px; }
+  .ut-block .sub-title { margin-top: 0; }
+  .ut-block .sub-body  { margin-top: 25px; }
+
+  /* Stage — cream container holding the phones SVG, the dots, and the
+     pink insight popup (all inside the cream box, per Figma). */
+  .ut-stage { position: relative; margin-top: 35px; }
+  .ut-wide-frame {
+    background: #F9F5EE;
+    border: 1px solid #EFE9E0;
+    border-radius: 4px;
+    padding: 38px 26px 26px;
+  }
+  /* Phone row holds the SVG + absolutely-positioned dots */
+  .ut-phones {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 969 / 696; /* matches the SVG */
+  }
+  .ut-fullshot {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+
+  /* Numbered hotspot dots — glow brown when inactive, pink when active */
+  .ut-dot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 26px; height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1.333px solid #FFFFFF;
+    box-shadow: 0 2.667px 2.667px 0 rgba(34,34,34,0.33);
+    background: var(--brown);
+    color: #FFFFFF;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 10.667px;
+    cursor: pointer;
+    padding: 0;
+    --glow-color: 57, 42, 19;
+    z-index: 3;
+    transition: width 140ms ease, height 140ms ease, font-size 140ms ease, border-width 140ms ease;
+  }
+  .ut-dot.is-active {
+    background: #C845AC;
+    --glow-color: 200, 69, 172;
+  }
+  .ut-dot::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: hotspotPulse 1.8s ease-out infinite;
+  }
+  .ut-dot-2::before { animation-delay: 0.6s; }
+  .ut-dot:hover, .ut-dot:focus-visible {
+    width: 33px; height: 33px;
+    font-size: 12.7px;
+    border-width: 1.692px;
+    box-shadow: 0 3.385px 3.385px 0 rgba(34,34,34,0.33);
+    outline: none;
+  }
+  @keyframes hotspotPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(var(--glow-color), 0.55); }
+    70%  { box-shadow: 0 0 0 14px rgba(var(--glow-color), 0); }
+    100% { box-shadow: 0 0 0 0 rgba(var(--glow-color), 0); }
+  }
+  /* Dot positions for Sub-section 1 — Filter Chips (centers as % of the 969x696 phones SVG) */
+  .ut-stage--filter .ut-dot-1 { left: 14%; top: 20%; }  /* Right edge of the Surgery chip on Phone 1 */
+  .ut-stage--filter .ut-dot-2 { left: 66%; top: 28%; }  /* Filter icon on Phone 2 */
+
+  /* Dot positions for Sub-section 2 — Public Forum (centers as % of the 968x676 phones SVG) */
+  .ut-stage--forum  .ut-dot-1 { left: 27%; top: 65%; }  /* "+4 comments" area on Phone 1 (Version A) */
+  .ut-stage--forum  .ut-dot-2 { left: 61%; top: 71%; }  /* "Clear All" / Who can assist on Phone 2 (Version B) */
+
+  /* Aspect ratios per stage (the three SVGs are slightly different) */
+  .ut-stage--filter   .ut-phones { aspect-ratio: 969 / 696; }
+  .ut-stage--forum    .ut-phones { aspect-ratio: 968 / 676; }
+  .ut-stage--scenario .ut-phones {
+    aspect-ratio: 669 / 652;
+    /* Only 2 phones in this SVG — cap the width so each phone reads at the
+       same size as the 3-phone SVGs above. Centered in the cream frame so
+       the cream box also shrinks down to match. */
+    width: 70%;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* Sub-section 3 — Provide medication: single blank pink dot on Phone 2 (Version A) */
+  .ut-stage--scenario .ut-dot-1 { left: 60%; top: 37%; }
+
+  /* Sub-section 3 Version B — 3 phones at full width, dot on Phone 3 */
+  .ut-stage--scenario-b .ut-phones { aspect-ratio: 947 / 652; }
+  .ut-stage--scenario-b .ut-dot-1 { left: 96%; top: 31%; }
+  /* Blank pink-circle dot (no number) — same glow as numbered dots */
+  .ut-dot--blank { font-size: 0; line-height: 0; }
+
+  /* 160px between user-testing sub-blocks */
+  .ut-block + .ut-block { margin-top: 160px; }
+
+  /* Version A / Version B toggle (uses ingram .ba-group / .ba-pill pattern) */
+  .ba-toggle {
+    display: flex;
+    gap: 18px;
+    margin-top: 35px;
+  }
+  .ba-pill {
+    height: 39px;
+    padding: 0 22px;
+    border-radius: 180px;
+    border: 1px solid #BDD6EB;
+    background: #FFFFFF;
+    color: #5E523F;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 16px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+  .ba-pill:hover { border-color: #90BDE4; color: var(--brown); }
+  .ba-pill[aria-pressed="true"] {
+    background: var(--brown);
+    border-color: var(--brown);
+    color: #FFFFFF;
+  }
+  .ba-pill:focus-visible { outline: 2px solid #4670D9; outline-offset: 2px; }
+  .ut-stage[hidden] { display: none; }
+
+  /* Pink insight popup — sits inside the cream frame, below the phones row */
+  .ut-popups {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+  }
+  .ut-popup {
+    background: #FFF6FD;
+    border: 1px solid #93287C;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.31);
+    padding: 25px 23px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: opacity 220ms ease;
+  }
+  .ut-popup[hidden] { display: none; }
+  .ut-popup.is-fading { opacity: 0; }
+  /* Header row: title + Next button on the same line, divider beneath.
+     Keeps popups 1 and 2 the same height since both share a one-line header. */
+  .ut-popup-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .ut-popup-title {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 28px;
+    color: #000;
+  }
+  .ut-popup p {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 25px;
+    color: #222;
+  }
+  .ut-popup p strong { font-weight: 700; }
+  .ut-popup-next {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 28px;
+    color: #93287C;
+    cursor: pointer;
+    transition: color 140ms ease;
+  }
+  .ut-popup-next:hover { color: #6F1F5F; }
+  .ut-popup-next:focus-visible {
+    outline: 2px solid #4670D9;
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  @media (max-width: 900px) {
+    .user-testing { padding: 112px 20px 112px; }
+    .ut-popup { padding: 18px 20px; }
+    .ut-popup-title { font-size: 14px; line-height: 22px; }
+    .ut-popup p,
+    .ut-popup-next { font-size: 14px; line-height: 22px; }
+  }
+
+  @media (max-width: 960px) {
+    .case-header { padding: 110px 24px 40px; }
+    .case-inner { padding: 0 8px; }
+  }
+  @media (max-width: 640px) {
+    .case-header { padding: 90px 20px 32px; }
+    .case-inner { padding: 0; }
+    .context { padding: 48px 20px 0; }
+  }
+
+  /* =========================================================
+     FINAL DESIGNS banner — full-bleed dark blue, 69px below
+     user testing, 51px tall, label aligned to the 1022px
+     content container (matches the user-testing copy above).
+     ========================================================= */
+  .final-designs-banner {
+    background: #33517D;
+    /* user-testing already has 160px padding-bottom, so we cancel that
+       and add 69px to land 69px below the user-testing content. */
+    margin-top: -91px;
+    height: 51px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+  }
+  .final-designs-banner-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .final-designs-label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  @media (max-width: 900px) {
+    .final-designs-banner { padding: 0 20px; }
+  }
+
+  /* =========================================================
+     FINAL DESIGNS — goals section (1–3)
+     ========================================================= */
+  .final-goals {
+    background: #DFE3F0;
+    padding: 69px 32px 120px;
+  }
+  .final-goals-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .final-goal { display: flex; flex-direction: column; gap: 25px; }
+  .final-goal + .final-goal { margin-top: 160px; }
+  .final-goal-label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 28px;
+    color: #392A13;
+    margin: 0;
+  }
+  .final-goal-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 0;
+  }
+  .final-goal-body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: #392A13;
+    margin: 0;
+  }
+
+  /* Dark muted-purple frame holding a portrait phone video, centered. */
+  .final-goal-media {
+    background: #A6A4B5;
+    border-radius: 4px;
+    margin-top: 35px;
+    aspect-ratio: 818 / 757;
+    width: 818px;
+    max-width: 100%;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .final-goal-media > video {
+    display: block;
+    height: auto;
+    /* width is set inline per video to match Figma's placement
+       (Goal 1: 321/818 ≈ 39.24%, Goal 2: 340/818 ≈ 41.56%) */
+    object-fit: contain;
+    background: transparent;
+  }
+
+  /* Goal 3 — SVG sits in its own wider wrapper outside the 1022 container,
+     mirroring the Figma frame (1398 wide, slightly outside margins). */
+  .final-goals-svg-row {
+    width: min(1398px, calc(100vw - 42px));
+    margin: 35px auto 0;     /* same 35px gap text→media as other goals */
+  }
+  .final-goals-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 820px) {
+    .final-goals { padding: 48px 20px 96px; }
+    .final-goal + .final-goal { margin-top: 96px; }
+  }
+  @media (max-width: 640px) {
+    .final-goal-title { font-size: 22px; }
+  }
+
+  /* =========================================================
+     IMPACT — final findings + next steps, 69px below the final
+     designs section. 209px L/R margins via the 1022 inner.
+     Two cards (translucent blue + translucent white).
+     ========================================================= */
+  .impact {
+    background: var(--page-bg);
+    padding: 69px 32px 120px;
+    scroll-margin-top: 72px;
+  }
+  .impact-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .impact-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.4;
+    color: var(--ink);
+    max-width: 844px;
+    margin: 35px 0 24px;
+  }
+  .impact-body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: #392A13;
+    margin: 0;
+  }
+  .impact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 56px;
+  }
+  .impact-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    min-height: 182px;
+    padding: 25px 23px;
+    border-radius: 4px;
+    border: 1px solid rgba(51, 81, 125, 0.63);
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+  .impact-card p { margin: 0; }
+  .impact-card strong { font-weight: 500; }
+  .impact-card--findings  { background: rgba(223, 227, 240, 0.4); }
+  .impact-card--next-step { background: rgba(255, 255, 255, 0.4); }
+
+  @media (max-width: 900px) {
+    .impact { padding: 56px 24px 96px; }
+    .impact-grid { gap: 24px; }
+  }
+  @media (max-width: 720px) {
+    .impact-grid { grid-template-columns: 1fr; gap: 24px; }
+    .impact-card { min-height: 0; }
+  }
+
+  /* =========================================================
+     THANK YOU — closing section with prev/next case-study
+     links, 160px below the impact section. 209px L/R.
+     ========================================================= */
+  .thankyou {
+    background: var(--page-bg);
+    /* 120px from .impact bottom padding + 40px here = 160px gap. */
+    padding: 40px 32px 96px;
+  }
+  .thankyou-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .thankyou-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.4;
+    color: var(--ink);
+    margin: 0;
+  }
+  .thankyou-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 46px;
+    gap: 16px;
+  }
+  .thankyou-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #392A13;
+    text-decoration: none;
+    transition: gap .25s ease, color .15s ease;
+  }
+  .thankyou-link img {
+    width: 24px;
+    height: 24px;
+    display: block;
+    flex-shrink: 0;
+  }
+  .thankyou-link:hover { color: #000; gap: 16px; }
+  .thankyou-link:focus-visible {
+    outline: 2px solid #33517D;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .thankyou { padding: 32px 24px 72px; }
+    .thankyou-nav { margin-top: 32px; }
+  }
+
+  /* =========================================================
+     SCROLL REVEAL — fade + rise as elements enter the viewport.
+     The JS at the bottom of the file adds `.reveal` to selected
+     content and toggles `.in-view` via IntersectionObserver.
+     ========================================================= */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    will-change: opacity, transform;
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-group > .reveal { transition-delay: 0ms; }
+  .reveal-group > .reveal:nth-child(2) { transition-delay: 80ms; }
+  .reveal-group > .reveal:nth-child(3) { transition-delay: 160ms; }
+  .reveal-group > .reveal:nth-child(4) { transition-delay: 240ms; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
+
+  /* =========================================================
+     PILL NAV — floating, fixed top-right. Replaces the standard
+     full-width header. Active link gets a yellow oval.
+     ========================================================= */
+  header.nav {
+    position: fixed !important;
+    top: 20px;
+    right: 32px;
+    left: auto;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 0 !important;
+    z-index: 50;
+  }
+  header.nav .nav-inner {
+    padding: 0;
+    margin: 0;
+    width: auto;
+    max-width: none;
+    justify-content: flex-end;
+  }
+  header.nav .brand,
+  header.nav .nav-toggle { display: none !important; }
+  nav#primary-nav {
+    display: inline-block !important;
+    position: static !important;
+    background: #FFFDF6 !important;
+    border: 1px solid rgba(19, 70, 162, 0.14) !important;   /* subtle portfolio-blue tint */
+    border-radius: 999px;
+    padding: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  nav#primary-nav ul {
+    flex-direction: row !important;
+    gap: 0 !important;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-flex;
+  }
+  nav#primary-nav .nav-link {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: #4B5A70;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: transparent;
+    display: inline-block;
+    text-decoration: none;
+    transition: color .15s ease, background .15s ease;
+  }
+  nav#primary-nav .nav-link:hover {
+    background: transparent;
+    color: var(--ink, #222);
+  }
+  /* Active state — light portfolio blue with deep blue text.
+     Contrast ratio #0D317A on #D3E2FF ≈ 9.6:1 (WCAG AAA). */
+  nav#primary-nav .nav-link[aria-current="page"],
+  nav#primary-nav .nav-link[aria-current="page"]:hover {
+    background: #D3E2FF;
+    color: #0D317A;
+    font-weight: 700;
+  }
+
+  /* Mobile: keep the full pill, centered horizontally at the top. */
+  @media (max-width: 640px) {
+    header.nav {
+      top: 12px;
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    nav#primary-nav { padding: 6px; }
+    /* !important overrides the legacy mobile rule `.nav#primary-nav
+       a.nav-link { border-radius: 8px }` from the old dropdown design. */
+    nav#primary-nav .nav-link {
+      padding: 8px 16px !important;
+      font-size: 13px !important;
+      border-radius: 999px !important;
+      display: inline-block !important;
+    }
+  }
+  /* =========================================================
+     SITE FOOTER — "Thank you for visiting!" + email / linkedin
+     icons, 160px below the previous section content. Top border
+     spans across the page margins per the Figma frame.
+     ========================================================= */
+  .site-footer {
+    margin-top: 64px;
+    border-top: 1px solid #635744;
+    background: var(--cream, var(--page-bg, #FFFDF9));
+    padding: 53px 32px;
+    text-align: center;
+  }
+  .site-footer-inner {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 29px;
+  }
+  .site-footer-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.4;
+    color: #222;
+    margin: 0;
+  }
+  .site-footer-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: filter .2s ease, transform .15s ease;
+  }
+  .footer-link img { display: block; }
+  .footer-link:hover {
+    filter: brightness(0.4);
+    transform: translateY(-1px);
+  }
+  .footer-link:focus-visible {
+    outline: 2px solid #635744;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .site-footer-copyright {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 28px;
+    color: rgba(57, 42, 19, 0.28);
+    margin: 0;
+  }
+  @media (max-width: 640px) {
+    .site-footer { padding: 40px 24px; }
+    .site-footer-inner { gap: 22px; }
+    .site-footer-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" role="banner">
+  <div class="nav-inner">
+    <a href="hero.html" class="brand" aria-label="Brian Pham, home">Brian Pham</a>
+    <button class="nav-toggle" type="button"
+            aria-expanded="false"
+            aria-controls="primary-nav"
+            aria-label="Open menu">
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+    <nav id="primary-nav" class="nav" aria-label="Primary">
+      <ul>
+        <li><a class="nav-link" href="hero.html">Home</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+        <li><a class="nav-link" href="hero.html#resume">Resume</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- CASE STUDY HEADER -->
+<section class="case-header" aria-labelledby="case-title">
+  <div class="case-inner">
+    <h1 id="case-title" class="case-title">Epocrates for Medical Students</h1>
+    <p class="case-desc">Enabling medical students to apply their knowledge through hands-on experiences and specialty-specific medical scenarios within the Epocrates platform.</p>
+  </div>
+</section>
+
+<!-- FULL-BLEED IMAGE BANNER -->
+<section class="showcase" aria-label="Epocrates for Medical Students project preview">
+  <img src="images/epocrates-showcase.svg"
+       alt="Epocrates mobile app screens — home with Workshops/Drugs/Reference tabs, a Workshop Feed listing medical workshops, and a Suturing Workshop Support Request with medical specialty cards — arranged on a steel-blue backdrop." />
+</section>
+
+<!-- CONTEXT -->
+<section class="context" aria-labelledby="context-heading">
+  <div class="context-inner">
+    <span class="section-chip" id="context-heading">Context</span>
+
+    <!-- Subsection 1: Hands-on experience -->
+    <div class="ctx-block ctx-block-1">
+      <div class="ctx-1-grid">
+        <div class="ctx-1-text">
+          <h2 class="sub-title">Medical students need more hands-on experience in their specialty of interest.</h2>
+          <p class="sub-body">Medical students struggle to apply their theoretical knowledge in real-world clinical settings, particularly in their specialties of interest.</p>
+          <p class="sub-body">Through in-depth interviews with <strong>6 medical students</strong>, I identified a disconnect between the reference information provided by tools like Epocrates and the practical application opportunities available to students.</p>
+        </div>
+
+        <aside class="ctx-meta">
+          <div class="ctx-meta-row">
+            <div class="ctx-meta-key">Role</div>
+            <div class="ctx-meta-val">UI/UX Designer, User Researcher</div>
+          </div>
+          <div class="ctx-meta-row">
+            <div class="ctx-meta-key">Time</div>
+            <div class="ctx-meta-val">3 Weeks</div>
+          </div>
+          <div class="ctx-meta-row">
+            <div class="ctx-meta-key">Product</div>
+            <div class="ctx-meta-val">Mobile App Concept</div>
+          </div>
+          <div class="ctx-meta-row">
+            <div class="ctx-meta-key">Tools</div>
+            <div class="ctx-meta-val">Figma, Zoom</div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Subsection 2: What is Epocrates? -->
+    <div class="ctx-block ctx-block-2">
+      <h2 class="sub-title">Background: What is Epocrates?</h2>
+      <p class="sub-body">Epocrates is a mobile/desktop application used by over 1 million healthcare professionals that provides them with drug references, medical calculators, and more.</p>
+
+      <div class="callout callout-yellow">
+        <h4>Analogy for Epocrates</h4>
+        <p>Epocrates is like a medical dictionary that provides quick, reliable drug and health information for medical professionals, students, and more!</p>
+      </div>
+
+      <div class="ctx-image-frame">
+        <img src="images/epocrates-context.png"
+             alt="Epocrates app screenshot beside a handshake icon and an illustration of a dictionary — symbolizing Epocrates as a trusted medical reference." />
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem" aria-labelledby="problem-heading">
+  <div class="problem-inner">
+    <span class="section-chip" id="problem-heading">Problem</span>
+
+    <h2 class="sub-title">&ldquo;As a medical student interested in surgery, I have to learn some concepts on my own &amp; constantly reach out to professionals for opportunities&rdquo; - 1 user.</h2>
+
+    <p class="sub-body">
+      Although there are many medical reference tools online, medical students need practical guidance for real-world clinical scenarios because passive knowledge lookup and <strong>limited opportunities</strong> to apply learning leave them <strong>concerned about their job performance</strong> and ability to provide quality patient care.
+    </p>
+
+    <div class="need-card">
+      <div class="need-header">
+        <img src="svgs/user.svg" alt="" aria-hidden="true" />
+        <span class="label">User Need:</span>
+      </div>
+      <p>Medical students need guided practice applying clinical knowledge to realistic patient scenarios so they can build confidence in their decision-making skills.</p>
+    </div>
+
+    <div class="why-card">
+      <h4>Why is this a problem?</h4>
+      <p>Through interviews with 6+ medical students. I came across 3 common insights that users mentioned when it came their experience with finding opportunities to grow in their specialty.</p>
+    </div>
+
+    <div class="problems-grid">
+      <div class="problem-card">
+        <div class="media">
+          <img src="svgs/four-oclock.svg" alt="Clock showing four o'clock" />
+        </div>
+        <div class="body">
+          <h4>Opportunities take too long to find.</h4>
+          <p>&ldquo;It is hard to gain access to opportunities to hone skills aligned with medical specialty. It requires a lot of networking and reaching out to even gain access to <strong>one opportunity</strong>&rdquo; (kristine)</p>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="media">
+          <img src="svgs/face-spiral.svg" alt="Face with spiral eyes — feeling overwhelmed" />
+        </div>
+        <div class="body">
+          <h4>Lack of Reassurance.</h4>
+          <p>&ldquo;I learn a lot in school &amp; reference medical apps but I <strong>don&rsquo;t feel reassured</strong> enough to be able to apply my skills in a real clinical setting aligned with my specialty&rdquo; (gabriel)</p>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="media">
+          <img src="svgs/face-clouds.svg" alt="Face in clouds — feeling disconnected" />
+        </div>
+        <div class="body">
+          <h4>Isolation.</h4>
+          <p>&ldquo;I experienced <strong>lack of emotional support</strong> when it came to starting medical school&rdquo; (Jahan).</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW MIGHT WE -->
+<section class="hmw" aria-labelledby="hmw-heading">
+  <div class="hmw-inner">
+    <p class="hmw-label">With this&hellip;</p>
+    <p class="hmw-text" id="hmw-heading">How might we extend Epocrates to help medical students gain better access to learning opportunities and hands-on experiences to build confidence in their medical specialty during clinical practice and future training?</p>
+  </div>
+</section>
+
+<!-- USER RESEARCH -->
+<section class="research" aria-labelledby="research-heading">
+  <div class="research-inner">
+    <span class="section-chip" id="research-heading">User Research</span>
+
+    <!-- Subsection 1: Success goals -->
+    <div class="research-block">
+      <h2 class="sub-title">What does success look like?</h2>
+      <p class="sub-body">After understanding the challenges medical students face in finding relevant learning opportunities and developing specialty-specific skills, I defined the following goals that align with user needs.</p>
+
+      <div class="goals-grid">
+        <div class="goal-card teal">
+          <div class="goal-head">
+            <img src="svgs/edit-pencil.svg" alt="" aria-hidden="true" />
+            <span class="label">Personalize and enhance visibility of medical opportunities</span>
+          </div>
+          <p>To match students with specialty-specific resources &amp; quickly direct them to medical professionals.</p>
+        </div>
+
+        <div class="goal-card grey">
+          <div class="goal-head">
+            <img src="svgs/star.svg" alt="" aria-hidden="true" />
+            <span class="label">Provide access to low-stake practices.</span>
+          </div>
+          <p>To help students make clinical decisions and receive feedback that boosts their confidence.</p>
+        </div>
+
+        <div class="goal-card">
+          <div class="goal-head">
+            <img src="svgs/users.svg" alt="" aria-hidden="true" />
+            <span class="label">Establish a sense of community.</span>
+          </div>
+          <p>To reduce the feeling of isolation and form of support system from other medical professionals.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subsection 2: Medical student profile -->
+    <div class="research-block">
+      <h2 class="sub-title">How do Medical Students Currently use the Epocrates App?</h2>
+      <p class="sub-body">While researching why the app is popular among medical students, I identified a key insight shared by 6 students in interviews.</p>
+
+      <div class="user-block">
+        <div class="user-avatar" aria-hidden="true">
+          <img src="svgs/med-student.svg" alt="" />
+        </div>
+        <div class="user-card">
+          <div class="user-card-head">User: Medical Student</div>
+          <p>Their <strong>motivation</strong> for using the app is to reassure themselves about dosing, contraindications, and interactions before patient encounters, exams, and many other real-world clinical settings.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subsection 3: Competitive analysis -->
+    <div class="research-block">
+      <h2 class="sub-title">Competitive Analysis: What are other popular medical reference tools?</h2>
+      <p class="sub-body">Based on research on the Epocrates App, it appears that many medical students use these digital reference tools to confirm their understanding of medical terminology and help them trust their own knowledge base.</p>
+      <p class="sub-body">I took a look at products similar to the platform and discovered the following strengths and weaknesses.</p>
+
+      <div class="comp-frame">
+        <img src="images/epocrates-competitive.png"
+             alt="Competitive analysis of medical reference tools — Epocrates, Medscape, Nursing Central, and others — comparing strengths (effective reference, medical podcasts) and weaknesses (lack of hands-on opportunities, no support, must build confidence on their own)." />
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- IDEATION -->
+<section class="ideation" aria-labelledby="ideation-heading">
+  <div class="ideation-inner">
+    <span class="section-chip" id="ideation-heading">Ideation</span>
+
+    <!-- Sub-section 1: Goals → Solutions chart -->
+    <div class="ideation-block">
+      <h2 class="sub-title">Transitioning goals into potential solutions.</h2>
+      <p class="sub-body">During the ideation phase, I organized potential solutions aligned with the goals defined earlier in the process. Establishing these goals early on helped generate solutions that directly addressed the identified user problems.</p>
+
+      <figure class="ideation-chart">
+        <img src="images/epocrates-goals-solutions.svg"
+             alt="Diagram mapping three goals (Personalize and enhance visibility of medical opportunities, Provide access to low-stake practices, Establish a sense of community) to potential solutions (Medical Workshops based on one's specialty, Mock Medical Scenarios to test and improve knowledge, Connect and gather mentorship from professionals in the field)." />
+      </figure>
+    </div>
+
+    <!-- Sub-section 2: Idea 1 — Workshops -->
+    <div class="ideation-block">
+      <h2 class="idea-title">Idea 1: Specialty-specific medical workshops nearby to help medical students access hands-on experience and support from professionals.</h2>
+      <p class="idea-body">Understanding the challenges of limited opportunities to grow in one&rsquo;s medical specialty &amp; the lack of support systems, I came up with the idea of finding in-person workshops and connecting them with the professional support they need.</p>
+
+      <div class="idea1-frame">
+        <img src="images/epocrates-idea1.svg"
+             alt="Five Epocrates mobile screens showing the workshops flow: Workshops by Specialty, Register, Assist Feed, Request Assistance, and Professional Feedback." />
+      </div>
+    </div>
+
+    <!-- Sub-section 3: Idea 2 — Scenario practice -->
+    <div class="ideation-block">
+      <h2 class="idea-title">Idea 2: Scenario based practice prompts where users walk through mock medical situations based off their specialty of choice</h2>
+      <p class="idea-body">In addition to workshops, I incorporated mock clinical scenarios to help physicians apply their learning in a low-stakes environment. This approach makes skill development more accessible while building both knowledge and confidence.</p>
+
+      <div class="idea2-frame">
+        <img src="images/epocrates-idea2-flow.svg"
+             alt="Flow chart for the scenario-based practice: Select Specialty (e.g. Orthopedics) → Random Scenario → Ask Patient Questions, Select Lab Tests, Diagnosis, Medication → Get Score." />
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- USER TESTING -->
+<section class="user-testing" aria-labelledby="user-testing-heading">
+  <div class="user-testing-inner">
+    <span class="section-chip" id="user-testing-heading">User Testing</span>
+
+    <aside class="callout callout-yellow ut-note">
+      <h4>Note:</h4>
+      <p><strong>A/B Testing</strong> with 6+ participants was conducted to compare the performance of different mobile experience versions.</p>
+    </aside>
+
+    <!-- Sub-section 1: Find medical workshops -->
+    <div class="ut-block">
+      <h2 class="sub-title">Find medical workshops aligned with the right specialty.</h2>
+      <p class="sub-body">First, I asked users to search for medical workshops specializing in different areas. This task aimed to evaluate whether the filtering functionality worked effectively and whether the generated workshop recommendations were properly tailored to each user&rsquo;s specific needs.</p>
+
+      <div class="ut-stage ut-stage--filter">
+        <div class="ut-wide-frame">
+          <div class="ut-phones" aria-label="A/B test screens for finding medical workshops: Version A, Version B, and Version B preferred.">
+            <img class="ut-fullshot"
+                 src="images/epocrates-ut1-versions.svg"
+                 alt="Three Epocrates mobile screens side-by-side — Version A, Version B, and Version B (preferred) — showing the workshop filtering and search experience." />
+
+            <button type="button" class="ut-dot ut-dot-1 is-active"
+                    aria-pressed="true" aria-label="Annotation 1"
+                    data-target="epoc-ut1-pop-1">1</button>
+            <button type="button" class="ut-dot ut-dot-2"
+                    aria-pressed="false" aria-label="Annotation 2"
+                    data-target="epoc-ut1-pop-2">2</button>
+          </div>
+
+          <div class="ut-popups">
+            <aside class="ut-popup ut-popup-1" id="epoc-ut1-pop-1" role="region" aria-label="Insight 1">
+              <div class="ut-popup-header">
+                <h4 class="ut-popup-title">Filter Chips on top by specialty (Version A)</h4>
+                <button type="button" class="ut-popup-next" data-next="epoc-ut1-pop-2" aria-label="Next insight">Next ›</button>
+              </div>
+              <p><strong>Insight:</strong> 5/6 users found the filters quick to use. However, they mentioned that selecting 1 at a time is constraining. Some specialties might have overlap and students may be interested in multiple topics.</p>
+            </aside>
+
+            <aside class="ut-popup ut-popup-2" id="epoc-ut1-pop-2" role="region" aria-label="Insight 2" hidden>
+              <div class="ut-popup-header">
+                <h4 class="ut-popup-title">Select the following specialties (Version B (Preferred))</h4>
+              </div>
+              <p><strong>Insight:</strong> Many medical students found this method of filtering to be more effective since it would allow them to access workshops that contain specializations that overlap each other.</p>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sub-section 2: Gather knowledgeable feedback -->
+    <div class="ut-block">
+      <h2 class="sub-title">Gather knowledgeable feedback and insight after a medical workshop.</h2>
+      <p class="sub-body">After completing a medical workshop, users can post their work for feedback from field professionals. This task aimed to identify which types of support would best help students develop their skills and build confidence.</p>
+
+      <div class="ut-stage ut-stage--forum">
+        <div class="ut-wide-frame">
+          <div class="ut-phones" aria-label="A/B test screens for getting insight after a medical workshop: Version A and Version B (preferred).">
+            <img class="ut-fullshot"
+                 src="images/epocrates-ut2-versions.svg"
+                 alt="Three Epocrates mobile screens — Version A showing a Public Forum thread, and Version B (preferred) showing a Workshop Support Request with structured Q&amp;A." />
+
+            <button type="button" class="ut-dot ut-dot-1 is-active"
+                    aria-pressed="true" aria-label="Annotation 1"
+                    data-target="epoc-ut2-pop-1">1</button>
+            <button type="button" class="ut-dot ut-dot-2"
+                    aria-pressed="false" aria-label="Annotation 2"
+                    data-target="epoc-ut2-pop-2">2</button>
+          </div>
+
+          <div class="ut-popups">
+            <aside class="ut-popup ut-popup-1" id="epoc-ut2-pop-1" role="region" aria-label="Insight 1">
+              <div class="ut-popup-header">
+                <h4 class="ut-popup-title">Public Forum (Version A)</h4>
+                <button type="button" class="ut-popup-next" data-next="epoc-ut2-pop-2" aria-label="Next insight">Next ›</button>
+              </div>
+              <p><strong>Insight:</strong> 5/6 users mentioned that even though a public forum could be a strong support system, it is possible to encounter misinformation that would hinder a medical student&rsquo;s learning.</p>
+            </aside>
+
+            <aside class="ut-popup ut-popup-2" id="epoc-ut2-pop-2" role="region" aria-label="Insight 2" hidden>
+              <div class="ut-popup-header">
+                <h4 class="ut-popup-title">Select who can assist (Version B (Preferred))</h4>
+              </div>
+              <p><strong>Insight:</strong> 5/6 users preferred selecting specific medical professionals for feedback since this approach would ensure they receive accurate, reliable guidance from credentialed experts rather than risking misinformation from a public forum.</p>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sub-section 3: Provide recommended medication (Version A / B compare) -->
+    <div class="ut-block">
+      <h2 class="sub-title">Provide recommended medication in low-stake mock medical scenarios.</h2>
+      <p class="sub-body">In specialty-specific mock medical scenarios, users must recommend appropriate medications as part of their clinical decision-making. This task evaluates which design more effectively tests students&rsquo; medication knowledge and their ability to apply it in realistic clinical contexts.</p>
+
+      <div class="ba-group" data-state="before">
+        <div class="ba-toggle" role="group" aria-label="Compare versions">
+          <button type="button" class="ba-pill" data-state="before" aria-pressed="true">Version A</button>
+          <button type="button" class="ba-pill" data-state="after"  aria-pressed="false">Version B</button>
+        </div>
+
+        <div class="ut-views">
+          <!-- Version A view -->
+          <div class="ut-stage ut-stage--scenario" data-view="before">
+            <div class="ut-wide-frame">
+              <div class="ut-phones" aria-label="Version A: Orthopedic Medical Scenario with Recommended Medications search and Analgesics checkbox list.">
+                <img class="ut-fullshot"
+                     src="images/epocrates-ut3-version-a.svg"
+                     alt="Two Epocrates mobile screens for Version A — the Orthopedic Medical Scenario detail with a Search Medication input, and the Recommended Medications screen showing an Analgesics list with checkboxes." />
+
+                <button type="button" class="ut-dot ut-dot--blank ut-dot-1 is-active"
+                        aria-pressed="true" aria-label="Insight: Medication checkbox"
+                        data-target="epoc-ut3-pop-1"></button>
+              </div>
+
+              <div class="ut-popups">
+                <aside class="ut-popup ut-popup-1" id="epoc-ut3-pop-1" role="region" aria-label="Insight">
+                  <div class="ut-popup-header">
+                    <h4 class="ut-popup-title">Medication Checkbox</h4>
+                    <button type="button" class="ut-popup-next" data-next="view-after" aria-label="Go to Version B">Version B ›</button>
+                  </div>
+                  <p><strong>Insight:</strong> Although selecting a medication is quick, 3/6 mentioned that this is too broad and very surface level. It feels like textbook information rather than an opportunity to apply their knowledge into a scenario.</p>
+                </aside>
+              </div>
+            </div>
+          </div>
+
+          <!-- Version B view -->
+          <div class="ut-stage ut-stage--scenario-b" data-view="after" hidden>
+            <div class="ut-wide-frame">
+              <div class="ut-phones" aria-label="Version B: Orthopedic Medical Scenario, Recommended Medications selection, and Acetaminophen duration/quantity follow-up.">
+                <img class="ut-fullshot"
+                     src="images/epocrates-ut3-version-b.svg"
+                     alt="Three Epocrates mobile screens for Version B — the Orthopedic Medical Scenario detail, the Recommended Medications list, and an Acetaminophen follow-up screen that asks how long, how much, and how often the user would prescribe it." />
+
+                <button type="button" class="ut-dot ut-dot--blank ut-dot-1 is-active"
+                        aria-pressed="true" aria-label="Insight: Duration and quantity"
+                        data-target="epoc-ut3b-pop-1"></button>
+              </div>
+
+              <div class="ut-popups">
+                <aside class="ut-popup ut-popup-1" id="epoc-ut3b-pop-1" role="region" aria-label="Insight">
+                  <div class="ut-popup-header">
+                    <h4 class="ut-popup-title">Duration &amp; Quantity of Medication (Version B (Preferred))</h4>
+                  </div>
+                  <p><strong>Insight:</strong> Although an extra step, 5/6 users mentioned that selecting duration and quantity provides more of an opportunity for students to actually apply their knowledge. It creates more complexity and further strengthens medical knowledge.</p>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     FINAL DESIGNS — full-bleed dark-blue banner, 69px below
+     the user testing section.
+     ========================================================= -->
+<section class="final-designs-banner" aria-labelledby="final-designs-heading">
+  <div class="final-designs-banner-inner">
+    <h2 id="final-designs-heading" class="final-designs-label">Final Designs</h2>
+  </div>
+</section>
+
+<!-- =========================================================
+     FINAL DESIGNS — goals 1–3, 69px below the blue banner
+     ========================================================= -->
+<section class="final-goals" aria-label="Final design goals">
+  <div class="final-goals-inner">
+
+    <!-- Goal 1 -->
+    <div class="final-goal">
+      <p class="final-goal-label">Goal 1</p>
+      <h3 class="final-goal-title">Personalize and Enhance Visibility of Medical Opportunities.</h3>
+      <p class="final-goal-body">
+        Medical Students can filter medical workshops nearby by specialty and see the current medical professional hosting the event and the number of attendees going. This provides an opportunity to meet others in the community and form potential connections.
+      </p>
+      <div class="final-goal-media">
+        <video
+          src="videos/epocrates-final-goal-1.mp4"
+          style="width: 39.24%; aspect-ratio: 432 / 850;"
+          autoplay
+          muted
+          loop
+          playsinline
+          webkit-playsinline
+          controls
+          controlsList="nodownload"
+          preload="auto"
+          aria-label="Walkthrough showing students filtering workshops by specialty and seeing host and attendee details"
+        ></video>
+      </div>
+    </div>
+
+    <!-- Goal 2 -->
+    <div class="final-goal">
+      <p class="final-goal-label">Goal 2</p>
+      <h3 class="final-goal-title">Building Community Throughout the Medical Student Journey.</h3>
+      <p class="final-goal-body">
+        After a medical workshop, students can request feedback and insight from an experienced professional. This provides not only encouragement, but a lasting connection that could help them throughout the journey as a medical student.
+      </p>
+      <div class="final-goal-media">
+        <video
+          src="videos/epocrates-final-goal-2.mp4"
+          style="width: 42.7%; aspect-ratio: 470 / 860;"
+          autoplay
+          muted
+          loop
+          playsinline
+          webkit-playsinline
+          controls
+          controlsList="nodownload"
+          preload="auto"
+          aria-label="Walkthrough showing a student requesting feedback from a medical professional after a workshop"
+        ></video>
+      </div>
+    </div>
+
+    <!-- Goal 3 — text inside the 1022 container -->
+    <div class="final-goal">
+      <p class="final-goal-label">Goal 3</p>
+      <h3 class="final-goal-title">Provide Access to Low-Stake Practices with Mock Medical Scenarios.</h3>
+      <p class="final-goal-body">
+        Students move from theory to practice in specialty-specific clinical scenarios, where they diagnose mock patients, recommend medications, and evaluate their decisions with professional standards.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Goal 3 SVG lives outside the 1022 container so it can extend
+       to ~1398px and still be centered on the viewport. -->
+  <div class="final-goals-svg-row">
+    <img class="final-goals-svg" src="images/epocrates-final-goal-3.svg" alt="Mock medical scenarios flow: students diagnose mock patients, recommend medications, and review feedback against professional standards" />
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="impact" aria-labelledby="impact-heading">
+  <div class="impact-inner">
+    <span class="section-chip" id="impact-heading">Impact</span>
+    <h2 class="impact-title">Final findings I came across and next steps.</h2>
+    <p class="impact-body">The medical students I conducted testing on emphasized that this concept would help them feel more reassured and supported throughout their education journey. I came across 2 findings from the final design concept.</p>
+
+    <div class="impact-grid">
+      <article class="impact-card impact-card--findings">
+        <p><strong>5/6</strong> expressed the the solution is realistic &amp; would provide users access to resources nearby to hone their skills &amp; knowledge associated with their medical specialty of interest.</p>
+      </article>
+      <article class="impact-card impact-card--next-step">
+        <p>If <strong>given more time</strong> I would work on more features that verify medical student status (such as an onboarding process) and conduct more research on constraints that might occur with medical workshops.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- THANK YOU -->
+<section class="thankyou" aria-label="Thank you for reading">
+  <div class="thankyou-inner">
+    <p class="thankyou-title">Thank you for reading!</p>
+    <nav class="thankyou-nav" aria-label="Other case studies">
+      <a class="thankyou-link thankyou-link--prev" href="tet-festival.html">
+        <img src="images/arrow-prev.svg" alt="" aria-hidden="true" />
+        San Diego Tet Festival
+      </a>
+      <a class="thankyou-link thankyou-link--next" href="ingram-micro.html">
+        Ingram Micro
+        <img src="images/arrow-next.svg" alt="" aria-hidden="true" />
+      </a>
+    </nav>
+  </div>
+</section>
+
+<!-- SITE FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p class="site-footer-title">Thank you for visiting!</p>
+    <div class="site-footer-links">
+      <a class="footer-link" href="mailto:brianpham05@gmail.com" aria-label="Email Brian">
+        <img src="images/footer-email.svg" alt="" aria-hidden="true" width="26" height="20" />
+      </a>
+      <a class="footer-link" href="https://www.linkedin.com/in/brianpham03/" target="_blank" rel="noopener noreferrer" aria-label="Visit Brian's LinkedIn (opens in a new tab)">
+        <img src="images/footer-linkedin.svg" alt="" aria-hidden="true" width="24" height="24" />
+      </a>
+    </div>
+    <p class="site-footer-copyright">Brian Pham - 2026</p>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  (function() {
+    const btn = document.querySelector('.nav-toggle');
+    const nav = document.getElementById('primary-nav');
+    if (!btn || !nav) return;
+    const setOpen = (open) => {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      nav.classList.toggle('is-open', open);
+    };
+    btn.addEventListener('click', () => {
+      setOpen(btn.getAttribute('aria-expanded') !== 'true');
+    });
+    nav.addEventListener('click', (e) => {
+      if (e.target.matches('a.nav-link')) setOpen(false);
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 640) setOpen(false);
+    });
+  })();
+
+  // Hotspot dots inside .ut-stage — group-select by data-target so multiple
+  // dots that point at the same insight light up together. Swapping popups
+  // fades the outgoing one out and the incoming one in.
+  (function() {
+    const FADE = 220;
+
+    document.querySelectorAll('.ut-stage').forEach(stage => {
+      const dots = stage.querySelectorAll('.ut-dot');
+      const popups = stage.querySelectorAll('.ut-popup');
+
+      function paintDots(target) {
+        dots.forEach(d => {
+          const match = d.dataset.target === target;
+          d.classList.toggle('is-active', match);
+          d.setAttribute('aria-pressed', match ? 'true' : 'false');
+        });
+      }
+
+      function showPopup(targetId) {
+        const incoming = targetId
+          ? stage.querySelector('#' + CSS.escape(targetId))
+          : null;
+        const outgoing = Array.from(popups).find(p => !p.hidden && p !== incoming);
+
+        if (outgoing) {
+          outgoing.classList.add('is-fading');
+          setTimeout(() => {
+            outgoing.hidden = true;
+            outgoing.classList.remove('is-fading');
+            if (incoming) {
+              incoming.hidden = false;
+              incoming.classList.add('is-fading');
+              void incoming.offsetWidth;
+              requestAnimationFrame(() => incoming.classList.remove('is-fading'));
+            }
+          }, FADE);
+        } else if (incoming) {
+          incoming.hidden = false;
+        }
+      }
+
+      function setActive(target) {
+        paintDots(target);
+        showPopup(target);
+      }
+      function clearActive() {
+        paintDots(null);
+        showPopup(null);
+      }
+
+      // Sync initial popup visibility to whichever dot is marked active.
+      const initial = stage.querySelector('.ut-dot.is-active');
+      popups.forEach(p => { p.hidden = true; });
+      if (initial && initial.dataset.target) {
+        const popup = stage.querySelector('#' + CSS.escape(initial.dataset.target));
+        if (popup) popup.hidden = false;
+      }
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          // Clicking an already-active dot is a no-op — the popup stays.
+          if (dot.classList.contains('is-active')) return;
+          const target = dot.dataset.target;
+          if (target) setActive(target);
+        });
+      });
+
+      // "Next" / "Go to Version B" buttons. data-next is either a popup id
+      // within the stage, OR "view-<name>" to switch the parent .ba-group's
+      // tab. Missing targets are no-ops so half-built sections don't break.
+      stage.querySelectorAll('.ut-popup-next[data-next]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const next = btn.dataset.next;
+          if (next.indexOf('view-') === 0) {
+            const view = next.slice(5);
+            const grp = stage.closest('.ba-group');
+            if (grp && typeof grp._switchView === 'function') {
+              grp._switchView(view);
+            }
+            return;
+          }
+          const target = stage.querySelector('#' + CSS.escape(next));
+          if (target) setActive(next);
+        });
+      });
+    });
+  })();
+
+  // Version A / Version B (Before / After) toggle — instant swap, no fade,
+  // so the iteration frame doesn't visibly shift between views.
+  (function() {
+    document.querySelectorAll('.ba-group').forEach(group => {
+      const pills = group.querySelectorAll('.ba-pill');
+      const stages = group.querySelectorAll('.ut-stage[data-view]');
+
+      function showState(state) {
+        if (group.dataset.state === state) return;
+        group.dataset.state = state;
+        pills.forEach(p => p.setAttribute('aria-pressed',
+          p.dataset.state === state ? 'true' : 'false'));
+        stages.forEach(s => { s.hidden = s.dataset.view !== state; });
+      }
+
+      pills.forEach(pill => {
+        pill.addEventListener('click', () => showState(pill.dataset.state));
+      });
+
+      // Expose so the hotspot module can trigger view switches via "Version B ›".
+      group._switchView = showState;
+    });
+  })();
+
+  // Scroll reveal — fade + rise for content as it enters the viewport.
+  // Mirrors the ingram-micro behaviour. Degrades gracefully and respects
+  // prefers-reduced-motion.
+  (function() {
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const selectors = [
+      '.case-title',
+      '.section-chip',
+      '.sub-title',
+      '.sub-body',
+      '.ctx-image-frame',
+      '.need-card',
+      '.why-card',
+      '.problems-grid',
+      '.problem-card',
+      '.hmw-quote',
+      '.research-block',
+      '.goals-grid',
+      '.goal-card',
+      '.user-block',
+      '.user-card',
+      '.comp-frame',
+      '.ideation-block',
+      '.idea-title',
+      '.idea-body',
+      '.ut-block',
+      '.ut-wide-frame',
+      '.ut-popup-title',
+      '.final-designs-banner',
+      '.final-goal',
+      '.final-goals-svg-row'
+    ];
+
+    const targets = new Set();
+    selectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => targets.add(el));
+    });
+
+    // Stagger the children of grid-like groups for a cascade.
+    const groupSelectors = ['.problems-grid', '.goals-grid'];
+    groupSelectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(group => {
+        group.classList.add('reveal-group');
+        Array.from(group.children).forEach(child => {
+          child.classList.add('reveal');
+          targets.add(child);
+        });
+      });
+    });
+
+    targets.forEach(el => el.classList.add('reveal'));
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -10% 0px',
+      threshold: 0.08
+    });
+
+    targets.forEach(el => io.observe(el));
+  })();
+</script>
+</body>
+</html>

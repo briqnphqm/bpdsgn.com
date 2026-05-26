@@ -20,6 +20,7 @@
     --gray-50:  #F9F9F9;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   html, body {
     margin: 0; padding: 0;
     font-family: 'Manrope', system-ui, sans-serif;
@@ -134,19 +135,32 @@
     }
   }
 
-  /* Hero — compact, leaves room for featured projects to peek below */
+  /* Hero — shortened slightly but still covers the visible viewport below the nav */
   .hero {
     position: relative;
     width: 100%;
-    min-height: 720px;
+    height: calc(88vh - 72px);
+    height: calc(88dvh - 72px);
+    min-height: 560px;
     margin: 0 auto;
-    padding: 140px 32px 72px;
+    padding: 0 32px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    gap: 36px;
     overflow: hidden;
+    isolation: isolate;
+    /* Seafoam palette tokens (from MailRainHero) */
+    --mr-base:   #d3ede4;
+    --mr-sky:    #e3f3ef;
+    --mr-pale:   #edf6e9;
+    --mr-blue:   #bcd9e8;
+    --mr-blue-hi:#a8cde0;
+    --mr-mint:   #bbe8cf;
+    --mr-mint-hi:#9fdfba;
+    --mr-teal:   #a9dde0;
+    --mr-teal-hi:#8cd1d6;
+    background: var(--mr-base);
   }
   .hero-content {
     position: relative;
@@ -201,261 +215,262 @@
   .btn-secondary { background: transparent; color: var(--blue-700); border-color: var(--blue-700); }
   .btn-secondary:hover { background: var(--blue-100); color: var(--blue-900); }
 
-  /* Doodles — scattered mail + accents */
-  .doodles {
+  /* Dreamy lake-gradient background with falling envelopes (port of
+     <MailRainHero> — seafoam palette). All layers are pointer-events:none
+     so the hero content remains interactive. */
+  .mr-lake-base, .mr-swirl, .mr-marble, .mr-bloom, .mr-vignette,
+  .mr-sparkles, .mr-rain {
     position: absolute;
-    inset: 0;
     pointer-events: none;
-    z-index: 1;
   }
-  .doodle {
+  .mr-lake-base {
+    inset: -10%;
+    background:
+      radial-gradient(60% 60% at 30% 30%, var(--mr-mint) 0%, transparent 60%),
+      radial-gradient(70% 60% at 75% 70%, var(--mr-blue) 0%, transparent 65%),
+      radial-gradient(50% 70% at 50% 100%, var(--mr-teal) 0%, transparent 70%),
+      linear-gradient(150deg, var(--mr-sky) 0%, var(--mr-pale) 100%);
+  }
+  .mr-swirl {
+    inset: -25%;
+    filter: blur(60px);
+    opacity: 0.85;
+    mix-blend-mode: screen;
+  }
+  .mr-swirl::before, .mr-swirl::after, .mr-swirl > i {
+    content: "";
     position: absolute;
-    pointer-events: auto;
-    opacity: 0.8;
-    transform: rotate(var(--r, 0deg));
-    transition: opacity .35s ease, transform .5s cubic-bezier(.2,.8,.2,1);
-    animation: floatY var(--dur, 6s) ease-in-out infinite;
-    animation-delay: var(--delay, 0s);
-    will-change: transform;
+    border-radius: 50%;
   }
-  .doodle svg { display: block; width: 100%; height: 100%; }
-  .doodle:hover {
-    opacity: 1;
-    transform: rotate(var(--r, 0deg)) translateY(-4px) scale(1.08);
-    animation-play-state: paused;
+  .mr-swirl::before {
+    width: 60vw; height: 60vw; left: 5%; top: -10%;
+    background: radial-gradient(circle, var(--mr-blue-hi) 0%, transparent 65%);
+    animation: mrFloatA 26s ease-in-out infinite alternate;
+  }
+  .mr-swirl::after {
+    width: 55vw; height: 55vw; right: -5%; top: 30%;
+    background: radial-gradient(circle, var(--mr-mint-hi) 0%, transparent 65%);
+    animation: mrFloatB 32s ease-in-out infinite alternate;
+  }
+  .mr-swirl > i {
+    width: 70vw; height: 70vw; left: 20%; bottom: -25%;
+    background: radial-gradient(circle, var(--mr-teal-hi) 0%, transparent 65%);
+    animation: mrFloatC 38s ease-in-out infinite alternate;
+    display: block;
+  }
+  @keyframes mrFloatA { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(8vw,5vh) scale(1.1)} 100%{transform:translate(-4vw,10vh) scale(0.95)} }
+  @keyframes mrFloatB { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-9vw,-6vh) scale(1.08)} 100%{transform:translate(6vw,4vh) scale(1.05)} }
+  @keyframes mrFloatC { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(7vw,-8vh) scale(1.12)} 100%{transform:translate(-5vw,3vh) scale(0.96)} }
+
+  .mr-marble {
+    inset: -10%;
+    background:
+      radial-gradient(80% 70% at 50% 40%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(60% 60% at 20% 80%, rgba(174,221,224,0.45), transparent 70%),
+      radial-gradient(60% 60% at 85% 20%, rgba(163,199,227,0.45), transparent 70%);
+    filter: url(#mrMarble) blur(2px);
+    mix-blend-mode: screen;
+    opacity: 0.85;
+  }
+  .mr-bloom {
+    inset: 0;
+    background: radial-gradient(80% 60% at 50% 35%, rgba(255,255,255,0.55), transparent 65%);
+    mix-blend-mode: screen;
+  }
+  .mr-vignette {
+    inset: 0;
+    background: radial-gradient(120% 100% at 50% 50%, transparent 60%, rgba(120,140,170,0.25) 100%);
+    mix-blend-mode: multiply;
   }
 
-  @keyframes floatY {
-    0%, 100% { transform: rotate(var(--r, 0deg)) translateY(0); }
-    50%      { transform: rotate(var(--r, 0deg)) translateY(-8px); }
+  /* Falling envelopes */
+  .mr-rain { inset: 0; }
+  .mr-mail {
+    position: absolute; top: -10%;
+    will-change: transform, opacity;
+    animation:
+      mrFall var(--mr-fall-dur) linear var(--mr-fall-delay) infinite,
+      mrSway var(--mr-sway-dur) ease-in-out var(--mr-sway-delay) infinite alternate,
+      mrTilt var(--mr-spin-dur) ease-in-out var(--mr-spin-delay) infinite alternate;
+    opacity: var(--mr-op, 0.95);
+    filter: drop-shadow(0 4px 14px rgba(80,110,140,0.25));
   }
-
-  /* Envelope positions — all kept ABOVE the title zone */
-  .mail-1  { top: 14%; left:  4%;  width: 96px;  --r: -6deg;  --delay: -0.2s; }
-  .mail-2  { top:  6%; left: 20%;  width: 104px; --r: -14deg; --delay: -1.0s; }
-  .mail-3  { top: 22%; left: 34%;  width: 88px;  --r:  8deg;  --delay: -2.1s; }
-  .mail-4  { top:  4%; left: 54%;  width: 100px; --r: -4deg;  --delay: -3.0s; }
-  .mail-5  { top: 18%; right: 26%; width: 100px; --r: -10deg; --delay: -4.2s; }
-  .mail-6  { top: 10%; right:  6%; width: 96px;  --r:  6deg;  --delay: -5.0s; }
-  .mail-7  { top: 28%; right:  2%; width: 88px;  --r: -8deg;  --delay: -1.6s; }
-  .mail-8  { top: 26%; left:  3%;  width: 94px;  --r:  12deg; --delay: -2.8s; }
-
-  /* Small accents */
-  .accent {
-    position: absolute;
-    pointer-events: auto;
-    opacity: 0.8;
-    transition: opacity .35s ease, transform .3s ease;
-    animation: floatY 5s ease-in-out infinite;
-  }
-  .accent:hover { opacity: 1; transform: scale(1.2); animation-play-state: paused; }
-  .heart  { color: #E8564B; }
-  .heart-a { top: 10%; left: 30%; width: 26px; --delay: -0.6s; }
-  .heart-b { top: 22%; left:  9%; width: 22px; --delay: -2.4s; }
-  .heart-c { top: 18%; right:  3%; width: 24px; --delay: -3.4s; }
-
-  .spark  { color: #F2B330; }
-  .spark-a { top: 20%; left: 16%; width: 22px; --delay: -1.2s; }
-  .spark-b { top: 16%; left: 28%; width: 18px; --delay: -2.0s; }
-  .spark-c { top: 12%; right: 26%; width: 20px; --delay: -4.0s; }
-
-  .dot { border-radius: 50%; }
-  .dot-a { top: 14%; left: 14%; width: 10px; height: 10px; background: #3E5FD4; --delay: -1.5s; }
-  .dot-b { top: 10%; left: 46%; width: 10px; height: 10px; background: #3E5FD4; --delay: -3.0s; }
-  .dot-c { top:  8%; right: 32%; width:  9px; height:  9px; background: #7B4CB8; --delay: -2.2s; }
-  .dot-d { top: 16%; right: 18%; width:  9px; height:  9px; background: #4A9A5A; --delay: -4.4s; }
-  .dot-e { top: 26%; left: 20%; width:  9px; height:  9px; background: #1E6F7D; --delay: -5.0s; }
-  .dot-f { top: 28%; right: 22%; width: 10px; height: 10px; background: #3E5FD4; --delay: -0.8s; }
-
-  /* Mailbox on the right — preserve native 171:229 aspect */
-  .mailbox {
-    position: absolute;
-    top: 42%; right: 4%;
-    width: clamp(130px, 13vw, 180px);
+  .mr-mail img {
+    display: block;
+    width: var(--mr-size);
     height: auto;
-    aspect-ratio: 171 / 229;
-    object-fit: contain;
-    opacity: 0.8;
-    pointer-events: auto;
-    transition: opacity .35s ease, transform .5s cubic-bezier(.2,.8,.2,1);
-    animation: floatY 7s ease-in-out infinite;
-    --r: 6deg;
-    transform: rotate(6deg);
+    user-select: none;
+    -webkit-user-drag: none;
   }
-  .mailbox:hover {
-    opacity: 1;
-    transform: rotate(6deg) translateY(-6px) scale(1.05);
-    animation-play-state: paused;
-  }
+  .mr-mail.mr-far     { filter: blur(1.2px) drop-shadow(0 3px 8px rgba(80,110,140,0.20)); }
+  .mr-mail.mr-farther { filter: blur(2.4px) drop-shadow(0 2px 5px rgba(80,110,140,0.18)); }
+  @keyframes mrFall { 0%{top:-14%} 100%{top:114%} }
+  @keyframes mrSway { 0%{transform:translateX(-26px)} 100%{transform:translateX(26px)} }
+  @keyframes mrTilt { 0%{rotate:-12deg} 100%{rotate:12deg} }
 
-  /* Info cards — sit directly below the hero content */
-  .info-row {
+  /* Hero content (h1 + lede + CTAs) — sits above the streams */
+  .hero-content {
     position: relative;
-    width: 100%;
-    max-width: 1100px;
+    z-index: 2;
+    max-width: 880px;
     margin: 0 auto;
-    padding: 0 32px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    z-index: 3;
+    text-align: center;
+    padding: 0 0 24px;
   }
-  .info-card {
-    background: #FFF;
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    padding: 20px 24px;
-    min-height: 140px;
-    box-shadow: 0 10px 24px 0 var(--card-border);
-    display: flex; flex-direction: column; justify-content: center; gap: 12px;
-    transition: transform .2s ease, box-shadow .2s ease;
+  .hero h1 {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 5.5vw, 68px);
+    line-height: 1.1;
+    color: var(--ink);
+    margin: 0 0 22px;
+    letter-spacing: -0.01em;
   }
-  .info-card:hover { transform: translateY(-3px); box-shadow: 0 14px 32px 0 rgba(198, 188, 165, .35); }
-  .info-card .label {
+  .hero .lede {
     font-family: 'Manrope', sans-serif;
     font-weight: 400;
-    font-size: 18px;
-    line-height: 1.5;
+    font-size: clamp(18px, 2vw, 24px);
+    line-height: 1.55;
     color: #000;
-    margin: 0;
+    margin: 0 auto 36px;
+    max-width: 760px;
   }
-  .info-card .asset {
-    height: 47px;
-    display: flex; align-items: center;
+  @media (min-width: 900px) {
+    .hero .lede { max-width: none; white-space: nowrap; }
   }
-  .info-card .asset img { max-height: 47px; width: auto; }
-  .info-card .asset .logo-ingram { width: 118px; height: auto; }
-  .info-card .asset .avatar { width: 47px; height: 47px; border-radius: 6px; object-fit: cover; }
+  .hero-ctas {
+    display: flex; gap: 18px; justify-content: center; flex-wrap: wrap;
+  }
 
-  /* Responsive — keep all doodles visible, just scale them down and pack above the title */
-  @media (max-width: 1180px) {
-    .mail-1 { width: 86px; }
-    .mail-2 { width: 94px; }
-    .mail-3 { width: 80px; }
-    .mail-4 { width: 92px; }
-    .mail-5 { width: 92px; }
-    .mail-6 { width: 86px; }
-    .mail-7 { width: 80px; }
-    .mail-8 { width: 86px; }
-    .mailbox { width: clamp(120px, 13vw, 170px); top: 38%; right: 2%; }
+  /* Buttons — sized up per Figma */
+  .btn {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 16px;
+    height: 48px;
+    padding: 14px 26px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+    min-width: 140px;
   }
-  @media (max-width: 960px) {
-    .mail-1 { top: 12%; left: 3%;  width: 74px; }
-    .mail-2 { top:  4%; left: 22%; width: 82px; }
-    .mail-3 { top: 20%; left: 36%; width: 70px; }
-    .mail-4 { top:  4%; left: 56%; width: 80px; }
-    .mail-5 { top: 16%; right: 28%; width: 80px; }
-    .mail-6 { top:  8%; right:  3%; width: 76px; }
-    .mail-7 { top: 24%; right: 14%; width: 70px; }
-    .mail-8 { top: 24%; left:  3%;  width: 74px; }
-    .mailbox { width: clamp(100px, 12vw, 140px); top: 36%; right: 1%; }
+  .btn:focus-visible { outline: 2px solid var(--blue-700); outline-offset: 2px; }
+  .btn-primary { background: var(--blue-700); color: #FFF; }
+  .btn-primary:hover { background: var(--blue-900); }
+  .btn-secondary { background: transparent; color: var(--blue-700); border-color: var(--blue-700); }
+  .btn-secondary:hover { background: var(--blue-100); color: var(--blue-900); }
+
+  /* Bottom-right meta — "Previously @" / "Alumni @" inside the hero */
+  .hero-meta {
+    position: absolute;
+    right: clamp(24px, 4vw, 64px);
+    bottom: clamp(24px, 4vh, 56px);
+    display: flex;
+    gap: 32px;
+    z-index: 2;
   }
-  /* Below 760px: doodles become a SOLID block that sits ABOVE the text, pushing content down */
+  .meta-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;   /* logo glues to bottom so it aligns across cards */
+    gap: 10px;
+    text-align: center;
+    padding: 14px 22px;
+    border-radius: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 8px 18px rgba(80, 110, 140, 0.18);
+  }
+  .meta-card .label { white-space: nowrap; }
+  .meta-card .label {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    color: var(--ink);
+  }
+  .meta-card .meta-logo {
+    width: auto;
+    height: 38px;
+    object-fit: contain;
+    display: block;
+  }
+  .meta-card.ingram .meta-logo { width: 130px; }
+  .meta-card.ucsd   .meta-logo { width: 140px; }
+
+  /* Responsive */
   @media (max-width: 760px) {
-    .hero { min-height: auto; padding: 24px 20px 56px; gap: 20px; }
-    .info-row { padding: 0 20px; grid-template-columns: 1fr; gap: 14px; }
-    /* Convert the doodle overlay into an in-flow header block */
-    .doodles {
-      position: relative;
-      inset: auto;
-      width: 100%;
-      height: 240px;
-      flex: 0 0 auto;
-      order: -1;
+    .hero { padding: 0 20px; min-height: 520px; }
+    .hero-meta {
+      right: 50%;
+      transform: translateX(50%);
+      bottom: 24px;
+      gap: 22px;
     }
-    /* Re-anchor every doodle within the 240px block, using px values for reliability */
-    .mail-1 { top:  80px; left:   4%; width: 62px; }
-    .mail-2 { top:  20px; left:  24%; width: 66px; }
-    .mail-3 { top: 120px; left:  40%; width: 58px; }
-    .mail-4 { top:  10px; left:  56%; width: 64px; }
-    .mail-5 { top:  90px; right: 26%; width: 64px; }
-    .mail-6 { top:  30px; right:  4%; width: 62px; }
-    .mail-7 { top: 165px; right: 12%; width: 58px; }
-    .mail-8 { top: 160px; left:   4%; width: 60px; }
-    .heart-a { top:  50px; left: 36%; width: 18px; }
-    .heart-b { top: 150px; left: 20%; width: 16px; }
-    .heart-c { top:  95px; right:  4%; width: 16px; }
-    .spark-a { top: 130px; left: 14%; width: 14px; }
-    .spark-b { top: 150px; left: 32%; width: 12px; }
-    .spark-c { top:  60px; right: 30%; width: 14px; }
-    .dot-a { top:  60px; left: 16%; width: 7px; height: 7px; }
-    .dot-b { top: 110px; left: 50%; width: 7px; height: 7px; }
-    .dot-c { top:  40px; right: 34%; width: 7px; height: 7px; }
-    .dot-d { top:  80px; right: 18%; width: 7px; height: 7px; }
-    .dot-e { top: 200px; left: 30%; width: 7px; height: 7px; }
-    .dot-f { top: 210px; right: 30%; width: 7px; height: 7px; }
-    .mailbox { top: 50px; right: 1%; width: 82px; }
+    .meta-card .label { font-size: 13px; line-height: 18px; }
+    .meta-card.ingram .meta-logo { width: 100px; height: 32px; }
+    .meta-card.ucsd   .meta-logo { width: 108px; height: 32px; }
   }
   @media (max-width: 520px) {
     .nav-inner { padding: 16px 20px; }
     .nav ul { gap: 2px; }
     .nav a.nav-link { padding: 8px 10px; font-size: 13px; }
-    .hero { padding: 16px 16px 40px; }
-    .hero-ctas .btn { flex: 1 1 140px; }
-    .doodles { height: 200px; }
-    .mail-1 { width: 48px; top:  65px; left:  2%; }
-    .mail-2 { width: 52px; top:  15px; left: 24%; }
-    .mail-3 { width: 44px; top: 100px; left: 40%; }
-    .mail-4 { width: 50px; top:  10px; left: 58%; }
-    .mail-5 { width: 48px; top:  70px; right: 26%; }
-    .mail-6 { width: 48px; top:  25px; right:  2%; }
-    .mail-7 { width: 42px; top: 140px; right: 12%; }
-    .mail-8 { width: 44px; top: 140px; left:  2%; }
-    .heart-a { top:  55px; left: 36%; width: 14px; }
-    .heart-b { top: 135px; left: 20%; width: 12px; }
-    .heart-c { top:  85px; right:  3%; width: 12px; }
-    .spark-a { top: 115px; left: 14%; width: 12px; }
-    .spark-b { top: 135px; left: 32%; width: 10px; }
-    .spark-c { top:  60px; right: 30%; width: 12px; }
-    .dot-a, .dot-b, .dot-c, .dot-d, .dot-e, .dot-f { width: 6px; height: 6px; }
-    .dot-e { top: 165px; left: 28%; }
-    .dot-f { top: 175px; right: 30%; }
-    .mailbox { top: 40px; right: 1%; width: 66px; }
+    .hero-ctas .btn { flex: 1 1 140px; font-size: 15px; height: 44px; padding: 12px 18px; }
+    .hero-meta { gap: 16px; }
+    .meta-card { padding: 12px 16px; }
+    .meta-card .label { font-size: 12px; line-height: 16px; }
+    .meta-card.ingram .meta-logo { width: 88px; height: 28px; }
+    .meta-card.ucsd   .meta-logo { width: 94px; height: 28px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .doodle, .accent, .mailbox { animation: none !important; transition: opacity .2s ease !important; }
-    .doodle:hover, .accent:hover, .mailbox:hover { transform: rotate(var(--r, 0deg)) !important; }
+    .mr-mail, .mr-swirl::before, .mr-swirl::after, .mr-swirl > i { animation: none !important; }
   }
 
-  /* ======= Featured Projects ======= */
+  /* ======= Featured Projects — wide 2-col grid, ~67px page margins ======= */
   .featured {
-    background: #FFF;
-    padding: 80px 32px 96px;
+    background: var(--cream);
+    padding: 69px 0 96px;       /* 69px below the hero per the Figma frame */
+    scroll-margin-top: 72px;    /* offset for the fixed pill nav when jumping here */
   }
   .featured-inner {
-    max-width: 1280px;
+    max-width: none;            /* let the grid stretch with the viewport */
     margin: 0 auto;
+    padding: 0 64px;            /* small page margin so cards dominate the screen */
   }
   .featured h2 {
-    font-family: 'Benne', serif;
-    font-weight: 400;
-    font-size: clamp(28px, 4vw, 40px);
-    color: var(--ink);
-    margin: 0 0 40px;
-    letter-spacing: -0.01em;
+    /* Visually hidden — the design has no on-page section heading,
+       but we keep one for screen readers and document outline. */
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    white-space: nowrap; border: 0;
   }
   .project-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
+    gap: 36px;
   }
-  .project-card.wide { grid-column: 1 / -1; }
 
   .project-card {
     display: flex;
     flex-direction: column;
-    background: #FFF;
+    background: #FFFFFF;
     border: 2px solid var(--card-border);
-    border-radius: 10px;
+    border-radius: 4px;
     overflow: hidden;
-    box-shadow: 0 10px 10px 0 #FEF8F0;
     text-decoration: none;
     color: inherit;
-    transition: transform .35s cubic-bezier(.2,.8,.2,1),
-                box-shadow .35s ease,
-                border-color .35s ease;
     cursor: pointer;
+    transition: transform .4s cubic-bezier(.2,.8,.2,1),
+                box-shadow .4s ease,
+                border-color .4s ease;
   }
   .project-card:hover {
     transform: translateY(-6px);
@@ -470,9 +485,8 @@
   .project-media {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 635 / 581;     /* image area dimensions from Figma */
   }
-  .project-card.wide .project-media { aspect-ratio: 1022 / 626; }
   .project-media img {
     width: 100%; height: 100%;
     object-fit: cover;
@@ -481,81 +495,303 @@
   .project-card:hover .project-media img { transform: scale(1.04); }
 
   .project-body {
-    padding: 32px 30px 28px;
-    display: flex; flex-direction: column; gap: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 28px 15px 24px 38px;   /* matches the Figma 38L / 15R inset */
   }
-  .project-card.wide .project-body { max-width: 663px; }
-
-  .chip-pill {
-    display: inline-flex; align-items: center; gap: 10px;
-    height: 36px; padding: 0 18px 0 24px;
-    border-radius: 999px;
-    font-family: 'Manrope', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    line-height: 20px;
-    width: fit-content;
-    position: relative;
-  }
-  .chip-pill::before {
-    content: "";
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: currentColor;
-    margin-right: 4px;
-    position: absolute; left: 12px; top: 50%;
-    transform: translateY(-50%);
-  }
-
   .project-title {
     font-family: 'Benne', serif;
     font-weight: 400;
-    font-size: clamp(24px, 3vw, 30px);
+    font-size: 30px;
     line-height: 1.4;
-    color: var(--ink);
+    color: #000;
     margin: 0;
   }
   .project-desc {
     font-family: 'Manrope', sans-serif;
     font-weight: 400;
     font-size: 20px;
-    line-height: 1.6;
-    color: #392a13;
-    margin: 0;
+    line-height: 32px;
+    color: #392A13;
+    margin: 0 0 36px;         /* breathing room above the View Project CTA */
   }
-  .read-more {
+  /* View Project + arrow row, right-aligned per Figma */
+  .project-cta {
+    margin-top: auto;
+    align-self: flex-end;
+    display: inline-flex;
+    align-items: center;
+    gap: 13px;
     font-family: 'Manrope', sans-serif;
     font-weight: 500;
     font-size: 20px;
-    line-height: 1.6;
-    margin: 8px 0 0;
-    display: inline-flex; align-items: center; gap: 6px;
+    line-height: 32px;
     transition: gap .25s ease;
   }
-  .project-card:hover .read-more { gap: 14px; }
+  .project-card:hover .project-cta { gap: 20px; }
+  .project-cta svg {
+    width: 24px; height: 24px;
+    flex-shrink: 0;
+    stroke: currentColor;        /* SVG inherits card accent color */
+  }
 
-  /* Per-card accents */
-  .card-email .project-media { background: #EAF3F6; }
-  .card-email .chip-pill     { background: #EAF3F6; color: #4670D9; }
-  .card-email .read-more     { color: #4670D9; }
+  /* Per-card accent colors (image bg + View Project text/arrow) */
+  .card-ingram .project-media { background: #D8EDFF; }
+  .card-ingram .project-cta   { color: #3F71C0; }
 
-  .card-tet .project-media   { background: #FFB5AA; aspect-ratio: 479 / 410; }
-  .card-tet .project-media img { object-fit: contain; }
-  .card-tet .chip-pill       { background: #FFF0EE; color: #AC230F; }
-  .card-tet .read-more       { color: #AC230F; }
+  .card-tet .project-media    { background: #D39C95; }
+  .card-tet .project-cta      { color: #AC230F; }
 
-  .card-epo .project-media   { background: #DFE3F0; aspect-ratio: 479 / 410; }
-  .card-epo .project-media img { object-fit: contain; }
-  .card-epo .chip-pill       { background: #DFE3F0; color: #33517D; }
-  .card-epo .read-more       { color: #33517D; }
+  .card-epo .project-media    { background: #A3B0C8; }
+  .card-epo .project-cta      { color: #33517D; }
+  /* Epocrates image is slightly inset within its background (per Figma) */
+  .card-epo .project-media img { object-fit: contain; padding: 9% 14%; box-sizing: border-box; }
 
+  /* Scroll-fade-in for each card */
+  .project-card.is-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1);
+  }
+  .project-card.is-reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  .project-card.is-reveal:nth-child(2) { transition-delay: .1s; }
+  .project-card.is-reveal:nth-child(3) { transition-delay: .2s; }
+  @media (prefers-reduced-motion: reduce) {
+    .project-card.is-reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  @media (max-width: 1024px) {
+    .featured-inner { padding: 0 40px; }
+  }
   @media (max-width: 820px) {
-    .featured { padding: 56px 20px 72px; }
+    .featured { padding: 56px 0 72px; }
+    .featured-inner { padding: 0 24px; }
     .project-grid { grid-template-columns: 1fr; gap: 24px; }
-    .project-body { padding: 24px 22px; }
-    .project-desc, .read-more { font-size: 18px; }
+    .project-body { padding: 24px 22px; gap: 8px; }
+    .project-title { font-size: 24px; }
+    .project-desc, .project-cta { font-size: 17px; line-height: 28px; }
+  }
+
+  /* =========================================================
+     ABOUT — "Hi I'm Brian!" intro block, 120px L/R per Figma.
+     Two-column: text (560px) + photo (507x599), 133px column gap.
+     ========================================================= */
+  .about {
+    background: var(--cream);
+    padding: 119px 0;
+    scroll-margin-top: 72px;   /* offset for the fixed pill nav */
+  }
+  .about-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 120px;
+    display: grid;
+    grid-template-columns: 560fr 507fr;
+    column-gap: 133px;
+    align-items: start;
+  }
+  .about-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 52px;
+    color: #000;
+    margin: 0 0 22px;          /* matches Figma title→body gap */
+  }
+  .about-body {
+    display: flex;
+    flex-direction: column;
+    gap: 59px;                  /* paragraph gap from Figma */
+  }
+  .about-body p {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 32px;
+    color: #392A13;
+    margin: 0;
+  }
+  .about-photo {
+    border-radius: 5px;
+    overflow: hidden;
+    aspect-ratio: 507 / 599;
+    background: var(--card-border);
+  }
+  .about-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 980px) {
+    .about { padding: 80px 0; }
+    .about-inner {
+      grid-template-columns: 1fr;
+      padding: 0 40px;
+      row-gap: 48px;
+    }
+    .about-photo { max-width: 507px; }
+  }
+  @media (max-width: 640px) {
+    .about-inner { padding: 0 24px; }
+    .about-title { font-size: 32px; line-height: 1.2; margin-bottom: 16px; }
+    .about-body { gap: 40px; }
+    .about-body p { font-size: 17px; line-height: 28px; }
+  }
+
+  /* =========================================================
+     PILL NAV — floating, fixed top-right. Replaces the standard
+     full-width header. Active link gets a yellow oval.
+     ========================================================= */
+  header.nav {
+    position: fixed !important;
+    top: 20px;
+    right: 32px;
+    left: auto;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 0 !important;
+    z-index: 50;
+  }
+  header.nav .nav-inner {
+    padding: 0;
+    margin: 0;
+    width: auto;
+    max-width: none;
+    justify-content: flex-end;
+  }
+  header.nav .brand,
+  header.nav .nav-toggle { display: none !important; }
+  nav#primary-nav {
+    display: inline-block !important;
+    position: static !important;
+    background: #FFFDF6 !important;
+    border: 1px solid rgba(19, 70, 162, 0.14) !important;   /* subtle portfolio-blue tint */
+    border-radius: 999px;
+    padding: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  nav#primary-nav ul {
+    flex-direction: row !important;
+    gap: 0 !important;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-flex;
+  }
+  nav#primary-nav .nav-link {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: #4B5A70;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: transparent;
+    display: inline-block;
+    text-decoration: none;
+    transition: color .15s ease, background .15s ease;
+  }
+  nav#primary-nav .nav-link:hover {
+    background: transparent;
+    color: var(--ink, #222);
+  }
+  /* Active state — light portfolio blue with deep blue text.
+     Contrast ratio #0D317A on #D3E2FF ≈ 9.6:1 (WCAG AAA). */
+  nav#primary-nav .nav-link[aria-current="page"],
+  nav#primary-nav .nav-link[aria-current="page"]:hover {
+    background: #D3E2FF;
+    color: #0D317A;
+    font-weight: 700;
+  }
+
+  /* Mobile: keep the full pill, centered horizontally at the top. */
+  @media (max-width: 640px) {
+    header.nav {
+      top: 12px;
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    nav#primary-nav { padding: 6px; }
+    /* !important overrides the legacy mobile rule `.nav#primary-nav
+       a.nav-link { border-radius: 8px }` from the old dropdown design. */
+    nav#primary-nav .nav-link {
+      padding: 8px 16px !important;
+      font-size: 13px !important;
+      border-radius: 999px !important;
+      display: inline-block !important;
+    }
+  }
+  /* =========================================================
+     SITE FOOTER — "Thank you for visiting!" + email / linkedin
+     icons, 160px below the previous section content. Top border
+     spans across the page margins per the Figma frame.
+     ========================================================= */
+  .site-footer {
+    margin-top: 64px;           /* + previous section's ~96px padding ≈ 160px gap */
+    border-top: 1px solid #635744;
+    background: var(--cream, var(--page-bg, #FFFDF9));
+    padding: 53px 32px;
+    text-align: center;
+  }
+  .site-footer-inner {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 29px;
+  }
+  .site-footer-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.4;
+    color: #222;
+    margin: 0;
+  }
+  .site-footer-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: filter .2s ease, transform .15s ease;
+  }
+  .footer-link img { display: block; }
+  .footer-link:hover {
+    /* Deepens the brown icon to a darker, fully-saturated tone. */
+    filter: brightness(0.4);
+    transform: translateY(-1px);
+  }
+  .footer-link:focus-visible {
+    outline: 2px solid #635744;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .site-footer-copyright {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 28px;
+    color: rgba(57, 42, 19, 0.28);
+    margin: 0;
+  }
+  @media (max-width: 640px) {
+    .site-footer { padding: 40px 24px; }
+    .site-footer-inner { gap: 22px; }
+    .site-footer-title { font-size: 22px; }
   }
 </style>
 </head>
@@ -574,8 +810,7 @@
     <nav id="primary-nav" class="nav" aria-label="Primary">
       <ul>
         <li><a class="nav-link" href="#home" aria-current="page">Home</a></li>
-        <li><a class="nav-link" href="#about">About</a></li>
-        <li><a class="nav-link" href="#work">Work</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
         <li><a class="nav-link" href="#resume">Resume</a></li>
       </ul>
     </nav>
@@ -609,176 +844,214 @@
       if (window.innerWidth > 640) setOpen(false);
     });
   })();
+
+  // Mail rain — port of <MailRainHero> useEffect. Builds N falling envelopes
+  // with three depth tiers (farther/far/near) for a parallax feel.
+  // Deferred to DOMContentLoaded so the #mr-rain element exists when this runs.
+  document.addEventListener('DOMContentLoaded', function buildMailRain() {
+    const root = document.getElementById('mr-rain');
+    if (!root) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const COUNT = 19;
+    const MIN_SIZE = 57;
+    const MAX_SIZE = 170;
+    const SPEED = [19, 47]; // [min, max] seconds per fall
+
+    const rand = (a, b) => Math.random() * (b - a) + a;
+
+    const [sMin, sMax] = SPEED;
+    for (let i = 0; i < COUNT; i++) {
+      const el = document.createElement('div');
+      el.className = 'mr-mail';
+
+      const depth = Math.random();
+      const depthClass = depth < 0.35 ? 'mr-farther' : depth < 0.7 ? 'mr-far' : 'mr-near';
+      el.classList.add(depthClass);
+
+      const size = depthClass === 'mr-farther'
+        ? rand(MIN_SIZE, MIN_SIZE + 14)
+        : depthClass === 'mr-far'
+          ? rand(MIN_SIZE + 10, (MIN_SIZE + MAX_SIZE) / 2)
+          : rand((MIN_SIZE + MAX_SIZE) / 2, MAX_SIZE);
+
+      const fallDur = depthClass === 'mr-farther'
+        ? rand(sMax * 0.85, sMax * 1.2)
+        : depthClass === 'mr-far'
+          ? rand((sMin + sMax) / 2, sMax)
+          : rand(sMin, (sMin + sMax) / 2);
+
+      el.style.left = rand(-4, 100) + 'vw';
+      el.style.setProperty('--mr-size', size + 'px');
+      el.style.setProperty('--mr-fall-dur', fallDur + 's');
+      el.style.setProperty('--mr-fall-delay', -rand(0, fallDur) + 's');
+      el.style.setProperty('--mr-sway-dur', rand(3.5, 7) + 's');
+      el.style.setProperty('--mr-sway-delay', -rand(0, 6) + 's');
+      el.style.setProperty('--mr-spin-dur', rand(5, 10) + 's');
+      el.style.setProperty('--mr-spin-delay', -rand(0, 6) + 's');
+      el.style.setProperty('--mr-op',
+        depthClass === 'mr-farther' ? 0.5 :
+        depthClass === 'mr-far' ? 0.75 : 0.95);
+
+      const img = document.createElement('img');
+      img.src = 'images/mail-rain.svg';
+      img.alt = '';
+      img.draggable = false;
+      el.appendChild(img);
+      root.appendChild(el);
+    }
+
+    if (reduceMotion) {
+      // Snap each mail to a deterministic vertical position when motion is off.
+      root.querySelectorAll('.mr-mail').forEach((el, i) => {
+        el.style.top = (10 + (i * 11) % 80) + '%';
+      });
+    }
+  });
 </script>
 
 <!-- HERO -->
 <main>
   <section class="hero" id="home" aria-labelledby="hero-title">
-    <div class="doodles" aria-hidden="true">
+    <!-- Lake-gradient background + falling mail (port of MailRainHero) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <filter id="mrMarble" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.006 0.012" numOctaves="2" seed="3" result="noise">
+            <animate attributeName="baseFrequency" dur="40s" repeatCount="indefinite"
+                     values="0.006 0.012; 0.010 0.008; 0.006 0.012" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="120" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </defs>
+    </svg>
+    <div class="mr-lake-base" aria-hidden="true"></div>
+    <div class="mr-swirl" aria-hidden="true"><i></i></div>
+    <div class="mr-marble" aria-hidden="true"></div>
+    <div class="mr-bloom" aria-hidden="true"></div>
+    <div class="mr-rain" id="mr-rain" aria-hidden="true"></div>
+    <div class="mr-vignette" aria-hidden="true"></div>
 
-      <!-- Envelopes (scattered) -->
-      <div class="doodle mail-1" style="color:#E8564B">
-        <svg viewBox="0 0 100 70" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M6 12 Q6 10 8 10 L92 10 Q94 10 94 12 L94 58 Q94 60 92 60 L8 60 Q6 60 6 58 Z"/>
-          <path d="M8 14 L50 42 L92 14"/>
-        </svg>
-      </div>
-      <div class="doodle mail-2" style="color:#7B4CB8">
-        <svg viewBox="0 0 100 70" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M6 12 Q6 10 8 10 L92 10 Q94 10 94 12 L94 58 Q94 60 92 60 L8 60 Q6 60 6 58 Z"/>
-          <path d="M8 14 L50 42 L92 14"/>
-        </svg>
-      </div>
-      <div class="doodle mail-3" style="color:#1E6F7D">
-        <svg viewBox="0 0 100 70" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M6 12 Q6 10 8 10 L92 10 Q94 10 94 12 L94 58 Q94 60 92 60 L8 60 Q6 60 6 58 Z"/>
-          <path d="M8 14 L50 42 L92 14"/>
-        </svg>
-      </div>
-      <div class="doodle mail-4" style="color:#1E6F7D">
-        <svg viewBox="0 0 100 70" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M6 12 Q6 10 8 10 L92 10 Q94 10 94 12 L94 58 Q94 60 92 60 L8 60 Q6 60 6 58 Z"/>
-          <path d="M8 14 L50 42 L92 14"/>
-        </svg>
-      </div>
-      <div class="doodle mail-5" style="color:#E6A73A">
-        <svg viewBox="0 0 100 70" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M6 12 Q6 10 8 10 L92 10 Q94 10 94 12 L94 58 Q94 60 92 60 L8 60 Q6 60 6 58 Z"/>
-          <path d="M8 14 L50 42 L92 14"/>
-        </svg>
-      </div>
-      <div class="doodle mail-6" style="color:#6B7DC3">
-        <svg viewBox="0 0 100 70" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M6 12 Q6 10 8 10 L92 10 Q94 10 94 12 L94 58 Q94 60 92 60 L8 60 Q6 60 6 58 Z"/>
-          <path d="M8 14 L50 42 L92 14"/>
-        </svg>
-      </div>
-      <div class="doodle mail-7" style="color:#4A9A5A">
-        <svg viewBox="0 0 100 70" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M6 12 Q6 10 8 10 L92 10 Q94 10 94 12 L94 58 Q94 60 92 60 L8 60 Q6 60 6 58 Z"/>
-          <path d="M8 14 L50 42 L92 14"/>
-        </svg>
-      </div>
-      <div class="doodle mail-8" style="color:#B88AC4">
-        <svg viewBox="0 0 100 70" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M6 12 Q6 10 8 10 L92 10 Q94 10 94 12 L94 58 Q94 60 92 60 L8 60 Q6 60 6 58 Z"/>
-          <path d="M8 14 L50 42 L92 14"/>
-        </svg>
-      </div>
-
-      <!-- Hearts -->
-      <div class="accent heart heart-a">
-        <svg viewBox="0 0 24 22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 20 C4 14 2 8 6 5 C9 3 11 5 12 7 C13 5 15 3 18 5 C22 8 20 14 12 20 Z"/></svg>
-      </div>
-      <div class="accent heart heart-b">
-        <svg viewBox="0 0 24 22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 20 C4 14 2 8 6 5 C9 3 11 5 12 7 C13 5 15 3 18 5 C22 8 20 14 12 20 Z"/></svg>
-      </div>
-      <div class="accent heart heart-c">
-        <svg viewBox="0 0 24 22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 20 C4 14 2 8 6 5 C9 3 11 5 12 7 C13 5 15 3 18 5 C22 8 20 14 12 20 Z"/></svg>
-      </div>
-
-      <!-- Sparkles -->
-      <div class="accent spark spark-a">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z"/></svg>
-      </div>
-      <div class="accent spark spark-b">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z"/></svg>
-      </div>
-      <div class="accent spark spark-c">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z"/></svg>
-      </div>
-
-      <!-- Dots -->
-      <div class="accent dot dot-a"></div>
-      <div class="accent dot dot-b"></div>
-      <div class="accent dot dot-c"></div>
-      <div class="accent dot dot-d"></div>
-      <div class="accent dot dot-e"></div>
-      <div class="accent dot dot-f"></div>
-
-      <!-- Mailbox -->
-      <img class="mailbox" src="https://www.figma.com/api/mcp/asset/bd76c9fc-3456-4d41-b79b-2418d0f9f344" alt="">
-
-    </div>
-
+    <!-- Hero content -->
     <div class="hero-content">
       <h1 id="hero-title">Hello! I&rsquo;m Brian.</h1>
-      <p class="lede">I&rsquo;m a product designer who delivers experiences users can unpack.</p>
+      <p class="lede">I&rsquo;m a product designer who delivers experiences that are ready to use.</p>
       <div class="hero-ctas" id="resume">
-        <a class="btn btn-primary" href="#about">About Me</a>
+        <a class="btn btn-primary" href="#work">View Projects</a>
         <a class="btn btn-secondary" href="./Brian-Pham-CV.pdf" download>Download CV</a>
       </div>
     </div>
 
-    <!-- INFO CARDS (inside hero, bottom) -->
-    <div class="info-row" id="work" aria-label="At a glance">
-      <div class="info-card">
-        <p class="label">Previously at:</p>
-        <div class="asset">
-          <img class="logo-ingram" src="https://www.figma.com/api/mcp/asset/28993199-20d8-49fc-8b5e-b67f26c45bd2" alt="Ingram Micro" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'Ingram Micro',style:'font-weight:700;color:var(--blue-700);font-size:20px'}))">
-        </div>
+    <!-- Bottom-right meta -->
+    <div class="hero-meta">
+      <div class="meta-card ingram">
+        <p class="label">Previously @</p>
+        <img class="meta-logo" src="images/logo-ingram.png" alt="Ingram Micro" />
       </div>
-      <div class="info-card" id="about">
-        <p class="label">UCSD Alumni</p>
-        <div class="asset">
-          <img class="avatar" src="https://www.figma.com/api/mcp/asset/4fcef791-4b55-41a2-9ea4-99772da78e6e" alt="UC San Diego">
-        </div>
-      </div>
-      <div class="info-card">
-        <p class="label">Open to work!</p>
-        <div class="asset">
-          <img class="avatar" src="https://www.figma.com/api/mcp/asset/b41c49c2-e7f9-4e85-a836-079f50600597" alt="Open to collaborating">
-        </div>
+      <div class="meta-card ucsd">
+        <p class="label">Alumni @</p>
+        <img class="meta-logo" src="images/logo-ucsd.png" alt="UC San Diego" />
       </div>
     </div>
   </section>
 
   <!-- FEATURED PROJECTS -->
-  <section class="featured" aria-labelledby="featured-title">
+  <section class="featured" id="work" aria-labelledby="featured-title">
     <div class="featured-inner">
       <h2 id="featured-title">Featured Projects</h2>
       <div class="project-grid">
 
-        <a href="ingram-micro.html" class="project-card wide card-email" aria-label="Email Marketing Optimization case study — Ingram Micro">
+        <a href="ingram-micro.html" class="project-card card-ingram is-reveal" aria-label="Email Marketing Optimization case study — Ingram Micro">
           <div class="project-media">
-            <img src="https://www.figma.com/api/mcp/asset/94ab6024-54c3-4f38-95b6-20bee69e999c" alt="Email Marketing Optimization preview">
+            <img src="images/card-ingram.png" alt="Email Marketing Optimization preview">
           </div>
           <div class="project-body">
-            <span class="chip-pill">Case Study</span>
             <h3 class="project-title">Email Marketing Optimization</h3>
-            <p class="project-desc">Untangling the Email Marketing Workflow @ Ingram Micro</p>
-            <span class="read-more" aria-hidden="true">Read More →</span>
+            <p class="project-desc">Untangling the Email Marketing Workflow @ Ingram Micro and enhance workflow efficiency by 25%</p>
+            <span class="project-cta" aria-hidden="true">
+              View Project
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4.92871 12H19.0708M13.414 6.34315L19.0708 12L13.414 17.6569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
           </div>
         </a>
 
-        <article class="project-card card-tet" tabindex="0">
+        <a href="tet-festival.html" class="project-card card-tet is-reveal" aria-label="San Diego Tet Festival case study">
           <div class="project-media">
-            <img src="https://www.figma.com/api/mcp/asset/3b35e8cf-7b01-4fe5-b6d8-65f398a29500" alt="San Diego Tet Festival preview">
+            <img src="images/card-tet.png" alt="San Diego Tet Festival preview">
           </div>
           <div class="project-body">
-            <span class="chip-pill">Case Study</span>
             <h3 class="project-title">San Diego Tet Festival</h3>
-            <p class="project-desc">Attract 25,000+ attendees each year with a festive website.</p>
-            <span class="read-more" aria-hidden="true">Read More →</span>
+            <p class="project-desc">Refresh the Tet Festival website with vibrant branding and intuitive design to better engage 30,000 annual visitors.</p>
+            <span class="project-cta" aria-hidden="true">
+              View Project
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4.92871 12H19.0708M13.414 6.34315L19.0708 12L13.414 17.6569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
           </div>
-        </article>
+        </a>
 
-        <article class="project-card card-epo" tabindex="0">
+        <a href="epocrates.html" class="project-card card-epo is-reveal" aria-label="Epocrates for Medical Students case study">
           <div class="project-media">
-            <img src="https://www.figma.com/api/mcp/asset/2c8f96ec-6aa5-4594-b265-104d2efa514a" alt="Epocrates for Medical Students preview">
+            <img src="images/card-epocrates.png" alt="Epocrates for Medical Students preview">
           </div>
           <div class="project-body">
-            <span class="chip-pill">Case Study</span>
-            <h3 class="project-title">Epocrates for Medical Students.</h3>
-            <p class="project-desc">Access knowledge &amp; hands-on experiences based on medical specialty.</p>
-            <span class="read-more" aria-hidden="true">Read More →</span>
+            <h3 class="project-title">Epocrates for Medical Students</h3>
+            <p class="project-desc">Improving access to medical experiences and helping students apply knowledge to specialty-specific scenarios.</p>
+            <span class="project-cta" aria-hidden="true">
+              View Project
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4.92871 12H19.0708M13.414 6.34315L19.0708 12L13.414 17.6569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
           </div>
-        </article>
+        </a>
 
       </div>
     </div>
   </section>
+
 </main>
+
+<!-- SITE FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p class="site-footer-title">Thank you for visiting!</p>
+    <div class="site-footer-links">
+      <a class="footer-link" href="mailto:brianpham05@gmail.com" aria-label="Email Brian">
+        <img src="images/footer-email.svg" alt="" aria-hidden="true" width="26" height="20" />
+      </a>
+      <a class="footer-link" href="https://www.linkedin.com/in/brianpham03/" target="_blank" rel="noopener noreferrer" aria-label="Visit Brian's LinkedIn (opens in a new tab)">
+        <img src="images/footer-linkedin.svg" alt="" aria-hidden="true" width="24" height="24" />
+      </a>
+    </div>
+    <p class="site-footer-copyright">Brian Pham - 2026</p>
+  </div>
+</footer>
+
+<script>
+  /* Fade-in case study cards as they scroll into view. */
+  (function () {
+    var cards = document.querySelectorAll('.project-card.is-reveal');
+    if (!cards.length) return;
+    if (!('IntersectionObserver' in window)) {
+      // Fallback: show immediately for browsers without IO
+      cards.forEach(function (c) { c.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    cards.forEach(function (c) { io.observe(c); });
+  })();
+</script>
 
 </body>
 </html>

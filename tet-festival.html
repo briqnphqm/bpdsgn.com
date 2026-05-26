@@ -1,0 +1,2572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>San Diego Tet Festival — Brian Pham</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Benne&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-700: #1346A2;
+    --blue-900: #0D317A;
+    --blue-100: #D3E2FF;
+    --cream:    #FFF9F0;
+    --page-bg:  #FFFDF9;
+    --ink:      #222222;
+    --muted:    #4B5A70;
+    --brown:    #392A13;
+    --brown-50: rgba(57, 42, 19, 0.51);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--page-bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; }
+
+  /* ===== NAV (matches site-wide pattern) ===== */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 253, 249, 0.85);
+    backdrop-filter: saturate(1.2) blur(8px);
+    -webkit-backdrop-filter: saturate(1.2) blur(8px);
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+  nav#primary-nav { border: 0; background: transparent; }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 32px;
+  }
+  .brand {
+    font-family: 'Benne', serif;
+    font-size: 22px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav ul {
+    display: flex; gap: 8px;
+    list-style: none; margin: 0; padding: 0;
+  }
+  .nav a.nav-link {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 999px;
+    transition: background .15s ease, color .15s ease;
+  }
+  .nav a.nav-link:hover { background: var(--blue-100); color: var(--blue-900); }
+
+  .nav-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid transparent;
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+    align-items: center; justify-content: center;
+  }
+  .nav-toggle:hover { background: var(--blue-100); }
+  .nav-toggle:focus-visible { outline: 2px solid var(--blue-700); outline-offset: 2px; }
+  .nav-toggle .bars {
+    position: relative;
+    width: 22px; height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: background .15s ease;
+  }
+  .nav-toggle .bars::before,
+  .nav-toggle .bars::after {
+    content: "";
+    position: absolute; left: 0;
+    width: 22px; height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform .3s ease, top .3s ease;
+  }
+  .nav-toggle .bars::before { top: -7px; }
+  .nav-toggle .bars::after  { top:  7px; }
+  .nav-toggle[aria-expanded="true"] .bars { background: transparent; }
+  .nav-toggle[aria-expanded="true"] .bars::before { top: 0; transform: rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .bars::after  { top: 0; transform: rotate(-45deg); }
+
+  @media (max-width: 640px) {
+    .nav-toggle { display: inline-flex; }
+    .nav#primary-nav { display: none; }
+    .nav#primary-nav.is-open {
+      display: block;
+      position: absolute;
+      top: 100%; left: 0; right: 0;
+      background: rgba(255, 253, 249, 0.98);
+      backdrop-filter: saturate(1.2) blur(8px);
+      -webkit-backdrop-filter: saturate(1.2) blur(8px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 12px 20px 20px;
+      animation: dropIn .22s ease;
+    }
+    .nav#primary-nav ul {
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav#primary-nav a.nav-link {
+      display: block;
+      padding: 12px 14px;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+    @keyframes dropIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: none; }
+    }
+  }
+
+  /* ===== Case study header — title aligns with the "Brian Pham" brand
+     (matches .nav-inner: max-width 1280, 32px padding) ===== */
+  .case-header {
+    background: var(--page-bg);
+    /* Extra top padding so the fixed pill nav doesn't overlap the title. */
+    padding: 120px 32px 56px;
+  }
+  .case-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .case-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: clamp(32px, 4.5vw, 40px);
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .case-desc {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: clamp(16px, 1.7vw, 20px);
+    line-height: 32px;
+    color: var(--brown);
+    margin: 25px 0 0;        /* 25px gap matches Figma */
+    max-width: 816px;        /* matches Figma description width */
+  }
+
+  /* ===== Full-bleed image banner — image fully covers the section ===== */
+  .showcase {
+    background: #D39C95;
+    width: 100%;
+    aspect-ratio: 1440 / 680;     /* slightly shorter than image — guarantees cover */
+    overflow: hidden;
+  }
+  .showcase img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transform: scale(1.04);       /* tiny zoom — eliminates the slim L/R rose slivers */
+    transform-origin: center;
+  }
+
+  /* ===== Context section (1440 frame, 209px L/R margins → 1022 inner) ===== */
+  .context {
+    background: var(--page-bg);
+    padding: 69px 32px 0;        /* 69px gap below the banner */
+  }
+  .context-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+
+  /* Red chip variant (matches Tet brand red) */
+  .section-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    height: 36px;
+    padding: 0 24px;
+    background: #FFF0EE;
+    color: #AC230F;
+    border-radius: 999px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 20px;
+  }
+  .section-chip::before {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #AC230F;
+  }
+
+  .sub-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 35px;
+    color: var(--ink);
+    margin: 35px 0 0;
+  }
+  .sub-body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--brown);
+    margin: 30px 0 0;
+  }
+  .sub-body + .sub-body { margin-top: 28px; }
+  .sub-body strong { font-weight: 700; }
+
+  /* Two-column: text on the left, "details" card on the right */
+  .context-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 520px) 451px;
+    column-gap: 51px;            /* aligns card start with Figma left:780 within 1022 */
+    align-items: start;
+    margin-top: 0;
+  }
+  .context-text { min-width: 0; }
+  .context-text .sub-title { max-width: 423px; } /* matches Figma title width */
+
+  .meta-card {
+    background: #FFF0EE;
+    border: 1px solid #FFD1CA;
+    border-radius: 4px;
+    padding: 35px 52px;
+    align-self: start;
+    margin-top: 35px;            /* aligns top with the sub-title */
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    width: 100%;
+  }
+  .meta-card .meta-item h4 {
+    margin: 0 0 2px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+  .meta-card .meta-item p {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* "Tết Festival Defined" card */
+  .defined-card {
+    margin-top: 96px;
+    background: #FAF2E5;
+    border-left: 2px solid #FFB132;
+    border-radius: 2px;
+    box-shadow: 0 5px 5px 0 #F6F2EB;
+    padding: 25px 23px;
+  }
+  .defined-card h4 {
+    margin: 0 0 8px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(34,34,34,0.12);
+  }
+  .defined-card p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* Lion-dancing image + caption */
+  .lion-figure {
+    margin: 80px 0 0;
+  }
+  .lion-frame {
+    width: 100%;
+    aspect-ratio: 1022 / 413;
+    border: 1px solid #FFF0EE;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #FFF0EE;
+  }
+  .lion-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .lion-caption {
+    margin: 10px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 32px;
+    color: var(--brown-50);
+    text-align: center;
+  }
+
+  /* ===== Subsection: The go-to source ===== */
+  .sub-block { margin-top: 160px; }
+  .sub-block .sub-title { max-width: 844px; }
+  .sub-block .sub-body { max-width: 844px; }
+
+  .flow-frame {
+    margin-top: 60px;
+    background: #F9F5EE;
+    border: 1px solid rgba(151, 134, 107, 0.11);
+    border-radius: 4px;
+    padding: 10px;
+    max-width: 997px;
+    width: 100%;
+  }
+  .flow-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+  }
+
+  /* ===== Problem section (160px below context, same 209px L/R margins) ===== */
+  .problem {
+    background: var(--page-bg);
+    padding: 160px 32px 0;
+  }
+  .problem-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .problem-inner .sub-title,
+  .problem-inner .sub-body { max-width: 844px; }
+
+  /* User Need / Business Need cards */
+  .need-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 50px;
+    margin-top: 56px;
+  }
+  .need-card {
+    background: #fff;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    padding: 25px 23px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+  }
+  .need-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .need-header img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+  .need-header .label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+  .need-card hr {
+    border: 0;
+    border-top: 1px solid rgba(34, 34, 34, 0.12);
+    margin: 8px 0 0;
+  }
+  .need-card p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* "Why is this a problem?" callout (same yellow/cream style as Tết defined) */
+  .why-card { margin-top: 32px; }
+
+  /* Three-up insight cards (image on top, text below) */
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 34px;
+    margin-top: 64px;
+  }
+  .insight-card { display: flex; flex-direction: column; }
+  .insight-image {
+    background: #FAF2E5;
+    border: 1px solid #BDD6EB;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    height: 262px;
+    padding: 0;
+    overflow: hidden;
+  }
+  .insight-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center; /* anchors top so headers stay visible */
+    border-radius: 4px 4px 0 0;
+    display: block;
+  }
+  .insight-body {
+    background: #fff;
+    border: 1px solid #BDD6EB;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    padding: 24px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    min-height: 180px;
+  }
+  .insight-body h4 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(34, 34, 34, 0.12);
+  }
+  .insight-body p {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* ===== User Research — 69px below HMW, same 209px L/R margins ===== */
+  .research {
+    background: var(--page-bg);
+    padding: 69px 32px 0;
+  }
+  .research-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .research-inner > .sub-title { max-width: 504px; } /* only the section's first title — sub-block titles stay 844 */
+  .research-inner .sub-body { max-width: 844px; }
+
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+    margin-top: 56px;
+  }
+  .research-card {
+    background: #fff;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    padding: 25px 23px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+  }
+  .research-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .research-icon {
+    font-size: 22px;
+    line-height: 28px;
+    flex-shrink: 0;
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  }
+  .research-card .label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+  .research-card hr {
+    border: 0;
+    border-top: 1px solid rgba(34, 34, 34, 0.12);
+    margin: 8px 0 0;
+  }
+  .research-card p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* "What does success look like" goal cards */
+  .goals-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+    margin-top: 56px;
+    align-items: start;        /* cards hug their own content — no empty bottom gap */
+  }
+  .goal-card {
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    padding: 25px 23px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+  }
+  .goal-card.pink   { background: #FFD0CA; }
+  .goal-card.peach  { background: #FFE2D3; }
+  .goal-card.yellow { background: #FFE9C5; }
+
+  .goal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .goal-header img {
+    width: 24px;
+    height: 24px;
+    display: block;
+    flex-shrink: 0;
+  }
+  .goal-card .label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+  .goal-card hr {
+    border: 0;
+    border-top: 1px solid rgba(34, 34, 34, 0.18);
+    margin: 8px 0 0;
+  }
+  .goal-card p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+
+  /* "Two users" — avatar on top of card, 2 columns */
+  .users-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+    margin-top: 56px;
+  }
+  .user-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .user-avatar {
+    width: 218px;
+    height: 218px;
+    margin-bottom: 46px;
+    flex-shrink: 0;
+  }
+  .user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .user-card {
+    width: 100%;
+    border-radius: 4px;
+    padding: 25px 23px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+  }
+  .user-card.pink   { background: #FFF0EE; border: 1px solid #FFAEA2; }
+  .user-card.yellow { background: #FFFBEE; border: 1px solid #E8CE7C; }
+  .user-card h4 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--ink);
+  }
+  .user-card hr {
+    border: 0;
+    border-top: 1px solid rgba(34, 34, 34, 0.18);
+    margin: 8px 0 0;
+  }
+  .user-card p {
+    margin: 12px 0 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: var(--brown);
+  }
+  .user-card strong { font-weight: 700; }
+
+  /* Competitive analysis — image in a cream frame */
+  .competitive-frame {
+    margin-top: 56px;
+    background: #F9F5EE;
+    border: 1px solid #EFE9E0;
+    border-radius: 4px;
+    padding: 45px 50px;
+  }
+  .competitive-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ===== Ideation section — 160px below user research, 209px L/R margins ===== */
+  .ideation {
+    background: var(--page-bg);
+    padding: 160px 32px 0;
+  }
+  .ideation-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .ideation-inner > .sub-title { max-width: 504px; }
+  .ideation-inner .sub-body { max-width: 844px; }
+
+  /* Cream-framed diagram container (used by both ideation visuals) */
+  .diagram-frame {
+    margin-top: 60px;
+    background: #F9F5EE;
+    border: 1px solid #EFE9E0;
+    border-radius: 4px;
+    padding: 15px 72px 36px;
+  }
+  .diagram-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .diagram-frame--ia {
+    padding: 25px 31px;
+  }
+
+  /* ===== User Testing — 160px below ideation, 209px L/R margins ===== */
+  .user-testing {
+    background: var(--page-bg);
+    padding: 160px 32px;       /* 160px top + 160px bottom */
+  }
+  .user-testing-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .user-testing-inner .sub-title,
+  .user-testing-inner .sub-body { max-width: 844px; }
+  .user-testing-inner > .note-card { margin-top: 35px; max-width: 844px; }
+  .user-testing-inner .sub-title { margin-top: 55px; }
+
+  /* Before / After filter chips */
+  .version-chips {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 44px;
+  }
+  .version-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 39px;
+    padding: 0 22px;
+    border-radius: 180px;
+    border: 1px solid #BDD6EB;
+    background: #FFFFFF;
+    color: #5E523F;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 16px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+  .version-chip:hover {
+    border-color: #90BDE4;
+    color: var(--brown);
+  }
+  .version-chip[aria-pressed="true"] {
+    background: var(--brown);
+    color: #FFFFFF;
+    border-color: var(--brown);
+  }
+  .version-chip[aria-pressed="true"]:hover {
+    color: #A49E95;
+  }
+  .version-chip:focus-visible {
+    outline: 2px solid #4670D9;
+    outline-offset: 2px;
+  }
+
+  .version-content { display: none; margin-top: 44px; position: relative; }
+  .version-content.is-active { display: block; }
+
+  /* Screen frame — image-wrap (with hotspots) + overlay card sibling */
+  .screen-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1022 / 714;
+    background: rgba(201, 184, 158, 0.22);
+    border: 1px solid rgba(151, 134, 107, 0.11);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .screen-image-wrap {
+    --wrap-aspect: 953 / 773;     /* used by mobile media query */
+    position: absolute;
+    left: 3.33%;
+    top: -4.20%;
+    width: 93.25%;
+    height: 108.26%;
+  }
+
+  /* Second user-testing sub-section — 160px below the previous version-group */
+  .user-testing-inner .version-group + .version-group { margin-top: 160px; }
+
+  /* VENDORS frame variant — image is 954x1145 placed inside 1022x714 frame
+     at (34, -7), so it overflows the frame vertically and gets cropped. */
+  .screen-frame--vendors .screen-image-wrap {
+    --wrap-aspect: 954 / 1145;
+    left: 3.33%;
+    top: -0.98%;
+    width: 93.35%;
+    height: 160.36%;
+  }
+  .screen-frame--vendors .screen-image {
+    object-fit: cover;
+    object-position: top left;
+  }
+  /* Hotspots for vendors (relative to .screen-image-wrap) */
+  .hotspot-vendors-1 { top: 8.91%; left: 8.81%; }
+  .hotspot-vendors-2 { top: 31.88%; left: 66.56%; }
+  .hotspot-vendors-2::before { animation-delay: 0.6s; }
+
+  /* HEADLINERS frame variant — image (947x714) fills frame width with a
+     small left margin, no vertical overflow. */
+  .screen-frame--headliners .screen-image-wrap {
+    --wrap-aspect: 947 / 714;
+    left: 3.72%;
+    top: 0;
+    width: 92.66%;
+    height: 100%;
+  }
+  .screen-frame--headliners .screen-image {
+    object-fit: cover;
+    object-position: top left;
+  }
+  .hotspot-headliners-1 { top: 22.41%; left: 17.95%; }
+  .hotspot-headliners-2 { top: 62.61%; left: 94.30%; }
+  .hotspot-headliners-2::before { animation-delay: 0.6s; }
+
+  /* HEADLINERS — AFTER frame variant. Cream bg + 987x709 SVG fits inside
+     via contain (aspect very close to frame's 1022/714 — small letterbox). */
+  .screen-frame--headliners-after {
+    background: #F3EEE5;
+  }
+  .screen-frame--headliners-after .screen-image-wrap {
+    --wrap-aspect: 987 / 709;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .screen-frame--headliners-after .screen-image {
+    object-fit: contain;
+    object-position: center;
+  }
+  .hotspot-headliners-after-1 { top: 22.6%; left: 33.1%; }
+  .hotspot-headliners-after-2 { top: 68%; left: 19.2%; }
+  .hotspot-headliners-after-2::before { animation-delay: 0.6s; }
+
+  /* VENDORS — AFTER frame variant. Keeps the same 1022/714 aspect as
+     the Before frame so both cream boxes match in size. The SVG is fit
+     to the frame width and the bottom edge is cropped just enough that
+     the rest of the section layout stays consistent. */
+  .screen-frame--vendors-after {
+    background: #F3EEE5;
+  }
+  .screen-frame--vendors-after .screen-image-wrap {
+    --wrap-aspect: 945 / 785;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .screen-frame--vendors-after .screen-image {
+    object-fit: contain;
+    object-position: center;
+  }
+  /* Hotspots — SVG is height-bound (859x714 letterboxed) inside the
+     1022x714 frame, matching the figma render. Hotspots use figma frame %. */
+  .hotspot-vendors-after-1 { top: 54.62%; left: 39.14%; }
+  .hotspot-vendors-after-2 { top: 55.60%; left: 59.78%; }
+  .hotspot-vendors-after-2::before { animation-delay: 0.6s; }
+
+  /* AFTER frame variant — different bg + image area */
+  .screen-frame--after {
+    background: #F3EEE5;
+  }
+  .screen-frame--after .screen-image-wrap {
+    --wrap-aspect: 915 / 848;     /* matches SVG natural aspect */
+    left: 2.74%;
+    top: 2.66%;
+    width: 94.32%;
+    height: 117.51%;
+  }
+  /* Show the full SVG (including the yellow half-circle) without cropping */
+  .screen-frame--after .screen-image {
+    object-fit: contain;
+    object-position: top left;
+  }
+  .screen-image-wrap .screen-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    display: block;
+    image-rendering: auto;        /* let the browser pick its best downscaler */
+  }
+
+  /* Numbered hotspots — fixed size, % positions stay pinned at any width */
+  .hotspot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.333px solid #FFFFFF;
+    box-shadow: 0 2.667px 2.667px 0 rgba(34, 34, 34, 0.33);
+    background: var(--brown);
+    color: #FFFFFF;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 10.667px;
+    text-align: center;
+    cursor: pointer;
+    padding: 0;
+    --glow-color: 57, 42, 19;
+    transition: width 140ms ease, height 140ms ease, border-width 140ms ease, font-size 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+  }
+  .hotspot.is-active {
+    background: #C845AC;
+    --glow-color: 200, 69, 172;
+  }
+  /* Pulsing glow ring */
+  .hotspot::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: hotspotPulse 1.8s ease-out infinite;
+  }
+  @keyframes hotspotPulse {
+    0%   { box-shadow: 0 0 0 0    rgba(var(--glow-color), 0.55); }
+    70%  { box-shadow: 0 0 0 14px rgba(var(--glow-color), 0); }
+    100% { box-shadow: 0 0 0 0    rgba(var(--glow-color), 0); }
+  }
+  .hotspot-2::before { animation-delay: 0.6s; }
+  .hotspot-3::before { animation-delay: 1.2s; }
+  .hotspot:hover,
+  .hotspot:focus-visible {
+    width: 33px;
+    height: 33px;
+    border-width: 1.692px;
+    font-size: 12.692px;
+    line-height: 13.538px;
+    box-shadow: 0 3.385px 3.385px 0 rgba(34, 34, 34, 0.33);
+    outline: none;
+  }
+  /* Hotspot positions — relative to .screen-image-wrap */
+  .hotspot-tet-1 { top: 40.49%; left: 8.50%; }
+  .hotspot-tet-2 { top: 51.62%; left: 88.35%; }
+  .hotspot-tet-after-1 { top: 52.44%; left: 32.26%; }
+
+  /* No-number hotspot (After section) — still glows pink */
+  .hotspot--no-number {
+    font-size: 0;
+    background: #C845AC;
+    --glow-color: 200, 69, 172;
+  }
+  .hotspot--no-number:hover,
+  .hotspot--no-number:focus-visible {
+    font-size: 0;                /* never reveal text */
+  }
+
+  /* Pink insight overlay card (sits on top of the image).
+     Position is driven by CSS variables so JS can swap it per active hotspot
+     while still letting the mobile media query reset to a static layout. */
+  .testing-overlay {
+    position: absolute;
+    left: var(--card-left, 9.98%);
+    top: var(--card-top, 44.68%);
+    width: 47.45%;
+    background: #FFF6FD;
+    border: 1px solid #93287C;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.31);
+    padding: 25px 23px;
+    font-family: 'Manrope', sans-serif;
+    transition: opacity 220ms ease;
+  }
+  .testing-overlay.is-fading { opacity: 0; }
+
+  /* AFTER card variant — wider, anchored bottom-right by default */
+  .testing-overlay--after {
+    width: 52.25%;
+    left: var(--card-left, 43.05%);
+    top: var(--card-top, 60.08%);
+  }
+  .testing-overlay-title {
+    display: block;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 28px;
+    color: #000;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(34, 34, 34, 0.18);
+    margin-bottom: 14px;
+  }
+  .testing-overlay-body {
+    margin: 0 0 14px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 25px;
+    color: #222;
+  }
+  .testing-overlay-body:last-of-type { margin-bottom: 0; }
+  .testing-overlay-body strong { font-weight: 700; }
+  .testing-overlay-next {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin: 14px 0 0 auto;
+    background: transparent;
+    border: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 28px;
+    color: #93287C;
+    cursor: pointer;
+    padding: 0;
+  }
+  .testing-overlay-next:hover { color: #6F1E5B; }
+  .testing-overlay-next .next-chevron {
+    display: inline-block;
+    font-size: 16px;
+    line-height: 1;
+    transform: translateY(-1px);
+  }
+  .testing-overlay-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* ===== Final Designs banner — full-bleed red, 160px below user testing.
+     Inner content max-width 1022px centered = 209px left margin on a 1440 frame
+     so "Final Designs" aligns with the section content above. */
+  .final-designs {
+    background: #AC230F;
+    padding: 16px 32px;
+    /* The 160px gap above is supplied by .user-testing's bottom padding. */
+  }
+  .final-designs-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .final-designs-label {
+    margin: 0;
+    color: #FFFFFF;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 960px) {
+    .final-designs { padding: 14px 24px; }
+  }
+  @media (max-width: 640px) {
+    .final-designs { padding: 12px 20px; }
+  }
+
+  /* Final designs section — light red full-bleed background; 69px below
+     the red banner; max-width 1022 inner so headings align with content above. */
+  .final-designs-section {
+    background: #FFF0EE;
+    padding: 69px 32px 160px;
+  }
+  .final-designs-section-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .final-goal + .final-goal { margin-top: 160px; }
+  .final-goal-label {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.04em;
+    color: #5E523F;
+    text-transform: uppercase;
+  }
+  .final-goal-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 35px;
+    color: var(--ink);
+    margin: 25px 0 0;
+    max-width: 844px;
+  }
+  .final-goal-body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 25px;
+    color: #222;
+    max-width: 844px;
+    margin: 25px 0 0;
+  }
+  .final-goal-media {
+    width: 100%;
+    aspect-ratio: 1022 / 591;
+    background: #FFFFFF;
+    border: 1px solid rgba(151, 134, 107, 0.11);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 60px;
+  }
+  .final-goal-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @media (max-width: 960px) {
+    .final-designs-section { padding: 56px 24px 96px; }
+    .final-goal + .final-goal { margin-top: 96px; }
+    .final-goal-media { margin-top: 40px; }
+  }
+  @media (max-width: 640px) {
+    .final-designs-section { padding: 48px 20px 72px; }
+    .final-goal + .final-goal { margin-top: 72px; }
+    .final-goal-title { font-size: 22px; line-height: 30px; }
+  }
+
+  /* =========================================================
+     IMPACT — success metrics, 69px below the final-designs
+     section content. 209px L/R margins via the 1022 inner.
+     Pulled up by negative margin to cancel most of the 160px
+     padding-bottom on .final-designs-section above, leaving
+     exactly 69px between the last video and the IMPACT chip.
+     ========================================================= */
+  .impact {
+    background: var(--page-bg);
+    /* Sits below the full pink final-designs section (no overlap),
+       with an extra 69px breathing room before the IMPACT chip. */
+    margin-top: 0;
+    padding: 69px 32px 120px;
+    scroll-margin-top: 72px;
+  }
+  .impact-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .impact-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.4;
+    color: var(--ink, #222);
+    max-width: 844px;
+    margin: 35px 0 24px;
+  }
+  .impact-body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: #392A13;
+    max-width: 844px;
+    margin: 0;
+  }
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 55px;
+    margin-top: 48px;
+  }
+  .impact-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    min-height: 182px;
+    padding: 25px 23px;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+  .impact-card p { margin: 0; }
+  .impact-card strong { font-weight: 500; }
+  .impact-card--user {
+    background: #FFF0EE;
+    border: 1px solid rgba(172, 35, 15, 0.38);
+  }
+  .impact-card--business {
+    background: #FFFFFF;
+    border: 1px solid #DFA299;
+  }
+
+  @media (max-width: 900px) {
+    .impact { padding: 0 24px 96px; }
+    .impact-grid { gap: 32px; }
+  }
+  @media (max-width: 720px) {
+    .impact-grid { grid-template-columns: 1fr; gap: 24px; }
+    .impact-card { min-height: 0; }
+  }
+
+  /* =========================================================
+     TAKEAWAYS — learnings from the project, 160px below the
+     impact section. 209px L/R margins via the 1022 inner.
+     ========================================================= */
+  .takeaways {
+    background: var(--page-bg);
+    /* 120px from .impact bottom padding + 40px here = 160px gap. */
+    padding: 40px 32px 120px;
+    scroll-margin-top: 72px;
+  }
+  .takeaways-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .takeaways-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.4;
+    color: var(--ink);
+    max-width: 844px;
+    margin: 35px 0 30px;
+  }
+  .takeaways-body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: #392A13;
+    margin: 0;
+  }
+  .takeaways-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 55px;
+    margin-top: 56px;
+  }
+  .takeaway-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 171px;
+    padding: 25px 23px;
+    background: #FFFFFF;
+    border: 1px solid #BDD6EB;
+    border-radius: 4px;
+    box-shadow: 0 10px 10px 0 #F6F2EB;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #000;
+  }
+  .takeaway-card p { margin: 0; }
+
+  @media (max-width: 900px) {
+    .takeaways { padding: 32px 24px 96px; }
+    .takeaways-grid { gap: 32px; }
+  }
+  @media (max-width: 720px) {
+    .takeaways-grid { grid-template-columns: 1fr; gap: 24px; }
+    .takeaway-card { min-height: 0; }
+  }
+
+  /* =========================================================
+     THANK YOU — closing section with prev/next case study
+     links, 160px below the takeaways section. 209px L/R.
+     ========================================================= */
+  .thankyou {
+    background: var(--page-bg);
+    /* 120px from .takeaways bottom padding + 40px here = 160px gap. */
+    padding: 40px 32px 96px;
+  }
+  .thankyou-inner {
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+  .thankyou-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.4;
+    color: var(--ink);
+    margin: 0;
+  }
+  .thankyou-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 46px;
+    gap: 16px;
+  }
+  .thankyou-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    color: #392A13;
+    text-decoration: none;
+    transition: gap .25s ease, color .15s ease;
+  }
+  .thankyou-link img {
+    width: 24px;
+    height: 24px;
+    display: block;
+    flex-shrink: 0;
+  }
+  .thankyou-link:hover { color: #000; gap: 16px; }
+  .thankyou-link:focus-visible {
+    outline: 2px solid #AC230F;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .thankyou { padding: 32px 24px 72px; }
+    .thankyou-nav { margin-top: 32px; }
+  }
+
+  /* ===== How Might We — full-bleed pink, 69px below problem ===== */
+  .hmw {
+    background: #FFF0EE;
+    margin-top: 69px;
+    padding: 38px 32px;        /* vertical only — content uses max-width below */
+    text-align: center;
+  }
+  .hmw-inner {
+    max-width: 1022px;         /* same 1022 inner = 209px margin on a 1440 frame */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .hmw-label {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    color: #AC230F;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+  .hmw-quote {
+    margin: 0;
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 23px;
+    line-height: 32px;
+    color: var(--ink);
+  }
+
+  @media (max-width: 960px) {
+    .context { padding: 56px 24px 0; }
+    .context-grid {
+      grid-template-columns: 1fr;
+      row-gap: 32px;
+    }
+    .meta-card { margin-top: 0; padding: 28px 32px; }
+    .defined-card { margin-top: 64px; }
+    .lion-figure { margin-top: 56px; }
+    .sub-block { margin-top: 96px; }
+    .flow-frame { margin-top: 40px; }
+
+    .problem { padding: 96px 24px 0; }
+    .need-grid { grid-template-columns: 1fr; gap: 24px; }
+    .insight-grid { grid-template-columns: 1fr; gap: 32px; max-width: 440px; margin-left: auto; margin-right: auto; }
+    .insight-image { height: 240px; }
+
+    .research { padding: 56px 24px 0; }
+    .research-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .goals-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .users-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .user-avatar { width: 180px; height: 180px; margin-bottom: 32px; }
+    .competitive-frame { padding: 32px 24px; }
+
+    .ideation { padding: 96px 24px 0; }
+    .diagram-frame { padding: 16px 24px 24px; }
+    .diagram-frame--ia { padding: 16px; }
+
+    .user-testing { padding: 96px 24px; }
+    .version-chips { flex-wrap: wrap; }
+
+    /* Smaller overlay on tablet so it doesn't dominate the image */
+    .testing-overlay {
+      width: 56%;
+      padding: 16px 14px;
+    }
+    .testing-overlay-title { font-size: 13px; line-height: 20px; padding-bottom: 6px; margin-bottom: 10px; }
+    .testing-overlay-body  { font-size: 13px; line-height: 19px; margin-bottom: 10px; }
+    .testing-overlay-next  { font-size: 13px; margin-top: 8px; }
+
+
+    .hmw { padding: 32px 24px; margin-top: 56px; }
+    .hmw-quote { font-size: 20px; line-height: 30px; }
+  }
+  @media (max-width: 640px) {
+    .context { padding: 40px 20px 0; }
+    .sub-title { font-size: 22px; line-height: 30px; }
+    .meta-card { padding: 24px; }
+    .sub-block { margin-top: 72px; }
+
+    .problem { padding: 72px 20px 0; }
+
+    .research { padding: 40px 20px 0; }
+
+    .ideation { padding: 72px 20px 0; }
+
+    .user-testing { padding: 72px 20px; }
+
+    /* Mobile: the cream rectangle keeps its 1022/714 aspect (size never
+       changes between Before/After). The pink note flows below the frame
+       instead of overlaying it so the image stays fully visible. */
+    .testing-overlay,
+    .testing-overlay--after {
+      position: relative;
+      left: 0;
+      top: 0;
+      width: 100%;
+      margin-top: 16px;
+      padding: 16px;
+    }
+    .testing-overlay-title { font-size: 13px; line-height: 19px; padding-bottom: 6px; margin-bottom: 10px; }
+    .testing-overlay-body  { font-size: 13px; line-height: 19px; margin-bottom: 10px; }
+    .testing-overlay-next  { font-size: 13px; margin-top: 8px; }
+
+    .hmw { padding: 28px 20px; }
+    .hmw-quote { font-size: 18px; line-height: 28px; }
+    .hmw-label { font-size: 12px; }
+  }
+
+  @media (max-width: 960px) {
+    .case-header { padding: 110px 24px 40px; }
+    .case-inner { padding: 0 24px; }
+  }
+  @media (max-width: 640px) {
+    .case-header { padding: 90px 20px 32px; }
+    .case-inner { padding: 0 20px; }
+    .case-desc { line-height: 1.6; }
+  }
+
+  /* ===== Scroll reveal — fade + rise ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    will-change: opacity, transform;
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-group > .reveal { transition-delay: 0ms; }
+  .reveal-group > .reveal:nth-child(2) { transition-delay: 80ms; }
+  .reveal-group > .reveal:nth-child(3) { transition-delay: 160ms; }
+  .reveal-group > .reveal:nth-child(4) { transition-delay: 240ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
+
+  /* =========================================================
+     PILL NAV — floating, fixed top-right. Replaces the standard
+     full-width header. Active link gets a yellow oval.
+     ========================================================= */
+  header.nav {
+    position: fixed !important;
+    top: 20px;
+    right: 32px;
+    left: auto;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 0 !important;
+    z-index: 50;
+  }
+  header.nav .nav-inner {
+    padding: 0;
+    margin: 0;
+    width: auto;
+    max-width: none;
+    justify-content: flex-end;
+  }
+  header.nav .brand,
+  header.nav .nav-toggle { display: none !important; }
+  nav#primary-nav {
+    display: inline-block !important;
+    position: static !important;
+    background: #FFFDF6 !important;
+    border: 1px solid rgba(19, 70, 162, 0.14) !important;   /* subtle portfolio-blue tint */
+    border-radius: 999px;
+    padding: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  nav#primary-nav ul {
+    flex-direction: row !important;
+    gap: 0 !important;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-flex;
+  }
+  nav#primary-nav .nav-link {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: #4B5A70;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: transparent;
+    display: inline-block;
+    text-decoration: none;
+    transition: color .15s ease, background .15s ease;
+  }
+  nav#primary-nav .nav-link:hover {
+    background: transparent;
+    color: var(--ink, #222);
+  }
+  /* Active state — light portfolio blue with deep blue text.
+     Contrast ratio #0D317A on #D3E2FF ≈ 9.6:1 (WCAG AAA). */
+  nav#primary-nav .nav-link[aria-current="page"],
+  nav#primary-nav .nav-link[aria-current="page"]:hover {
+    background: #D3E2FF;
+    color: #0D317A;
+    font-weight: 700;
+  }
+
+  /* Mobile: keep the full pill, centered horizontally at the top. */
+  @media (max-width: 640px) {
+    header.nav {
+      top: 12px;
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    nav#primary-nav { padding: 6px; }
+    /* !important overrides the legacy mobile rule `.nav#primary-nav
+       a.nav-link { border-radius: 8px }` from the old dropdown design. */
+    nav#primary-nav .nav-link {
+      padding: 8px 16px !important;
+      font-size: 13px !important;
+      border-radius: 999px !important;
+      display: inline-block !important;
+    }
+  }
+  /* =========================================================
+     SITE FOOTER — "Thank you for visiting!" + email / linkedin
+     icons, 160px below the previous section content. Top border
+     spans across the page margins per the Figma frame.
+     ========================================================= */
+  .site-footer {
+    margin-top: 64px;
+    border-top: 1px solid #635744;
+    background: var(--cream, var(--page-bg, #FFFDF9));
+    padding: 53px 32px;
+    text-align: center;
+  }
+  .site-footer-inner {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 29px;
+  }
+  .site-footer-title {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.4;
+    color: #222;
+    margin: 0;
+  }
+  .site-footer-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: filter .2s ease, transform .15s ease;
+  }
+  .footer-link img { display: block; }
+  .footer-link:hover {
+    filter: brightness(0.4);
+    transform: translateY(-1px);
+  }
+  .footer-link:focus-visible {
+    outline: 2px solid #635744;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .site-footer-copyright {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 28px;
+    color: rgba(57, 42, 19, 0.28);
+    margin: 0;
+  }
+  @media (max-width: 640px) {
+    .site-footer { padding: 40px 24px; }
+    .site-footer-inner { gap: 22px; }
+    .site-footer-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" role="banner">
+  <div class="nav-inner">
+    <a href="hero.html" class="brand" aria-label="Brian Pham, home">Brian Pham</a>
+    <button class="nav-toggle" type="button"
+            aria-expanded="false"
+            aria-controls="primary-nav"
+            aria-label="Open menu">
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+    <nav id="primary-nav" class="nav" aria-label="Primary">
+      <ul>
+        <li><a class="nav-link" href="hero.html">Home</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+        <li><a class="nav-link" href="hero.html#resume">Resume</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- CASE STUDY HEADER -->
+<section class="case-header" aria-labelledby="case-title">
+  <div class="case-inner">
+    <h1 id="case-title" class="case-title">Integrating Culture into the SD Tet Festival Web Experience</h1>
+    <p class="case-desc">Refreshed the Tet Festival website with vibrant, culturally inspired branding and a more intuitive user experience for 30,000 annual visitors.</p>
+  </div>
+</section>
+
+<!-- FULL-BLEED IMAGE BANNER -->
+<section class="showcase" aria-label="San Diego Tet Festival project preview">
+  <img src="images/tet-showcase.png"
+       alt="San Diego Tet Festival website preview — entertainment headliners page, hero landing page with festival dates, and vendors page mockups arranged on a dusty rose backdrop." />
+</section>
+
+<!-- CONTEXT -->
+<section class="context" aria-labelledby="context-heading">
+  <div class="context-inner">
+    <span class="section-chip" id="context-heading">Context</span>
+
+    <div class="context-grid">
+      <div class="context-text">
+        <h2 class="sub-title">Vietnamese American Youth Alliance Annual Event: Lunar New Year Festival.</h2>
+        <p class="sub-body">
+          The Vietnamese American Youth Alliance (VAYA) is a nonprofit dedicated to empowering Vietnamese American youth through leadership development, cultural awareness, social activism, &amp; community building.
+        </p>
+        <p class="sub-body">
+          Each year, VAYA hosts the Lunar New Year T&#7871;t Festival in San Diego, one of the organization&rsquo;s largest cultural events (attracting <strong>30,000+</strong> people each year!). I contributed as a designer for the 2025 festival website, helping shape its digital experience.
+        </p>
+      </div>
+
+      <aside class="meta-card" aria-label="Project details">
+        <div class="meta-item">
+          <h4>Role</h4>
+          <p>UI/UX Designer, User Researcher</p>
+        </div>
+        <div class="meta-item">
+          <h4>Team</h4>
+          <p>4 Designers, 2 Developers, 1 Project Manager</p>
+        </div>
+        <div class="meta-item">
+          <h4>Time</h4>
+          <p>4 Months</p>
+        </div>
+        <div class="meta-item">
+          <h4>Product</h4>
+          <p>Web Application Prototype</p>
+        </div>
+        <div class="meta-item">
+          <h4>Tools</h4>
+          <p>Figma, Zoom</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="defined-card">
+      <h4>T&#7871;t Festival Defined:</h4>
+      <p>Tet Festival (T&#7871;t) is the Vietnamese Lunar New Year celebration, marking the arrival of spring and the start of a new year. It&rsquo;s a time for family gatherings, honoring ancestors, and celebrating with traditional food, performances, and cultural festivities.</p>
+    </div>
+
+    <figure class="lion-figure">
+      <div class="lion-frame">
+        <img src="images/tet-context-1.png"
+             alt="Lion dancers in red and yellow costumes performing on stage at the Tet Festival, surrounded by marigolds and traditional decorations." />
+      </div>
+      <figcaption class="lion-caption">Lion Dancing at the T&#7871;t Festival</figcaption>
+    </figure>
+
+    <!-- Subsection: The go-to source for information -->
+    <div class="sub-block">
+      <h2 class="sub-title">The go-to source for information: The Festival Website.</h2>
+      <p class="sub-body">
+        In the past, festival attendees relied on social media platforms like Instagram to stay updated. However, discussions revealed that most ultimately turned to the official website for the latest information.
+      </p>
+      <p class="sub-body">
+        Despite being the primary source, the website still left many <strong>feeling confused</strong> about the events offered.
+      </p>
+
+      <div class="flow-frame">
+        <img src="images/tet-context-2.png"
+             alt="Flow diagram: festival excitement leads attendees to pull up the website, but the experience leaves them feeling confused." />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem" aria-labelledby="problem-heading">
+  <div class="problem-inner">
+    <span class="section-chip" id="problem-heading">Problem</span>
+
+    <h2 class="sub-title">&ldquo;The Festival seems fun but I don&rsquo;t really know what to do here.&rdquo;</h2>
+
+    <p class="sub-body">
+      Festival visitors are eager to immerse themselves in Vietnamese culture and create memorable experiences with friends and family.
+    </p>
+    <p class="sub-body">
+      Research on last year&rsquo;s website showed that the festival&rsquo;s wide range of events can <strong>feel overwhelming</strong> and <strong>lacks</strong> a clear sense of Vietnamese cultural identity, making it difficult for attendees to find activities that meaningfully enhance their cultural experience.
+    </p>
+
+    <div class="need-grid">
+      <div class="need-card">
+        <div class="need-header">
+          <img src="svgs/user.svg" alt="" aria-hidden="true" />
+          <span class="label">User Need:</span>
+        </div>
+        <hr>
+        <p>Festival experience that is memorable and enhances exposure to Vietnamese culture.</p>
+      </div>
+
+      <div class="need-card">
+        <div class="need-header">
+          <img src="svgs/building.svg" alt="" aria-hidden="true" />
+          <span class="label">Business Need:</span>
+        </div>
+        <hr>
+        <p>Organization needs to see a raise in attendees immersing themselves in Vietnamese culture.</p>
+      </div>
+    </div>
+
+    <div class="defined-card why-card">
+      <h4>Why is this a problem?</h4>
+      <p>Through interviews with 10+ people who have gone to the festival in the past &amp; those who are interested in going, I came across 3 common insights that users mentioned when it came to their experience with the festival website.</p>
+    </div>
+
+    <div class="insight-grid">
+      <div class="insight-card">
+        <div class="insight-image">
+          <img src="images/tet-research-1.png"
+               alt="Screenshot of the previous festival homepage — Year of the Dragon hero with no Lunar New Year visual cues." />
+        </div>
+        <div class="insight-body">
+          <h4>Doesn&rsquo;t Feel like a T&#7871;t Website.</h4>
+          <p>First impressions of the web experience do not remind visitors of Lunar New Year.</p>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-image">
+          <img src="images/tet-research-2.png"
+               alt="Screenshot of the previous Vendors page — long unstructured list with little visual hierarchy." />
+        </div>
+        <div class="insight-body">
+          <h4>Unstructured.</h4>
+          <p>Unstructured sections makes it challenging to view what the festival has to offer.</p>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-image">
+          <img src="images/tet-research-3.png"
+               alt="Screenshot of the previous Entertainment page — repeating headliner cards in a uniform grid." />
+        </div>
+        <div class="insight-body">
+          <h4>Repetitive.</h4>
+          <p>A repetitive design style does not effectively highlight the festival&rsquo;s major events.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW MIGHT WE -->
+<section class="hmw" aria-labelledby="hmw-heading">
+  <div class="hmw-inner">
+    <p class="hmw-label" id="hmw-heading">With this&hellip;</p>
+    <p class="hmw-quote">How might we enhance the branding of the San Diego Tet Festival web experience to better capture the spirit of the Vietnamese Lunar New Year &amp; highlight activities that help attendees immerse themselves in the culture?</p>
+  </div>
+</section>
+
+<!-- USER RESEARCH -->
+<section class="research" aria-labelledby="research-heading">
+  <div class="research-inner">
+    <span class="section-chip" id="research-heading">User Research</span>
+
+    <h2 class="sub-title">Why do people attend the Lunar New Year Festival?</h2>
+
+    <p class="sub-body">
+      Initial website impressions may seem like the only research rationale needed to continue with the web experience enhancement.
+    </p>
+    <p class="sub-body">
+      However, it was important to gather insights beyond the web experience to understand why people choose to attend the festival in the first place. Interviews with past and prospective attendees revealed <strong>3</strong> key insights into why people attend the festival.
+    </p>
+
+    <div class="research-grid">
+      <div class="research-card">
+        <div class="research-header">
+          <span class="research-icon" aria-hidden="true">&#129511;</span>
+          <span class="label">Connect with Culture.</span>
+        </div>
+        <hr>
+        <p>Vietnamese attendees that have gone to this festival &amp; similar events do so to feel more connected with their culture.</p>
+      </div>
+
+      <div class="research-card">
+        <div class="research-header">
+          <span class="research-icon" aria-hidden="true">&#128221;</span>
+          <span class="label">Learn More about the culture.</span>
+        </div>
+        <hr>
+        <p>Both Vietnamese &amp; non-Vietnamese attendees go to the festival to have a good time while learning about what the culture has to offer.</p>
+      </div>
+
+      <div class="research-card">
+        <div class="research-header">
+          <span class="research-icon" aria-hidden="true">&#127881;</span>
+          <span class="label">Have fun with friends &amp; family.</span>
+        </div>
+        <hr>
+        <p>Most past attendees and those interested in the festival attend to create lasting memories with friends and family.</p>
+      </div>
+    </div>
+
+    <!-- "What does success look like?" goals -->
+    <div class="sub-block">
+      <h2 class="sub-title">What does success look like?</h2>
+      <p class="sub-body">
+        After analyzing the web experience and understanding the &ldquo;<strong>why</strong>&rdquo; behind festival attendance, I defined the following <strong>goals</strong> to guide the design process for the website revamp.
+      </p>
+
+      <div class="goals-grid">
+        <div class="goal-card pink">
+          <div class="goal-header">
+            <img src="svgs/up-arrow.svg" alt="" aria-hidden="true">
+            <span class="label">Enhance Vietnamese Culture.</span>
+          </div>
+          <hr>
+          <p>To create a festive and educational web experience that reflects the spirit of Lunar New Year.</p>
+        </div>
+
+        <div class="goal-card peach">
+          <div class="goal-header">
+            <img src="svgs/folder.svg" alt="" aria-hidden="true">
+            <span class="label">Organize Event Details.</span>
+          </div>
+          <hr>
+          <p>To streamline event discovery so attendees can quickly identify activities that match their interests.</p>
+        </div>
+
+        <div class="goal-card yellow">
+          <div class="goal-header">
+            <img src="svgs/warning.svg" alt="" aria-hidden="true">
+            <span class="label">Emphasize Key Events.</span>
+          </div>
+          <hr>
+          <p>To help users spot top events that would deepen their engagement with Vietnamese culture.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- "Two users" -->
+    <div class="sub-block">
+      <h2 class="sub-title">There are 2 users of the website. Who are they?</h2>
+      <p class="sub-body">
+        As mentioned earlier, festival attendees are the primary user and vendors are the secondary user of the festival website. Despite using the same product, they use it for different purposes.
+      </p>
+
+      <div class="users-grid">
+        <div class="user-col">
+          <div class="user-avatar">
+            <img src="images/tet-user-1.png"
+                 alt="Illustration of a festival attendee — woman in a red áo dài with hoop earrings." />
+          </div>
+          <div class="user-card pink">
+            <h4>Primary user: Festival Attendee</h4>
+            <hr>
+            <p>With over 30,000 attendees each year, their <strong>motivation</strong> for attending the festival is to have fun, connect with Vietnamese culture, and introduce it to friends.</p>
+          </div>
+        </div>
+
+        <div class="user-col">
+          <div class="user-avatar">
+            <img src="images/tet-user-2.png"
+                 alt="Illustration of a festival vendor — person with glasses wearing a yellow striped apron." />
+          </div>
+          <div class="user-card yellow">
+            <h4>Secondary User: Vendor</h4>
+            <hr>
+            <p>Motivated to attend mainly as a vendor, they <strong>need</strong> to understand the required permissions and expectations in order to successfully sell their products.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Competitive analysis -->
+    <div class="sub-block">
+      <h2 class="sub-title">Competitive Analysis: How do similar events structure their web experience?</h2>
+      <p class="sub-body">
+        To collect some inspiration for our design, research was conducted on existing festival websites and the design decisions they made to present themselves.
+      </p>
+
+      <div class="competitive-frame">
+        <img src="images/tet-competitive.png"
+             alt="Competitive analysis grid: 626 Night Market, Coachella, Outside Lands, and Stern Grove Festival logos paired with takeaways — incorporated visuals, fixed header with tabs, color-coding, and categorization." />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IDEATION -->
+<section class="ideation" aria-labelledby="ideation-heading">
+  <div class="ideation-inner">
+    <span class="section-chip" id="ideation-heading">Ideation</span>
+
+    <h2 class="sub-title">Transitioning goals into potential solutions.</h2>
+    <p class="sub-body">
+      During the ideation phase, I organized potential solutions aligned with the goals defined earlier in the process. Establishing these goals early on helped generate solutions that directly addressed the identified user problems.
+    </p>
+
+    <div class="diagram-frame">
+      <img src="images/tet-goals.png"
+           alt="Goals and potential solutions diagram: each of the three goal cards (Enhance Vietnamese Culture, Organize Event Details, Emphasize Key Events) maps with arrows to bulleted lists of potential design solutions." />
+    </div>
+
+    <!-- Information Architecture -->
+    <div class="sub-block">
+      <h2 class="sub-title">Information Architecture: Organizing Festivities Offered at the Event.</h2>
+      <p class="sub-body">
+        In collaboration with VAYA, I gathered &amp; documented requirements for the festival website. Afterwards, I translated them into an information architecture to <strong>structure the web experience</strong> and support intuitive discovery of essential information.
+      </p>
+
+      <div class="diagram-frame diagram-frame--ia">
+        <img src="images/tet-sitemap.png"
+             alt="Site map of the SD Tet Festival website — San Diego Tet Festival branches into Home, Visitor Info, Entertainment, Vendors, Schedule, Miss Vietnam SD, Sponsors, and Volunteers, with sub-pages such as Vendors Application, Miss VN Application, Sponsorship Package, Consent Form, Hour Verification Form, and Join Discord." />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USER TESTING -->
+<section class="user-testing" aria-labelledby="user-testing-heading">
+  <div class="user-testing-inner">
+    <span class="section-chip" id="user-testing-heading">User Testing</span>
+
+    <div class="defined-card note-card">
+      <h4>Note:</h4>
+      <p><strong>Pre-post studies</strong> with 10+ participants was conducted to evaluate whether the design concepts functioned as intended. Iterations were then made based on user interactions with the product, such as the time required to complete key tasks within the web experience.</p>
+    </div>
+
+    <div class="version-group">
+      <h2 class="sub-title">Incorporating more Vietnamese Culture into the Web Experience.</h2>
+      <p class="sub-body">
+        I started off by assigning users the task of finding an interesting fact they learned about Vietnamese Lunar New Year from the home page alone. I then measured how long it took to complete this task &amp; whether they felt like they learned something new about the holiday.
+      </p>
+
+      <div class="version-chips" role="group" aria-label="Filter by before or after">
+        <button type="button" class="version-chip" data-version="before" aria-pressed="true">Before</button>
+        <button type="button" class="version-chip" data-version="after" aria-pressed="false">After</button>
+      </div>
+
+      <div class="version-content is-active" data-version="before">
+        <div class="screen-frame">
+          <div class="screen-image-wrap">
+            <img class="screen-image"
+                 src="images/tet-before-culture.png"
+                 alt="Two design concepts side by side — original Year of the Dragon homepage on the left and the first Connections Game design concept on the right." />
+
+            <button type="button"
+                    class="hotspot hotspot-tet-1 is-active"
+                    data-counter="1"
+                    data-title="Original Web Experience"
+                    data-insight="<strong>Insight:</strong> 8/10 users mentioned that it <strong>took a long time</strong> to find a fact that stood out to them &amp; the large display of text is not engaging."
+                    data-action="<strong>Action:</strong> Design an entertaining experience that motivates users to learn about the culture."
+                    data-card-left="9.98%"
+                    data-card-top="44.68%"
+                    data-next-label="Next"
+                    data-next-target="hotspot-2"
+                    aria-pressed="true"
+                    aria-label="Insight 1">1</button>
+
+            <button type="button"
+                    class="hotspot hotspot-tet-2"
+                    data-counter="2"
+                    data-title="1st Design Concept: Connections Game"
+                    data-insight="<strong>Insight:</strong> Incorporating a game to group similar Vietnamese terms together is fun but is <strong>time-consuming &amp; distracting</strong>."
+                    data-action="<strong>Action:</strong> Create an experience that allows users to <strong>briefly</strong> educate themselves about the holiday in an engaging way."
+                    data-card-left="41.29%"
+                    data-card-top="4.20%"
+                    data-next-label="Go to After"
+                    data-next-target="version-after"
+                    aria-pressed="false"
+                    aria-label="Insight 2">2</button>
+          </div>
+        </div>
+
+        <div class="testing-overlay" role="region" aria-live="polite">
+          <span class="testing-overlay-title">Original Web Experience</span>
+          <p class="testing-overlay-body">
+            <strong>Insight:</strong> 8/10 users mentioned that it <strong>took a long time</strong> to find a fact that stood out to them &amp; the large display of text is not engaging.
+          </p>
+          <p class="testing-overlay-body">
+            <strong>Action:</strong> Design an entertaining experience that motivates users to learn about the culture.
+          </p>
+          <div class="testing-overlay-actions">
+            <button type="button" class="testing-overlay-next" aria-label="Next insight"><span class="next-label">Next</span> <span class="next-chevron" aria-hidden="true">&rsaquo;</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="version-content" data-version="after">
+        <div class="screen-frame screen-frame--after">
+          <div class="screen-image-wrap">
+            <img class="screen-image"
+                 src="images/tet-after.svg"
+                 alt="Redesigned SD Tet Festival homepage — black hero with festival dates, red envelope infographic with horizontally-scrollable cards (zodiac compatibility, fish & sticky rice cakes), and a hanging gallery of festival photos." />
+
+            <button type="button"
+                    class="hotspot hotspot--no-number hotspot-tet-after-1 is-active"
+                    data-title="2nd Design Concept: Red Envelope Infographic"
+                    data-insight="<strong>Insight:</strong> 9/10 addressed that they were able to briefly learn about the holiday by <strong>horizontally scrolling</strong> through the visuals."
+                    data-action="<strong>Action:</strong> Keep this design method since it not only <strong>quickly educates</strong> users, but also enhances the festival vibe in the web experience."
+                    data-card-left="43.05%"
+                    data-card-top="60.08%"
+                    aria-pressed="true"
+                    aria-label="After insight"></button>
+          </div>
+        </div>
+
+        <div class="testing-overlay testing-overlay--after" role="region" aria-live="polite">
+          <span class="testing-overlay-title">2nd Design Concept: Red Envelope Infographic</span>
+          <p class="testing-overlay-body">
+            <strong>Insight:</strong> 9/10 addressed that they were able to briefly learn about the holiday by <strong>horizontally scrolling</strong> through the visuals.
+          </p>
+          <p class="testing-overlay-body">
+            <strong>Action:</strong> Keep this design method since it not only <strong>quickly educates</strong> users, but also enhances the festival vibe in the web experience.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sub-section 2: Organizing similar festival vendors together -->
+    <div class="version-group">
+      <h2 class="sub-title">Organizing similar festival vendors together.</h2>
+      <p class="sub-body">
+        Next, participants were asked to locate vendors across categories such as food and souvenirs. The goal of this section was to observe navigation behavior, record task completion time, and understand why tasks took a certain amount of time.
+      </p>
+
+      <div class="version-chips" role="group" aria-label="Filter by before or after">
+        <button type="button" class="version-chip" data-version="before" aria-pressed="true">Before</button>
+        <button type="button" class="version-chip" data-version="after" aria-pressed="false">After</button>
+      </div>
+
+      <div class="version-content is-active" data-version="before">
+        <div class="screen-frame screen-frame--vendors">
+          <div class="screen-image-wrap">
+            <img class="screen-image"
+                 src="images/vendors-before.svg"
+                 alt="Original SD Tet Festival vendors page — long alphabetical list of vendor names with little visual grouping or hierarchy." />
+
+            <button type="button"
+                    class="hotspot hotspot-vendors-1 is-active"
+                    data-counter="1"
+                    data-title="Original Web Experience"
+                    data-insight="<strong>Insight:</strong> 7/10 users mentioned that sorting the vendors in alphabetical order helped, but was <strong>not enough</strong> since there were still too many vendors to choose from."
+                    data-action="<strong>Action:</strong> Keep the alphabetical format but organize vendors that specialize in similar products."
+                    data-card-left="10.27%"
+                    data-card-top="18.35%"
+                    data-next-label="Next"
+                    data-next-target="hotspot-2"
+                    aria-pressed="true"
+                    aria-label="Insight 1">1</button>
+
+            <button type="button"
+                    class="hotspot hotspot-vendors-2"
+                    data-counter="2"
+                    data-title="1st Design Concept: Categorizing with Background Colors."
+                    data-insight="<strong>Insight:</strong> Categorizing similar vendors with a specific color background made it easier to locate vendors but was <strong>hard to read</strong>."
+                    data-action="<strong>Action:</strong> Keep categorizing the vendors together but remove the color blocks."
+                    data-card-left="41.68%"
+                    data-card-top="3.50%"
+                    data-next-label="Go to After"
+                    data-next-target="version-after"
+                    aria-pressed="false"
+                    aria-label="Insight 2">2</button>
+          </div>
+        </div>
+
+        <div class="testing-overlay" role="region" aria-live="polite">
+          <span class="testing-overlay-title">Original Web Experience</span>
+          <p class="testing-overlay-body">
+            <strong>Insight:</strong> 7/10 users mentioned that sorting the vendors in alphabetical order helped, but was <strong>not enough</strong> since there were still too many vendors to choose from.
+          </p>
+          <p class="testing-overlay-body">
+            <strong>Action:</strong> Keep the alphabetical format but organize vendors that specialize in similar products.
+          </p>
+          <div class="testing-overlay-actions">
+            <button type="button" class="testing-overlay-next" aria-label="Next insight"><span class="next-label">Next</span> <span class="next-chevron" aria-hidden="true">&rsaquo;</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="version-content" data-version="after">
+        <div class="screen-frame screen-frame--vendors-after">
+          <div class="screen-image-wrap">
+            <img class="screen-image"
+                 src="images/vendors-after.svg"
+                 alt="Redesigned SD Tet Festival vendors page — categorized vendor list with white backgrounds and color-coded headers (Food in red, Non-Profit & Community Organizations in blue, Health & Wellness in green) alongside the original alphabetical list." />
+
+            <button type="button"
+                    class="hotspot hotspot--no-number hotspot-vendors-after-1 is-active"
+                    data-title="2nd Design Concept: White Background &amp; Different Colored Headers."
+                    data-insight="<strong>Insight:</strong> 9/10 said using a white background and a different colored header for each category made finding a specific vendor <strong>quicker</strong>."
+                    data-action="<strong>Action:</strong> Keep this design method and apply the same colors onto the map provided by VAYA to enhance the browsing experience."
+                    data-card-left="44.42%"
+                    data-card-top="2.80%"
+                    aria-pressed="true"
+                    aria-label="After insight 1"></button>
+
+            <button type="button"
+                    class="hotspot hotspot--no-number hotspot-vendors-after-2"
+                    data-title="2nd Design Concept: White Background &amp; Different Colored Headers."
+                    data-insight="<strong>Insight:</strong> 9/10 said using a white background and a different colored header for each category made finding a specific vendor <strong>quicker</strong>."
+                    data-action="<strong>Action:</strong> Keep this design method and apply the same colors onto the map provided by VAYA to enhance the browsing experience."
+                    data-card-left="44.42%"
+                    data-card-top="2.80%"
+                    aria-pressed="false"
+                    aria-label="After insight 2"></button>
+          </div>
+        </div>
+
+        <div class="testing-overlay testing-overlay--after" role="region" aria-live="polite" style="--card-left: 44.42%; --card-top: 2.80%;">
+          <span class="testing-overlay-title">2nd Design Concept: White Background &amp; Different Colored Headers.</span>
+          <p class="testing-overlay-body">
+            <strong>Insight:</strong> 9/10 said using a white background and a different colored header for each category made finding a specific vendor <strong>quicker</strong>.
+          </p>
+          <p class="testing-overlay-body">
+            <strong>Action:</strong> Keep this design method and apply the same colors onto the map provided by VAYA to enhance the browsing experience.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sub-section 3: Measuring demand for key festival events -->
+    <div class="version-group">
+      <h2 class="sub-title">Measuring Demand for Key Festival Events.</h2>
+      <p class="sub-body">
+        Lastly, participants were asked which events they would be most likely to attend. The goal of this section was to measure demand across festival events &amp; understand why certain events were preferred over others. Throughout the iteration process, it was also important to design in a way that encourages users to attend the headliners.
+      </p>
+
+      <div class="version-chips" role="group" aria-label="Filter by before or after">
+        <button type="button" class="version-chip" data-version="before" aria-pressed="true">Before</button>
+        <button type="button" class="version-chip" data-version="after" aria-pressed="false">After</button>
+      </div>
+
+      <div class="version-content is-active" data-version="before">
+        <div class="screen-frame screen-frame--headliners">
+          <div class="screen-image-wrap">
+            <img class="screen-image"
+                 src="images/headliners-before.png"
+                 alt="Original SD Tet Festival headliners and main program page — text-heavy lists of acts and events with little visual hierarchy." />
+
+            <button type="button"
+                    class="hotspot hotspot-headliners-1 is-active"
+                    data-counter="1"
+                    data-title="Original Web Experience"
+                    data-insight="<strong>Insight:</strong> 6/10 mentioned no strong preference for events, noting that none stood out as more appealing than the others."
+                    data-action="<strong>Action:</strong> Make the headliners stand out by making a different design component. Categorize events to highlight variety."
+                    data-card-left="2.54%"
+                    data-card-top="58.96%"
+                    data-next-label="Next"
+                    data-next-target="hotspot-2"
+                    aria-pressed="true"
+                    aria-label="Insight 1">1</button>
+
+            <button type="button"
+                    class="hotspot hotspot-headliners-2"
+                    data-counter="2"
+                    data-title="1st Design Concept: Differentiating Headliners &amp; Main Program"
+                    data-insight="<strong>Insight:</strong> Splitting events into 3 categories displayed variety to users. However, they were <strong>uninterested in the headliners</strong>."
+                    data-action="<strong>Action:</strong> Enlarge the design for the headliners and keep the categorization of the events."
+                    data-card-left="16.54%"
+                    data-card-top="31.65%"
+                    data-next-label="Go to After"
+                    data-next-target="version-after"
+                    aria-pressed="false"
+                    aria-label="Insight 2">2</button>
+          </div>
+        </div>
+
+        <div class="testing-overlay" role="region" aria-live="polite" style="--card-left: 2.54%; --card-top: 58.96%;">
+          <span class="testing-overlay-title">Original Web Experience</span>
+          <p class="testing-overlay-body">
+            <strong>Insight:</strong> 6/10 mentioned no strong preference for events, noting that none stood out as more appealing than the others.
+          </p>
+          <p class="testing-overlay-body">
+            <strong>Action:</strong> Make the headliners stand out by making a different design component. Categorize events to highlight variety.
+          </p>
+          <div class="testing-overlay-actions">
+            <button type="button" class="testing-overlay-next" aria-label="Next insight"><span class="next-label">Next</span> <span class="next-chevron" aria-hidden="true">&rsaquo;</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="version-content" data-version="after">
+        <div class="screen-frame screen-frame--headliners-after">
+          <div class="screen-image-wrap">
+            <img class="screen-image"
+                 src="images/headliners-after.svg"
+                 alt="Redesigned SD Tet Festival entertainment page — enlarged headliner cards with featured artist photos and dates, event listings categorized by Headliners, Performances, and Events." />
+
+            <button type="button"
+                    class="hotspot hotspot--no-number hotspot-headliners-after-1 is-active"
+                    data-title="2nd Design Concept: Contrasting Components"
+                    data-insight="<strong>Insight:</strong> 9/10 were more likely open to going to a headliner after <strong>enlarging</strong> the design."
+                    data-action="<strong>Action:</strong> Keep different design components for events &amp; headliners and event categories."
+                    data-card-left="53.2%"
+                    data-card-top="64%"
+                    aria-pressed="true"
+                    aria-label="After insight 1"></button>
+
+            <button type="button"
+                    class="hotspot hotspot--no-number hotspot-headliners-after-2"
+                    data-title="2nd Design Concept: Contrasting Components"
+                    data-insight="<strong>Insight:</strong> 9/10 were more likely open to going to a headliner after <strong>enlarging</strong> the design."
+                    data-action="<strong>Action:</strong> Keep different design components for events &amp; headliners and event categories."
+                    data-card-left="53.2%"
+                    data-card-top="64%"
+                    aria-pressed="false"
+                    aria-label="After insight 2"></button>
+          </div>
+        </div>
+
+        <div class="testing-overlay" role="region" aria-live="polite" style="--card-left: 53.2%; --card-top: 64%;">
+          <span class="testing-overlay-title">2nd Design Concept: Contrasting Components</span>
+          <p class="testing-overlay-body">
+            <strong>Insight:</strong> 9/10 were more likely open to going to a headliner after <strong>enlarging</strong> the design.
+          </p>
+          <p class="testing-overlay-body">
+            <strong>Action:</strong> Keep different design components for events &amp; headliners and event categories.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL DESIGNS BANNER -->
+<section class="final-designs" aria-labelledby="final-designs-heading">
+  <div class="final-designs-inner">
+    <h2 id="final-designs-heading" class="final-designs-label">Final Designs</h2>
+  </div>
+</section>
+
+<!-- FINAL DESIGNS — light red full-bleed section with goal videos -->
+<section class="final-designs-section" aria-label="Final designs by goal">
+  <div class="final-designs-section-inner">
+
+    <div class="final-goal">
+      <p class="final-goal-label">Goal 1</p>
+      <h3 class="final-goal-title">Enhance Vietnamese Culture.</h3>
+      <p class="final-goal-body">
+        Users can quickly browse through fun facts about Vietnamese New Year by horizontally scrolling through the red envelopes. This helps users learn more about the event, while enhancing festivity.
+      </p>
+      <div class="final-goal-media">
+        <video src="videos/final-goal-1.mp4"
+               autoplay muted loop playsinline webkit-playsinline controls preload="auto"
+               controlslist="nodownload"
+               aria-label="Demo of the redesigned homepage with horizontally-scrollable red envelopes that reveal fun facts about Vietnamese Lunar New Year."></video>
+      </div>
+    </div>
+
+    <div class="final-goal">
+      <p class="final-goal-label">Goal 2</p>
+      <h3 class="final-goal-title">Organizing Vendor + Event Details.</h3>
+      <p class="final-goal-body">
+        Users can scan through the list of vendors they are interested in and effectively locate them on the map depending on the header color. Attendees interested in becoming vendors can apply &amp; view the vendor requirements.
+      </p>
+      <div class="final-goal-media">
+        <video src="videos/final-goal-2.mp4"
+               autoplay muted loop playsinline webkit-playsinline controls preload="auto"
+               controlslist="nodownload"
+               aria-label="Demo of the redesigned vendors page — list of vendors with color-coded category headers mapped onto the festival vendor map."></video>
+      </div>
+    </div>
+
+    <div class="final-goal">
+      <p class="final-goal-label">Goal 3</p>
+      <h3 class="final-goal-title">Emphasize Key Events.</h3>
+      <p class="final-goal-body">
+        Contrasting designs for headliners &amp; events emphasizes important events that day, helping users determine the following events that allow them exposure to Vietnamese culture.
+      </p>
+      <div class="final-goal-media">
+        <video src="videos/final-goal-3.mp4"
+               autoplay muted loop playsinline webkit-playsinline controls preload="auto"
+               controlslist="nodownload"
+               aria-label="Demo of the redesigned entertainment page — enlarged headliner cards distinguished from the smaller event cards beneath."></video>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="impact" aria-labelledby="impact-heading">
+  <div class="impact-inner">
+    <span class="section-chip" id="impact-heading">Impact</span>
+    <h2 class="impact-title">So&hellip; What did my designs help improve?</h2>
+    <p class="impact-body">By defining the goals early on in the design process, it helped identify success metrics more efficiently. As a result, I came across 3 success metrics (2 user metrics and 1 business metric).</p>
+
+    <div class="impact-grid">
+      <article class="impact-card impact-card--user">
+        <p><strong>9/10</strong> users mentioned that the web experience feels more like a festival website.</p>
+      </article>
+      <article class="impact-card impact-card--user">
+        <p><strong>8/10</strong> users found it easier to find events that would help them learn more about Vietnamese culture.</p>
+      </article>
+      <article class="impact-card impact-card--business">
+        <p><strong>Over half</strong> of the users mentioned that they saw themselves attending the Lunar New Year festival.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- TAKEAWAYS -->
+<section class="takeaways" aria-labelledby="takeaways-heading">
+  <div class="takeaways-inner">
+    <span class="section-chip" id="takeaways-heading">Takeaways</span>
+    <h2 class="takeaways-title">What did I learn from this experience?</h2>
+    <p class="takeaways-body">As a Vietnamese myself, I found it very fun and meaningful to be able to work on a project catered towards users with a similar background as me. I came across 3 learning insights throughout my experience with this project.</p>
+
+    <div class="takeaways-grid">
+      <article class="takeaway-card">
+        <p>Don&rsquo;t be afraid to experiment with bold &amp; festive designs as long as it&rsquo;s feasible.</p>
+      </article>
+      <article class="takeaway-card">
+        <p>Sometimes, less is not more with a festive website that encourages festive designs.</p>
+      </article>
+      <article class="takeaway-card">
+        <p>Learn to have fun with visual design while keeping track of user needs.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- THANK YOU -->
+<section class="thankyou" aria-label="Thank you for reading">
+  <div class="thankyou-inner">
+    <p class="thankyou-title">Thank you for reading!</p>
+    <nav class="thankyou-nav" aria-label="Other case studies">
+      <a class="thankyou-link thankyou-link--prev" href="ingram-micro.html">
+        <img src="images/arrow-prev.svg" alt="" aria-hidden="true" />
+        Ingram Micro
+      </a>
+      <a class="thankyou-link thankyou-link--next" href="epocrates.html">
+        Epocrates
+        <img src="images/arrow-next.svg" alt="" aria-hidden="true" />
+      </a>
+    </nav>
+  </div>
+</section>
+
+<!-- SITE FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p class="site-footer-title">Thank you for visiting!</p>
+    <div class="site-footer-links">
+      <a class="footer-link" href="mailto:brianpham05@gmail.com" aria-label="Email Brian">
+        <img src="images/footer-email.svg" alt="" aria-hidden="true" width="26" height="20" />
+      </a>
+      <a class="footer-link" href="https://www.linkedin.com/in/brianpham03/" target="_blank" rel="noopener noreferrer" aria-label="Visit Brian's LinkedIn (opens in a new tab)">
+        <img src="images/footer-linkedin.svg" alt="" aria-hidden="true" width="24" height="24" />
+      </a>
+    </div>
+    <p class="site-footer-copyright">Brian Pham - 2026</p>
+  </div>
+</footer>
+
+
+<script>
+  // Mobile nav toggle
+  (function() {
+    const btn = document.querySelector('.nav-toggle');
+    const nav = document.getElementById('primary-nav');
+    if (!btn || !nav) return;
+    const setOpen = (open) => {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      nav.classList.toggle('is-open', open);
+    };
+    btn.addEventListener('click', () => {
+      setOpen(btn.getAttribute('aria-expanded') !== 'true');
+    });
+    nav.addEventListener('click', (e) => {
+      if (e.target.matches('a.nav-link')) setOpen(false);
+    });
+  })();
+
+  // Before / After filter toggle — scoped per .version-group so each
+  // user testing sub-section toggles independently.
+  (function() {
+    document.querySelectorAll('.version-group').forEach(group => {
+      const chips = group.querySelectorAll('.version-chip');
+      const panels = group.querySelectorAll('.version-content');
+
+      function activate(version) {
+        chips.forEach(c => {
+          c.setAttribute('aria-pressed', c.dataset.version === version ? 'true' : 'false');
+        });
+        panels.forEach(p => {
+          p.classList.toggle('is-active', p.dataset.version === version);
+        });
+      }
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => activate(chip.dataset.version));
+      });
+    });
+  })();
+
+  // Hotspot insight overlay — clicking a hotspot (or "Next" / "Go to After")
+  // activates the hotspot and populates the overlay card with a fade.
+  (function() {
+    document.querySelectorAll('.screen-frame').forEach(frame => {
+      const hotspots = Array.from(frame.querySelectorAll('.hotspot'));
+      const overlay = frame.parentElement
+        ? frame.parentElement.querySelector('.testing-overlay')
+        : null;
+      if (!overlay || hotspots.length === 0) return;
+
+      const titleEl  = overlay.querySelector('.testing-overlay-title');
+      const bodies   = overlay.querySelectorAll('.testing-overlay-body');
+      const nextBtn  = overlay.querySelector('.testing-overlay-next');
+      const nextLbl  = nextBtn ? nextBtn.querySelector('.next-label') : null;
+
+      const FADE_MS = 220;
+
+      function paint(spot) {
+        if (titleEl && spot.dataset.title) titleEl.textContent = spot.dataset.title;
+        if (bodies[0] && spot.dataset.insight) bodies[0].innerHTML = spot.dataset.insight;
+        if (bodies[1] && spot.dataset.action)  bodies[1].innerHTML = spot.dataset.action;
+        // Reposition (CSS uses these vars on desktop; mobile media query ignores them)
+        if (spot.dataset.cardLeft) overlay.style.setProperty('--card-left', spot.dataset.cardLeft);
+        if (spot.dataset.cardTop)  overlay.style.setProperty('--card-top',  spot.dataset.cardTop);
+        // Update Next button label
+        if (nextLbl && spot.dataset.nextLabel) nextLbl.textContent = spot.dataset.nextLabel;
+      }
+
+      function activate(spot) {
+        if (!spot || spot.classList.contains('is-active')) return;
+        hotspots.forEach(h => {
+          const isActive = h === spot;
+          h.classList.toggle('is-active', isActive);
+          h.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+        // Fade out, swap content + position, fade in
+        overlay.classList.add('is-fading');
+        setTimeout(() => {
+          paint(spot);
+          overlay.classList.remove('is-fading');
+        }, FADE_MS);
+      }
+
+      hotspots.forEach(spot => {
+        spot.addEventListener('click', () => activate(spot));
+      });
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          const active = hotspots.find(h => h.classList.contains('is-active'));
+          if (!active) return;
+          const target = active.dataset.nextTarget || '';
+
+          if (target.startsWith('hotspot-')) {
+            const idx = parseInt(target.slice('hotspot-'.length), 10) - 1;
+            if (hotspots[idx]) activate(hotspots[idx]);
+          } else if (target.startsWith('version-')) {
+            // Switch to a sibling version tab (e.g. After) inside the same group
+            const ver = target.slice('version-'.length);
+            const group = active.closest('.version-group');
+            const chip = group ? group.querySelector('.version-chip[data-version="' + ver + '"]') : null;
+            if (chip) chip.click();
+          } else {
+            // Fallback: cycle through hotspots
+            const i = hotspots.findIndex(h => h.classList.contains('is-active'));
+            activate(hotspots[(i + 1) % hotspots.length]);
+          }
+        });
+      }
+    });
+  })();
+
+  // Scroll reveal — fade + rise for content as it enters the viewport.
+  // Mirrors the ingram-micro behaviour: auto-tag common content blocks,
+  // stagger grid-like groups, and swap in `.in-view` once the element
+  // crosses the threshold. Degrades gracefully and respects reduced motion.
+  (function() {
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const selectors = [
+      '.case-title',
+      '.case-subtitle',
+      '.section-chip',
+      '.sub-title',
+      '.sub-body',
+      '.meta-card',
+      '.defined-card',
+      '.lion-frame',
+      '.flow-frame',
+      '.need-grid',
+      '.need-card',
+      '.insight-grid',
+      '.insight-card',
+      '.research-grid',
+      '.research-card',
+      '.goals-grid',
+      '.goal-card',
+      '.ut-block',
+      '.ut-wide-frame',
+      '.ut-popup-title',
+      '.hmw-quote'
+    ];
+
+    const targets = new Set();
+    selectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => targets.add(el));
+    });
+
+    // Stagger the children of grid-like groups for a cascade.
+    const groupSelectors = ['.need-grid', '.insight-grid', '.research-grid', '.goals-grid'];
+    groupSelectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(group => {
+        group.classList.add('reveal-group');
+        Array.from(group.children).forEach(child => {
+          child.classList.add('reveal');
+          targets.add(child);
+        });
+      });
+    });
+
+    targets.forEach(el => el.classList.add('reveal'));
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -10% 0px',
+      threshold: 0.08
+    });
+
+    targets.forEach(el => io.observe(el));
+  })();
+</script>
+
+</body>
+</html>
