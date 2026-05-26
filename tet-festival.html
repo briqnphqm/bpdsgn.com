@@ -1159,7 +1159,7 @@
   }
 
   @media (max-width: 900px) {
-    .impact { padding: 0 24px 96px; }
+    .impact { padding: 72px 24px 96px; }
     .impact-grid { gap: 32px; }
   }
   @media (max-width: 720px) {
@@ -2565,6 +2565,35 @@
     });
 
     targets.forEach(el => io.observe(el));
+  })();
+
+  // Mobile autoplay fallback: iOS/Android browsers often refuse to autoplay
+  // more than one muted video at a time. Force .play() when each video
+  // scrolls into view, and pause when out of view to save battery.
+  (function () {
+    const videos = document.querySelectorAll('.final-goal-media video');
+    if (!videos.length || !('IntersectionObserver' in window)) return;
+
+    videos.forEach(v => {
+      v.muted = true;
+      v.setAttribute('muted', '');
+      v.setAttribute('playsinline', '');
+      v.setAttribute('webkit-playsinline', '');
+    });
+
+    const vio = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const v = entry.target;
+        if (entry.isIntersecting) {
+          const p = v.play();
+          if (p && typeof p.catch === 'function') p.catch(() => {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.25 });
+
+    videos.forEach(v => vio.observe(v));
   })();
 </script>
 
