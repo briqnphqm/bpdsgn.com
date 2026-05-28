@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Protected Work — Brian Pham</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Benne&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-700: #1346A2;
+    --blue-900: #0D317A;
+    --blue-100: #D3E2FF;
+    --cream:    #FFF9F0;
+    --ink:      #222222;
+    --muted:    #4B5A70;
+    --error:    #B91C1C;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+  .card {
+    width: 100%;
+    max-width: 440px;
+    background: #FFFFFF;
+    border: 1px solid #F0E9DC;
+    border-radius: 12px;
+    padding: 40px 32px;
+    box-shadow: 0 10px 40px rgba(20, 30, 60, 0.06);
+    text-align: center;
+  }
+  h1 {
+    font-family: 'Benne', serif;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+  p.sub {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0 0 28px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  label {
+    text-align: left;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  input[type="password"] {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    padding: 12px 14px;
+    border: 1px solid #D6CFC0;
+    border-radius: 6px;
+    background: #FFFDF8;
+    color: var(--ink);
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  input[type="password"]:focus {
+    border-color: var(--blue-700);
+    box-shadow: 0 0 0 3px var(--blue-100);
+  }
+  button {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 6px;
+    border: 1px solid var(--blue-700);
+    background: var(--blue-700);
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease;
+    margin-top: 8px;
+  }
+  button:hover { background: var(--blue-900); border-color: var(--blue-900); }
+  .err {
+    display: none;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--error);
+  }
+  .err.show { display: block; }
+  .footer {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .footer a {
+    color: var(--blue-700);
+    text-decoration: none;
+  }
+  .footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="card" role="dialog" aria-labelledby="gate-title">
+      <h1 id="gate-title">Protected Work</h1>
+      <p class="sub">Enter the password to view the case studies.</p>
+      <form id="gate-form" autocomplete="off">
+        <label for="pw">Password</label>
+        <input id="pw" type="password" autocomplete="off" autofocus required aria-describedby="gate-error" />
+        <button type="submit">Enter</button>
+        <div id="gate-error" class="err" role="alert">Incorrect password. Try again.</div>
+      </form>
+      <p class="footer">
+        Need access? <a href="mailto:brianpham05@gmail.com">Email me</a>.
+      </p>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      // To change the password later, edit the string below.
+      var PASSWORD = 'phamdsgn2325';
+
+      var form = document.getElementById('gate-form');
+      var input = document.getElementById('pw');
+      var err = document.getElementById('gate-error');
+
+      // If already unlocked in this session, skip the gate.
+      try {
+        if (sessionStorage.getItem('bp_work_unlocked') === '1') {
+          window.location.replace('/');
+          return;
+        }
+      } catch (e) {}
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (input.value === PASSWORD) {
+          try { sessionStorage.setItem('bp_work_unlocked', '1'); } catch (e) {}
+          window.location.href = '/';
+        } else {
+          err.classList.add('show');
+          input.value = '';
+          input.focus();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
