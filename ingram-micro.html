@@ -1409,24 +1409,10 @@
   .ut2-stage[data-view="after"] .ut-dot-1 { left: 47%; top: 78%; }
   .ut2-stage[data-view="after"] .ut-dot-2 { left: 92%; top: 82%; }
 
-  /* ----- Sub-section 3: Browse for completed campaigns / save as draft ----- */
-  /* Same wide frame as ut2-stage (1270 x 887) */
-  .ut3-stage .ut-wide-frame { aspect-ratio: 1270 / 887; }
-  /* Before view: the screenshot is 1096.49 x 849 inside the 1270 x 887 frame,
-     positioned at (145.76, 21) per Figma. Use explicit width/height so the
-     image box is correctly sized — when only insets are set, browsers fall
-     back to the image's intrinsic aspect ratio, which makes the height
-     exceed the frame and the bottom caption gets clipped by overflow:hidden. */
-  .ut3-stage[data-view="before"] .ut-fullshot {
-    inset: auto;
-    top: 2.37%;
-    left: 11.48%;
-    right: auto;
-    bottom: auto;
-    width: 86.34%;    /* 1096.49 / 1270 */
-    height: 95.71%;   /* 849 / 887 */
-    object-fit: contain;
-  }
+  /* ----- Sub-section 3: View and Browse for Marketing Campaigns ----- */
+  /* Browse Campaigns view keeps the old wide frame; the View Campaign
+     view (below) uses its own 1022x1069 cream container. */
+  .ut3-stage[data-view="after"] .ut-wide-frame { aspect-ratio: 1270 / 887; }
   /* After view: the SVG is a full 1270 x 887, so it fills the entire frame. */
   .ut3-stage[data-view="after"] .ut-fullshot {
     inset: 0;
@@ -1434,13 +1420,26 @@
     height: 100%;
     object-fit: contain;
   }
-  /* Before-view dot positions (badge centers as % of 1270 x 887, taken from
-     the Figma badge top-left coords + 13px half of the 26px badge). */
-  .ut3-stage[data-view="before"] .ut-dot-1 { left: 86.85%; top: 20.86%; }
-  .ut3-stage[data-view="before"] .ut-dot-2 { left: 40.55%; top: 74.07%; }
-  /* Before-view popups — both share the same lower-left region per Figma */
-  .ut3-stage[data-view="before"] .ut-popup-1,
-  .ut3-stage[data-view="before"] .ut-popup-2 { left: 1.26%; top: 48.59%; width: 31.65%; }
+
+  /* View Campaign view: 1022x1069 cream container, constrained to the
+     1022px text column (same 209px-margin treatment as ut1-stage). All
+     annotations are baked into the SVG so no dots or popups are needed. */
+  .ut3-stage[data-view="before"] {
+    width: 100%;
+    margin-left: 0;
+    transform: none;
+  }
+  .ut3-stage[data-view="before"] .ut-wide-frame {
+    aspect-ratio: 1022 / 1069;
+    background: #F9F5EE;
+  }
+  .ut3-stage[data-view="before"] .ut-fullshot {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center top;
+  }
 
   /* After-view positions */
   .ut3-stage[data-view="after"] .ut-dot-1 { left: 33%; top: 84%; }   /* Engage tag in the ALL CAMPAIGNS row */
@@ -2534,48 +2533,25 @@
       </div>
     </div>
 
-    <!-- Sub-section 3: Browse for completed campaigns and save unfinished work as a draft -->
+    <!-- Sub-section 3: View and Browse for Marketing Campaigns -->
     <div class="ut-block">
-      <h2 class="sub-title">Browse for completed campaigns and save unfinished work as a draft.</h2>
+      <h2 class="sub-title">View and Browse for Marketing Campaigns.</h2>
       <p class="sub-body">Since users must submit their work for approval to save their progress, it appears in the &ldquo;Browse Campaigns&rdquo; section for everyone to see. This makes it difficult, especially for PMs to differentiate between completed campaigns and those saved as a draft.</p>
       <p class="sub-body">The goal of this section was to reduce efforts of browsing campaigns and come up with a design that helps <strong>distinguish</strong> between completed campaigns &amp; those saved as a draft.</p>
 
       <div class="ba-group" data-state="before">
-        <div class="ba-toggle" role="group" aria-label="Compare before and after">
-          <button type="button" class="ba-pill" data-state="before" aria-pressed="true">Before</button>
-          <button type="button" class="ba-pill" data-state="after"  aria-pressed="false">After</button>
+        <div class="ba-toggle" role="group" aria-label="Compare view campaign and browse campaigns">
+          <button type="button" class="ba-pill" data-state="before" aria-pressed="true">View Campaign</button>
+          <button type="button" class="ba-pill" data-state="after"  aria-pressed="false">Browse Campaigns</button>
         </div>
 
         <div class="ut-views">
-          <!-- Before view -->
+          <!-- View Campaign view: all annotations are baked into the single SVG. -->
           <div class="ut-stage ut3-stage" data-view="before">
-            <div class="ut-wide-frame" aria-label="Before iteration: original Browse Campaigns dashboard and submitted-header preview.">
+            <div class="ut-wide-frame" aria-label="View Campaign — the original design that required submitting incomplete work alongside the redesigned draft-saving flow.">
               <img class="ut-fullshot"
-                   src="images/ingram-ut3-before.png"
-                   alt="Original Template Repository — the Browse Campaigns dashboard with a long repetitive table, and a preview of an uploaded header-only campaign labeled 'Submitted only the header to save progress.'" />
-
-              <button type="button" class="ut-dot ut-dot-1 is-active"
-                      aria-pressed="true" aria-label="Annotation 1"
-                      data-target="ut3b-pop-1">1</button>
-              <button type="button" class="ut-dot ut-dot-2"
-                      aria-pressed="false" aria-label="Annotation 2"
-                      data-target="ut3b-pop-2">2</button>
-            </div>
-
-            <div class="ut-popups">
-              <aside class="ut-popup ut-popup-1" id="ut3b-pop-1" role="region" aria-label="Insight 1">
-                <h4 class="ut-popup-title">Original Design: Browse Campaigns</h4>
-                <p><strong>Insight:</strong> Repetitive dashboard results in campaigns not standing out, making it harder to search.</p>
-                <p><strong>Action:</strong> Include more dashboard elements (e.g. tags) to reduce search efforts.</p>
-                <button type="button" class="ut-popup-next" data-next="ut3b-pop-2" aria-label="Next insight">Next ›</button>
-              </aside>
-
-              <aside class="ut-popup ut-popup-2" id="ut3b-pop-2" role="region" aria-label="Insight 2" hidden>
-                <h4 class="ut-popup-title">Original Design: Incompleted but Submitted</h4>
-                <p><strong>Insight:</strong> When users open a campaign to view, they expect it to be fully finished &amp; submitted for PM approval, not incomplete.</p>
-                <p><strong>Action:</strong> Display and differentiate templates submitted for approval and as a draft.</p>
-                <button type="button" class="ut-popup-next" data-next="view-after" aria-label="Go to After insights">Go to After ›</button>
-              </aside>
+                   src="images/ingram-ut3-view-campaign.svg"
+                   alt="View Campaign — original design where submitting templates was required to save progress, paired with the redesigned Save-as-Draft flow that stores work separately." />
             </div>
           </div>
 
