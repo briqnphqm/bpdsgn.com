@@ -1409,37 +1409,30 @@
   .ut2-stage[data-view="after"] .ut-dot-1 { left: 47%; top: 78%; }
   .ut2-stage[data-view="after"] .ut-dot-2 { left: 92%; top: 82%; }
 
-  /* ----- Sub-section 3: View and Browse for Marketing Campaigns ----- */
-  /* Browse Campaigns view keeps the old wide frame; the View Campaign
-     view (below) uses its own 1022x1069 cream container. */
-  .ut3-stage[data-view="after"] .ut-wide-frame { aspect-ratio: 1270 / 887; }
-  /* After view: the SVG is a full 1270 x 887, so it fills the entire frame. */
-  .ut3-stage[data-view="after"] .ut-fullshot {
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-  /* View Campaign view: 1022x1069 cream container, constrained to the
-     1022px text column (same 209px-margin treatment as ut1-stage). All
-     annotations are baked into the SVG so no dots or popups are needed. */
-  .ut3-stage[data-view="before"] {
+  /* ----- Sub-section 3: View and Browse for Marketing Campaigns -----
+     Both views share a 1022x1069 cream container constrained to the
+     1022px text column (same 209px-margin treatment as ut1-stage).
+     All annotations are baked into each SVG, so no dots or popups. */
+  .ut3-stage {
     width: 100%;
     margin-left: 0;
     transform: none;
   }
-  .ut3-stage[data-view="before"] .ut-wide-frame {
+  .ut3-stage .ut-wide-frame {
     aspect-ratio: 1022 / 1069;
     background: #F9F5EE;
   }
-  .ut3-stage[data-view="before"] .ut-fullshot {
+  .ut3-stage .ut-fullshot {
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: contain;
     object-position: center top;
   }
+  /* Re-assert the cream background for the after view — the global
+     .ut-stage[data-view="after"] .ut-wide-frame rule above would
+     otherwise win on specificity. */
+  .ut3-stage[data-view="after"] .ut-wide-frame { background: #F9F5EE; }
 
   /* After-view positions */
   .ut3-stage[data-view="after"] .ut-dot-1 { left: 33%; top: 84%; }   /* Engage tag in the ALL CAMPAIGNS row */
@@ -2555,35 +2548,12 @@
             </div>
           </div>
 
-          <!-- After view -->
+          <!-- Browse Campaigns view: all annotations are baked into the single SVG. -->
           <div class="ut-stage ut3-stage" data-view="after" hidden>
-            <div class="ut-wide-frame" aria-label="After iteration: redesigned Browse Campaigns with tags and a campaign list.">
+            <div class="ut-wide-frame" aria-label="Browse Campaigns — original repetitive dashboard alongside the redesigned campaign list with tags and a draft/submitted toggle.">
               <img class="ut-fullshot"
-                   src="images/ingram-ut3-after.svg"
-                   alt="Redesigned Template Repository — the new Browse Campaigns experience with campaign tags, a redesigned card preview, and an All Campaigns list view." />
-
-              <button type="button" class="ut-dot ut-dot-1 is-active"
-                      aria-pressed="true" aria-label="Annotation 1"
-                      data-target="ut3a-pop-1">1</button>
-              <button type="button" class="ut-dot ut-dot-2"
-                      aria-pressed="false" aria-label="Annotation 2"
-                      data-target="ut3a-pop-2">2</button>
-            </div>
-
-            <div class="ut-popups">
-              <aside class="ut-popup ut-popup-1" id="ut3a-pop-1" role="region" aria-label="Insight 1">
-                <h4 class="ut-popup-title">Browse Campaign (Redesigned)</h4>
-                <p><strong>Insight:</strong> Adding ui tags for different campaign categories differentiated campaigns and reduced search efforts for <strong>5/6 users</strong>.</p>
-                <p>Also including a fraction helped them determine which templates are actually completed.</p>
-                <button type="button" class="ut-popup-next" data-next="ut3a-pop-2" aria-label="Next insight">Next ›</button>
-              </aside>
-
-              <aside class="ut-popup ut-popup-2" id="ut3a-pop-2" role="region" aria-label="Insight 2" hidden>
-                <h4 class="ut-popup-title">Browse Campaign (Redesigned)</h4>
-                <p><strong>Insight:</strong> Saving as a draft reduced design efforts for <strong>5/6 users</strong>.</p>
-                <p>Switching between submitted &amp; drafts made the browsing experience feel more organized for <strong>5/6 users</strong>.</p>
-                <p>They favor how incomplete and submitted templates were no longer grouped together.</p>
-              </aside>
+                   src="images/ingram-ut3-browse-campaigns.svg"
+                   alt="Browse Campaigns — original dashboard where campaigns were hard to distinguish, paired with the redesigned list view using category tags and a Submitted/Draft toggle." />
             </div>
           </div>
         </div>
