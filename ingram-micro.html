@@ -1319,6 +1319,9 @@
     border-radius: 50%;
     animation: hotspotPulse 1.8s ease-out infinite;
   }
+  /* Red ring position over the 1005x604 Switch-Templates SVG.
+     Estimate: just right of "Template 1". Adjust left/top % to fine-tune. */
+  .ut-redring-1 { left: 38%; top: 42%; }
 
   /* Red popup variant — same shape/positioning rules as .ut-popup, but
      re-colored to signal "this didn't work as intended." */
@@ -1329,6 +1332,26 @@
   .ut-popup.ut-popup--red .ut-popup-title { color: #6B1407; }
   .ut-popup.ut-popup--red .ut-popup-next  { color: #C9331C; }
   .ut-popup.ut-popup--red .ut-popup-next:hover { color: #8C2310; }
+  /* Inline red-X icon in the red popup title */
+  .ut-popup-x {
+    width: 18px;
+    height: 18px;
+    vertical-align: -3px;
+    margin-right: 6px;
+  }
+
+  /* Sub-section 1 Before view: use the 1005x604 Switch-Templates SVG.
+     The After view continues to use the default 1270/1094 frame. */
+  .ut1-stage[data-view="before"] .ut-wide-frame {
+    aspect-ratio: 1005 / 604;
+    background: transparent;
+  }
+  .ut1-stage[data-view="before"] .ut-fullshot {
+    object-fit: contain;
+  }
+  /* Reposition dot #1 over the Campaign Details area on the new SVG.
+     These are estimates — tweak left/top % to taste. */
+  .ut1-stage[data-view="before"] .ut-dot-1 { left: 25%; top: 60%; }
 
   /* ----- Sub-section 2: Customize your own Marketing Campaign ------------ */
   /* 160px below the previous user-testing block. */
@@ -2343,24 +2366,20 @@
 
         <div class="ut-views">
           <!-- Before view -->
-          <div class="ut-stage" data-view="before">
-            <div class="ut-wide-frame" aria-label="Before iteration: original Template Repository campaign creation flow with annotated insights">
-              <img class="ut-gif"
-                   src="images/ingram-ut1-before-gif.gif"
-                   alt="Animated walkthrough of the original Template Repository campaign creation flow" />
-              <img class="ut-iteration"
-                   src="images/ingram-ut1-before-iteration.png"
-                   alt="Iteration of the campaign creation flow showing template selection options" />
+          <div class="ut-stage ut1-stage" data-view="before">
+            <div class="ut-wide-frame" aria-label="Before iteration: original Template Repository campaign creation flow with the Switch Templates UI that failed in testing">
+              <img class="ut-fullshot"
+                   src="images/ingram-ut1-before.svg"
+                   alt="Original Template Repository — Enter Campaign Details step alongside the Switch Templates UI that users found surprising during testing" />
 
               <button type="button" class="ut-dot ut-dot-1 is-active"
                       aria-pressed="true" aria-label="Annotation 1"
                       data-target="ut1b-pop-1">1</button>
-              <button type="button" class="ut-dot ut-dot-2"
-                      aria-pressed="false" aria-label="Annotation 2"
-                      data-target="ut1b-pop-2">2</button>
-              <button type="button" class="ut-dot ut-dot-2b"
-                      aria-pressed="false" aria-label="Annotation 2"
-                      data-target="ut1b-pop-2">2</button>
+
+              <!-- Red glowing ring: emphasizes the Template 1 close/switch UI
+                   that failed during initial testing. Position is an estimate
+                   relative to the 1005x604 SVG; tweak in the CSS below. -->
+              <span class="ut-redring ut-redring-1" aria-hidden="true"></span>
             </div>
 
             <div class="ut-popups">
@@ -2371,11 +2390,14 @@
                 <button type="button" class="ut-popup-next" data-next="ut1b-pop-2" aria-label="Next insight">Next ›</button>
               </aside>
 
-              <aside class="ut-popup ut-popup-2" id="ut1b-pop-2" role="region" aria-label="Insight 2" hidden>
-                <h4 class="ut-popup-title">Template Preview</h4>
+              <aside class="ut-popup ut-popup-2 ut-popup--red" id="ut1b-pop-2" role="region" aria-label="Insight 2" hidden>
+                <h4 class="ut-popup-title">
+                  <img class="ut-popup-x" src="svgs/close-x.svg" alt="" aria-hidden="true" />
+                  Template Preview
+                </h4>
                 <p><strong>Insight:</strong> It&rsquo;s nice to know which templates to work with but switching between them feels like a <strong>surprise</strong> since there is a new template layout to expect.</p>
                 <p><strong>Action:</strong> Allow users to preview templates in a familiar, intuitive way so they know what to expect before they begin designing.</p>
-                <button type="button" class="ut-popup-next" data-next="view-after" aria-label="Go to After insights">Go to After ›</button>
+                <button type="button" class="ut-popup-next" data-next="view-after" aria-label="Go to What I Changed insights">Go to What I Changed ›</button>
               </aside>
             </div>
           </div>
