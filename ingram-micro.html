@@ -1356,17 +1356,25 @@
   }
   .ut1-stage .ut-fullshot {
     object-fit: contain;
+    object-position: center top;   /* SVG anchored to the top of the frame */
   }
+  /* Re-assert the cream background for the after view — the global
+     .ut-stage[data-view="after"] .ut-wide-frame rule above would
+     otherwise win on specificity. */
+  .ut1-stage[data-view="after"] .ut-wide-frame { background: #F9F5EE; }
   /* --- Before view (red Template Button) --- */
   .ut1-stage[data-view="before"] .ut-dot-1 { left: 50%; top: 36%; }
   .ut1-stage[data-view="before"] .ut-popup-2 {
     left: 38%; top: 60%; width: 58%;
   }
-  /* --- What-I-Changed view (green Template Preview) --- */
-  /* Green dot position estimate — adjust once you see it. */
-  .ut1-stage[data-view="after"] .ut-dot-1 { left: 70%; top: 40%; }
+  /* --- What-I-Changed view (green Template Preview) ---
+     Two green dots: #1 on the Template 1 thumbnail in the left list,
+     #2 on the in-canvas Template 1 preview in the right edit panel. */
+  .ut1-stage[data-view="after"] .ut-dot-1 { left: 18%; top: 30%; }
+  .ut1-stage[data-view="after"] .ut-dot-2 { left: 74%; top: 55%; }
+  /* Green popup sits in the lower-left, half-width, below the SVG. */
   .ut1-stage[data-view="after"] .ut-popup-1 {
-    left: 38%; top: 60%; width: 58%;
+    left: 5%; top: 76%; width: 50%;
   }
 
   /* ----- Sub-section 2: Customize your own Marketing Campaign ------------ */
@@ -2414,15 +2422,18 @@
 
           <!-- What I Changed view -->
           <div class="ut-stage ut1-stage" data-view="after" hidden>
-            <div class="ut-wide-frame" aria-label="What I changed: redesigned Template Repository campaign creation flow with template previews">
+            <div class="ut-wide-frame" aria-label="What I changed: redesigned Template Repository campaign creation flow with template thumbnail previews">
               <img class="ut-fullshot"
                    src="images/ingram-ut1-after.svg"
-                   alt="Redesigned campaign creation flow with template thumbnail previews so users know what to expect as they switch templates." />
+                   alt="Redesigned campaign creation flow with template thumbnail previews on both the left list and the right edit panel." />
 
-              <!-- Blank green dot: same shape as the brown/pink/red dots but
-                   green and number-less. Marks the new Template Preview
-                   thumbnails that resolved the original UI issue. -->
+              <!-- Two blank green dots — both reveal the same green
+                   Template Preview popup (left dot on the thumbnail list,
+                   right dot on the in-canvas template preview). -->
               <button type="button" class="ut-dot ut-dot--blank ut-dot--green ut-dot-1 is-active"
+                      aria-pressed="true" aria-label="Insight: Template Preview"
+                      data-target="ut1a-pop-1"></button>
+              <button type="button" class="ut-dot ut-dot--blank ut-dot--green ut-dot-2 is-active"
                       aria-pressed="true" aria-label="Insight: Template Preview"
                       data-target="ut1a-pop-1"></button>
             </div>
@@ -2433,8 +2444,8 @@
                   <img class="ut-popup-check" src="svgs/check-rounded.svg" alt="" aria-hidden="true" />
                   Template Preview
                 </h4>
-                <p><strong>Insight:</strong> Including a thumbnail preview when users switch views <strong>reduced surprise</strong> and helped them know what to expect as they switch to view different templates.</p>
-                <p><strong>Action:</strong> Incorporate this technique into the template designing phase (2nd image), so users can <strong>view multiple templates</strong> at once &amp; recall edits as they are designing.</p>
+                <p><strong>Change I Made:</strong> Instead of switching templates with a simple button, I changed them into <strong>template thumbnails</strong>.</p>
+                <p><strong>Insight:</strong> Including a thumbnail preview when users switch views <strong>reduced surprise</strong> and helped them know what to expect as they switch to view different templates for <strong>5/6 users</strong>.</p>
               </aside>
             </div>
           </div>
