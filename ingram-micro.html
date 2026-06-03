@@ -1316,8 +1316,10 @@
   .ut-popup.ut-popup--red .ut-popup-title { color: #6B1407; }
   .ut-popup.ut-popup--red .ut-popup-next  { color: #C9331C; }
   .ut-popup.ut-popup--red .ut-popup-next:hover { color: #8C2310; }
-  /* Inline red-X icon in the red popup title */
+  /* Inline red-X icon in the red popup title (override the global
+     img { display: block } so it sits inline next to the title text). */
   .ut-popup-x {
+    display: inline-block;
     width: 18px;
     height: 18px;
     vertical-align: -3px;
