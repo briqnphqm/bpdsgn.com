@@ -1296,6 +1296,40 @@
   .ut-stage[data-view="after"] .ut-popup-1,
   .ut-stage[data-view="after"] .ut-popup-2 { left: 46.93%; top: 2.10%; width: 51.18%; }
 
+  /* ----- Red "didn't work as intended" annotations -----------------------
+     Used in Sub-section 1 (Preview Templates) Before view to emphasize a
+     UI element that failed during initial testing. The red glow ring uses
+     the same hotspotPulse animation as the pink/brown dots. */
+  .ut-redring {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;          /* centers on left/top % */
+    border-radius: 50%;
+    border: 2px solid #F14F37;
+    background: transparent;
+    --glow-color: 241, 79, 55;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .ut-redring::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    animation: hotspotPulse 1.8s ease-out infinite;
+  }
+
+  /* Red popup variant — same shape/positioning rules as .ut-popup, but
+     re-colored to signal "this didn't work as intended." */
+  .ut-popup.ut-popup--red {
+    background: #FFF1EE;
+    border-color: #C9331C;
+  }
+  .ut-popup.ut-popup--red .ut-popup-title { color: #6B1407; }
+  .ut-popup.ut-popup--red .ut-popup-next  { color: #C9331C; }
+  .ut-popup.ut-popup--red .ut-popup-next:hover { color: #8C2310; }
+
   /* ----- Sub-section 2: Customize your own Marketing Campaign ------------ */
   /* 160px below the previous user-testing block. */
   .ut-block + .ut-block { margin-top: 160px; }
@@ -2284,7 +2318,7 @@
 
 <section class="user-testing" aria-labelledby="user-testing-heading">
   <div class="user-testing-inner">
-    <span class="section-chip" id="user-testing-heading">User Testing</span>
+    <span class="section-chip" id="user-testing-heading">User Testing &amp; Iteration</span>
 
     <aside class="callout callout-yellow ut-note">
       <h4>Note:</h4>
@@ -2293,7 +2327,7 @@
 
     <!-- Sub-section 1: Preview Templates Prior and While Designing -->
     <div class="ut-block">
-      <h2 class="sub-title">Preview Templates Prior and While Designing.</h2>
+      <h2 class="sub-title">Preview Templates Before and While Designing to Reduce Ambiguity.</h2>
       <p class="sub-body">
         To reduce ambiguity, it was important for marketing associates to know what email marketing templates they were working with before starting the design process.
       </p>
@@ -2302,9 +2336,9 @@
       </p>
 
       <div class="ba-group" data-state="before">
-        <div class="ba-toggle" role="group" aria-label="Compare before and after">
+        <div class="ba-toggle" role="group" aria-label="Compare before and what I changed">
           <button type="button" class="ba-pill" data-state="before" aria-pressed="true">Before</button>
-          <button type="button" class="ba-pill" data-state="after"  aria-pressed="false">After</button>
+          <button type="button" class="ba-pill" data-state="after"  aria-pressed="false">What I Changed</button>
         </div>
 
         <div class="ut-views">
