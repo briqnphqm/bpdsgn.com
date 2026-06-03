@@ -1334,7 +1334,7 @@
     transform: none;
   }
   .ut1-stage[data-view="before"] .ut-wide-frame {
-    aspect-ratio: 1005 / 604;
+    aspect-ratio: 1022 / 820;
     background: #F9F5EE;       /* light cream from spec */
   }
   .ut1-stage[data-view="before"] .ut-fullshot {
@@ -1342,10 +1342,11 @@
   }
   /* Red dot position over the Switch-Templates SVG.
      Estimate: just right of "Template 1". Adjust left/top % to taste. */
-  .ut1-stage[data-view="before"] .ut-dot-1 { left: 38%; top: 42%; }
-  /* Red Template-Preview popup sits to the right of the dot. */
+  .ut1-stage[data-view="before"] .ut-dot-1 { left: 50%; top: 36%; }
+  /* Red Template-Button popup sits in the lower-right, wide enough for
+     a horizontal title row (X + Template Button | What I Changed ›). */
   .ut1-stage[data-view="before"] .ut-popup-2 {
-    left: 58%; top: 18%; width: 40%;
+    left: 38%; top: 60%; width: 58%;
   }
 
   /* ----- Sub-section 2: Customize your own Marketing Campaign ------------ */
@@ -2347,10 +2348,10 @@
     <div class="ut-block">
       <h2 class="sub-title">Preview Templates Before and While Designing to Reduce Ambiguity.</h2>
       <p class="sub-body">
-        To reduce ambiguity, it was important for marketing associates to know what email marketing templates they were working with before starting the design process.
+        It was important for marketing associates to know what email marketing templates they were working with before starting designing. The user must enter campaign details (e.g. campaign name), &amp; their campaign of choice before they begin designing.
       </p>
       <p class="sub-body">
-        The goal of this section was the measure how long it took for users to locate their desired campaign and if template support mechanisms (e.g. previews) minimize ambiguity in the campaign design process.
+        The goal of this section was to determine if template support mechanisms (e.g. thumbnail previews) minimize ambiguity in the campaign design process.
       </p>
 
       <div class="ba-group" data-state="before">
@@ -2378,13 +2379,15 @@
 
             <div class="ut-popups">
               <aside class="ut-popup ut-popup-2 ut-popup--red" id="ut1b-pop-2" role="region" aria-label="Insight">
-                <h4 class="ut-popup-title">
-                  <img class="ut-popup-x" src="svgs/close-x.svg" alt="" aria-hidden="true" />
-                  Template Preview
-                </h4>
-                <p><strong>Insight:</strong> It&rsquo;s nice to know which templates to work with but switching between them feels like a <strong>surprise</strong> since there is a new template layout to expect.</p>
+                <div class="ut-popup-header">
+                  <h4 class="ut-popup-title">
+                    <img class="ut-popup-x" src="svgs/close-x.svg" alt="" aria-hidden="true" />
+                    Template Button
+                  </h4>
+                  <button type="button" class="ut-popup-next" data-next="view-after" aria-label="Go to What I Changed insights">What I Changed ›</button>
+                </div>
+                <p><strong>Insight:</strong> Seeing a campaign&rsquo;s template count upfront is helpful, but switching between templates felt jarring due to unexpected layout changes.</p>
                 <p><strong>Action:</strong> Allow users to preview templates in a familiar, intuitive way so they know what to expect before they begin designing.</p>
-                <button type="button" class="ut-popup-next" data-next="view-after" aria-label="Go to What I Changed insights">Go to What I Changed ›</button>
               </aside>
             </div>
           </div>
