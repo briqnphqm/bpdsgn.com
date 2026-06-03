@@ -1316,9 +1316,10 @@
   .ut-popup.ut-popup--red .ut-popup-title { color: #6B1407; }
   .ut-popup.ut-popup--red .ut-popup-next  { color: #C9331C; }
   .ut-popup.ut-popup--red .ut-popup-next:hover { color: #8C2310; }
-  /* Inline red-X icon in the red popup title (override the global
-     img { display: block } so it sits inline next to the title text). */
-  .ut-popup-x {
+  /* Inline red-X / green-check icons in the popup title (override the
+     global img { display: block } so they sit inline next to the title). */
+  .ut-popup-x,
+  .ut-popup-check {
     display: inline-block;
     width: 18px;
     height: 18px;
@@ -1326,28 +1327,45 @@
     margin-right: 6px;
   }
 
-  /* Sub-section 1 Before view: constrain the stage to the same 1022px
-     inner column as the text and pill above (rather than stretching to
-     the wider 1270px default). This keeps the dark-cream rectangle
-     aligned with the 209px L/R page margins. */
-  .ut1-stage[data-view="before"] {
+  /* Green "resolved / works as intended" variant — paired with the
+     green blank dot. Same shape as .ut-popup--red, re-tinted. */
+  .ut-dot--green,
+  .ut-dot--green.is-active {
+    background: #56A839;
+    --glow-color: 86, 168, 57;
+  }
+  .ut-popup.ut-popup--green {
+    background: #F1F8EC;
+    border-color: #3F7A29;
+  }
+  .ut-popup.ut-popup--green .ut-popup-title { color: #2A5219; }
+  .ut-popup.ut-popup--green .ut-popup-next  { color: #3F7A29; }
+  .ut-popup.ut-popup--green .ut-popup-next:hover { color: #2A5219; }
+
+  /* Sub-section 1: share the 1022x820 cream container across both
+     the Before view and the What-I-Changed view, constrained to the
+     1022px text column (instead of the default 1270px wide stage). */
+  .ut1-stage {
     width: 100%;
     margin-left: 0;
     transform: none;
   }
-  .ut1-stage[data-view="before"] .ut-wide-frame {
+  .ut1-stage .ut-wide-frame {
     aspect-ratio: 1022 / 820;
     background: #F9F5EE;       /* light cream from spec */
   }
-  .ut1-stage[data-view="before"] .ut-fullshot {
+  .ut1-stage .ut-fullshot {
     object-fit: contain;
   }
-  /* Red dot position over the Switch-Templates SVG.
-     Estimate: just right of "Template 1". Adjust left/top % to taste. */
+  /* --- Before view (red Template Button) --- */
   .ut1-stage[data-view="before"] .ut-dot-1 { left: 50%; top: 36%; }
-  /* Red Template-Button popup sits in the lower-right, wide enough for
-     a horizontal title row (X + Template Button | What I Changed ›). */
   .ut1-stage[data-view="before"] .ut-popup-2 {
+    left: 38%; top: 60%; width: 58%;
+  }
+  /* --- What-I-Changed view (green Template Preview) --- */
+  /* Green dot position estimate — adjust once you see it. */
+  .ut1-stage[data-view="after"] .ut-dot-1 { left: 70%; top: 40%; }
+  .ut1-stage[data-view="after"] .ut-popup-1 {
     left: 38%; top: 60%; width: 58%;
   }
 
@@ -2394,34 +2412,27 @@
             </div>
           </div>
 
-          <!-- After view -->
-          <div class="ut-stage" data-view="after" hidden>
-            <div class="ut-wide-frame" aria-label="After iteration: redesigned Template Repository campaign creation flow with annotated insights">
+          <!-- What I Changed view -->
+          <div class="ut-stage ut1-stage" data-view="after" hidden>
+            <div class="ut-wide-frame" aria-label="What I changed: redesigned Template Repository campaign creation flow with template previews">
               <img class="ut-fullshot"
                    src="images/ingram-ut1-after.svg"
-                   alt="Redesigned campaign creation flow showing the new Campaign Details and Template steps with template previews" />
+                   alt="Redesigned campaign creation flow with template thumbnail previews so users know what to expect as they switch templates." />
 
-              <button type="button" class="ut-dot ut-dot-1 is-active"
-                      aria-pressed="true" aria-label="Annotation 1"
-                      data-target="ut1a-pop-1">1</button>
-              <button type="button" class="ut-dot ut-dot-2"
-                      aria-pressed="false" aria-label="Annotation 2"
-                      data-target="ut1a-pop-2">2</button>
-              <button type="button" class="ut-dot ut-dot-2b"
-                      aria-pressed="false" aria-label="Annotation 2"
-                      data-target="ut1a-pop-2">2</button>
+              <!-- Blank green dot: same shape as the brown/pink/red dots but
+                   green and number-less. Marks the new Template Preview
+                   thumbnails that resolved the original UI issue. -->
+              <button type="button" class="ut-dot ut-dot--blank ut-dot--green ut-dot-1 is-active"
+                      aria-pressed="true" aria-label="Insight: Template Preview"
+                      data-target="ut1a-pop-1"></button>
             </div>
 
             <div class="ut-popups">
-              <aside class="ut-popup ut-popup-1" id="ut1a-pop-1" role="region" aria-label="Insight 1">
-                <h4 class="ut-popup-title">Enter Campaign Details</h4>
-                <p><strong>Insight:</strong> To maintain a digestible interface, I split campaign details &amp; templates into two steps. <strong>6/6 users</strong> preferred this layout since it reduces space &amp; helps the user know what steps to input first before diving into designing templates.</p>
-                <p><strong>Action:</strong> Keep the progress bar since it displays the details needed to dive into template designing, which <strong>reduces ambiguity</strong>.</p>
-                <button type="button" class="ut-popup-next" data-next="ut1a-pop-2" aria-label="Next insight">Next ›</button>
-              </aside>
-
-              <aside class="ut-popup ut-popup-2" id="ut1a-pop-2" role="region" aria-label="Insight 2" hidden>
-                <h4 class="ut-popup-title">Template Preview</h4>
+              <aside class="ut-popup ut-popup-1 ut-popup--green" id="ut1a-pop-1" role="region" aria-label="Insight">
+                <h4 class="ut-popup-title">
+                  <img class="ut-popup-check" src="svgs/check-rounded.svg" alt="" aria-hidden="true" />
+                  Template Preview
+                </h4>
                 <p><strong>Insight:</strong> Including a thumbnail preview when users switch views <strong>reduced surprise</strong> and helped them know what to expect as they switch to view different templates.</p>
                 <p><strong>Action:</strong> Incorporate this technique into the template designing phase (2nd image), so users can <strong>view multiple templates</strong> at once &amp; recall edits as they are designing.</p>
               </aside>
