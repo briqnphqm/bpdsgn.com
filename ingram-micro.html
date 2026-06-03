@@ -1324,12 +1324,18 @@
     margin-right: 6px;
   }
 
-  /* Sub-section 1 Before view: dark-cream container hosting the
-     1005x604 Switch-Templates SVG. The After view keeps the default
-     1270/1094 frame. */
+  /* Sub-section 1 Before view: constrain the stage to the same 1022px
+     inner column as the text and pill above (rather than stretching to
+     the wider 1270px default). This keeps the dark-cream rectangle
+     aligned with the 209px L/R page margins. */
+  .ut1-stage[data-view="before"] {
+    width: 100%;
+    margin-left: 0;
+    transform: none;
+  }
   .ut1-stage[data-view="before"] .ut-wide-frame {
     aspect-ratio: 1005 / 604;
-    background: #EFE6D2;       /* dark cream */
+    background: #F9F5EE;       /* light cream from spec */
   }
   .ut1-stage[data-view="before"] .ut-fullshot {
     object-fit: contain;
